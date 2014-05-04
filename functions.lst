@@ -1,0 +1,137 @@
+apadrv [SQL_APA]
+apakkoqb [SQL_APA]
+apaqbd [SQL_APA]
+apaqbdDescendents [SQL_APA]
+apaqbdList [SQL_APA]
+atbdrv alter table driver.
+ctcdrv             ctcdrv - Create Table or Cluster DRiVer.  
+dbgeEndDDEInvocation [diag_dde]
+dbgeEndDDEInvocationImpl [diag_dde]
+dbgeExecuteForError [diag_dde]
+dbgePostErrorKGE [diag_dde]
+dbgexExplicitEndInc [diag_dde]
+dbgexProcessError [diag_dde]
+dbkePostKGE_kgsf [rdbms_dde]
+delexe             delexe.c - delete execute
+delrow             delrow - Row Procedure used by KXRD to delete or lock a
+evaopn2            evaluate operand
+hshuid [PLSQL_KG_Interface]
+insexe [DML]
+kaudel             ? Module Notes: perform inserts, updates, and deletes, modifying indexes on tables
+kcbchg1 [CACHE_RCV]
+kcbchg1_main [CACHE_RCV]
+kcbflc_keep_all [CACHE_RCV]
+kcbflc_keep_range [CACHE_RCV]
+kcbgtcr [CACHE_RCV]
+kcbldrget [CACHE_RCV]
+kcblgt [CACHE_RCV]
+kcblrd [CACHE_RCV]
+kdicdrv            KDI: create index driver routine
+kdicrws            KDI: create index using row source
+kdla_read [LOB_KDLA]
+kdliReadX [LOB_INODE]
+kdliXfmCheck [LOB_INODE]
+kdli_readx [LOB_INODE]
+kdlw_read [LOB_KDLW]
+kdlw_read_data [LOB_KDLW]
+kdlxDecompress1 [LOB_KDLX]
+kdlxDecompressCbk [LOB_KDLX]
+kdlxDecompressSUnit [LOB_KDLX]
+kdlxDecompressUnit [LOB_KDLX]
+kdlx_read [LOB_KDLX]
+kdlxdup_read [LOB_KDLXDUP]
+kesaiExecAction [SQL_Manage_Infra]
+kesaiTuneSqlDrv [SQL_Manage_Infra]
+kestsTuneSqlDrv [SQL_Tune]
+kestsiIndexAnalyzeDrv [SQL_Tune_Index]
+kghalf [KGH]
+kghalo [KGH]
+kghasp [KGH]
+kghbigasp [KGH]
+kgherror [KGH]
+kghfnd [KGH]
+kghfre [KGH]
+kghfre [KGH]
+kghfrh [KGH]
+kghfrh_internal [KGH]
+kghfrmrg [KGH]
+kghfrunp [KGH]
+kghgex [KGH]
+kghnerror [KGH]
+kghssgfr [KGH]
+kglMutexCleanupAll [LIBCACHE]
+kglMutexRecovery [LIBCACHE]
+kglOnErrorMutexCleanup [LIBCACHE]
+kgldafr [LIBCACHE]
+kglhdd [LIBCACHE]
+kglhdda [LIBCACHE]
+kgllccl [LIBCACHE]
+kglobfr [LIBCACHE]
+kglobld [LIBCACHE]
+kglobpn [LIBCACHE]
+kglpim [LIBCACHE]
+kglpin [LIBCACHE]
+kglpndl [LIBCACHE]
+kglpnds [LIBCACHE]
+kkdcico            Kkdc Insert COnstraint definition.
+kkmupd [SQL_Semantic]
+kkmups [SQL_Semantic]
+kkoiqb [SQL_Costing]
+kkoixo [SQL_Costing]
+kkooqb [SQL_Costing]
+kkoqbc [SQL_Costing]
+kkqctdrvIT [SQL_Transform]
+kkqcttcalo [SQL_Transform]
+kksFullTypeCheck [cursor]
+kksLoadChild [cursor]
+kksOnErrorMutexCleanup [cursor]
+kksParentHandleFreeCbk [cursor]
+kksSetBindType [cursor]
+kksfbc [cursor]
+kllcqgf [DIRPATH_LOAD]
+klmalf [DIRPATH_LOAD]
+kpoal8             kpoal8.c - Kernel Programmatic Oracle ALl Version 8
+ksbabs [background_proc]
+ksbrdp [background_proc]
+ksedmp             # KSE: dump the process state
+ksedst             # KSE: dump the call stack
+ksepop [KSE]
+ksmsgfr [KSM]
+kssdch [VOS]
+kssdel [VOS]
+kssxdl [VOS]
+ksuxds [ksu]
+main               # Standard executable entry point
+opidrv             # opidrv - ORACLE Program Interface DRiVer (IGNORE)
+opiexe             opiexe - ORACLE Program Interface EXEcute
+opiino             opiino - ORACLE Program Interface INitialize Opi
+opiodr             OPIODR: ORACLE code request driver - route the current
+opiosq             OPIOSQ: prepare to parse a sql command
+opiosq0            OPI: prepare to parse a sql command
+opitsk             opitsk - Two Task Oracle Side Function Dispatcher
+pcicmp0 [PLSQL_Infrastructure]
+phf_read_items [PLSQL_Infrastructure]
+phpcmp [PLSQL_Infrastructure]
+qergiFetch [PART]
+qerliFetch         QERLI: parallel create index fetch
+qerltcFetch [SQL_Execution]
+qerocFetch [SQL_Execution]
+qerocnFetch [SQL_Execution]
+qersoFetch         QERSO: Fetch from a sort row source
+qersoProcessULS    process underlying row source
+qertbFetch [SQL_Execution]
+qkaconPreUA [SQL_Code_Generator]
+qkadrv [SQL_Code_Generator]
+qkaqkn [SQL_Code_Generator]
+qksanAnalyzeSql [SQL_Analyze]
+qksanExecSql [SQL_Analyze]
+qksvcDoReplace [SQL_Virtual]
+qksvcReplaceIndexExpr [SQL_Virtual]
+rpidrus            RPI: Recursive program handling (unclear)
+rpidrv             RPI: Recursive Program Interface DRiVer
+rpiswu2            RPI: SWitch User in recursive sql
+skgmstack          skgmstack - call specified function with extra STACK 
+sou2o              # Main Oracle executable entry point
+ssexhd             # ** DUMP ROUTINE - IGNORE stuff above this on the stack
+start              # C program entry point (IGNORE)
+ttcpip             TTCPIP: Two Task Common PIPe read/write
