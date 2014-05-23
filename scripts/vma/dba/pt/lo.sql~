@@ -1,0 +1,76 @@
+-------------------------------------------------------------------------------
+--
+-- Script:	lo.sql
+-- Purpose:	Display longops report for given session.
+--              ixora save/restore_s+ used for saving user environment
+--
+-- Copyright:	(c) FTC LLC
+-- Author:	Velikikh Mikhail
+--
+-- Description:	Session longops report
+--
+-- Usage:       @lo.sql "{<sid>|sid=<sid>|qcsid=<qcsid>}"
+--
+-- Change history:
+--   Vers:   1.0.0.0
+--     Auth: Velikikh M.
+--     Date: 2013/10/28 11:55
+--     Desc: Creation
+--
+-------------------------------------------------------------------------------
+--DOCSTART
+--
+--lo.sql
+------------
+--
+--Session longops report.
+--
+--lo.sql {<sid> | [sid=<sid>] | [,qcsid=<qcsid>] }
+--
+--DOCEND
+@save_sqlplus_settings.sql
+
+set hea off
+set term off
+set timing off
+
+def input="&1."
+
+@eva &input. sid qcsid
+@evadef &input. sid
+
+col if_sid new_v if_sid nopri
+col if_qcsid new_v if_qcsid nopri
+
+select nvl2('&sid.', '', '--') if_sid,
+       nvl2('&qcsid.', '', '--') if_qcsid
+  from dual
+/
+
+set hea on
+set term on
+
+col opname for a20
+col pct for 990.99
+col sid for 99999
+col target for a30
+col time_remaining hea REM for 99999
+col units for a10
+col elapsed_seconds hea ELA for 99999
+
+select sid, opname, target, sofar, totalwork, round(sofar/totalwork*100, 2) pct, units, time_remaining, elapsed_seconds, sql_id, start_time, last_update_time
+       &if_qcsid., qcsid
+  from v$session_longops
+ where 1 = 1
+   and sofar<totalwork
+   &if_sid. and sid = &sid.
+   &if_qcsid. and qcsid = &qcsid.
+/
+
+undef if_sid
+undef sid
+undef if_qcsid
+undef qcsid
+undef input
+
+@restore_sqlplus_settings.sql

@@ -1,0 +1,133 @@
+-------------------------------------------------------------------------------
+--
+-- Script:	ashrpt.sql
+-- Purpose:	Display ASH in different dimensions
+--              ixora save/restore_s+ used for saving user environment
+--
+-- Copyright:	(c) FTC LLC
+-- Author:	Velikikh Mikhail
+--
+-- Description:	This script display information active session history
+--
+-- Usage:       @ashrpt.sql "<filter>" "{<group by cols>|
+--                agg=<aggregate cols>|
+--                gby=<group by cols>|
+--                oby=<order by cols>|
+--                top=<row count>}"
+--
+-- Change history:
+--   Vers:   1.0.0.0
+--     Auth: Velikikh M.
+--     Date: 2013/11/21 11:25
+--     Desc: Creation
+--
+-------------------------------------------------------------------------------
+--DOCSTART
+--
+--ashrpt.sql
+------------
+--
+--Active Session History report.
+--
+--ashrpt.sql {tablespace_name}
+--  [
+--    [<group by cols>] |
+--    [,agg=<aggregate cols>] |
+--    [,gby=<group by cols>] |
+--    [,oby=<order by cols>] |
+--    [,top=<row count>]
+--  ]
+--
+--DOCEND
+
+@save_sqlplus_settings.sql
+
+set timing off
+
+col 2 new_v 2 nopri
+
+select '' "2" from dual where null^=null;
+
+def filter="&1."
+def input="&2."
+
+@eva "&input." agg gby oby top
+
+@evadef "&input." gby
+
+set term off
+
+col if_agg new_v if_agg nopri
+col if_filter new_v if_filter nopri
+col if_gby_gby new_v if_gby_gby nopri
+col if_gby_lst new_v if_gby_lst nopri
+col if_oby new_v if_oby nopri
+col if_top new_v if_top nopri
+
+select nvl2(q'[&agg.]', q'[&agg.]', '--') if_agg,
+       nvl2(q'[&filter.]', q'[&filter.]', 'sample_time between systimestamp-interval ''15'' minute and systimestamp') if_filter,
+       nvl2(q'[&gby.]', q'[&gby.]', '()') if_gby_gby,
+       nvl2(q'[&gby.]', q'[&gby.]', '--') if_gby_lst,
+       nvl2(q'[&oby.]', q'[&oby.]', 'sample_count desc') if_oby,
+       nvl2('&top.', 'rownum<=&top.', '1=1') if_top
+  from dual
+/
+
+set term on
+set echo off
+set ver off
+
+col event for a37
+col pct_bar for a10
+col module for a30
+col name for a15 hea SERVICE_NAME
+col pct nopri
+col pct_text for a7 hea PCT
+col sample_count for 9999999 hea SAMPLES
+col wait_class for a14
+
+select *
+  from (
+       select &if_gby_lst.,
+              &if_agg.,
+              count(1) sample_count,
+              round(ratio_to_report(count(1)) over ()*100,2) pct,
+              to_char(round(ratio_to_report(count(1)) over ()*100,2), '990.99') pct_text,
+              lpad('*', ratio_to_report(count(1)) over()*100/10, '*') pct_bar
+         from v$active_session_history ash, v$active_services srvc, dba_users usr
+        where &if_filter.
+          and ash.service_hash = srvc.name_hash(+)
+          and ash.user_id = usr.user_id(+)
+        group by &if_gby_gby.
+        order by &if_oby.)
+ where &if_top.
+/
+
+undef filter
+undef if_filter
+undef input
+undef gby
+undef if_gby_gby
+undef if_gby_lst
+undef oby
+undef if_oby
+undef top
+undef if_top
+
+col if_agg cle
+col if_filter cle
+col if_gby_gby cle
+col if_gby_lst cle
+col if_oby cle
+col if_top cle
+
+col event cle
+col pct_bar cle
+col module cle
+col name cle
+col pct cle
+col pct_text cle
+col sample_count cle
+col wait_class cle
+
+@restore_sqlplus_settings.sql

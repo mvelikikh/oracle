@@ -1,0 +1,139 @@
+-------------------------------------------------------------------------------
+--
+-- Script:	helpus.sql
+-- Purpose:	Scripts HELP text
+--
+-- Copyright:	(c) FTC LLC                        
+-- Author:	Velikikh Mikhail
+--
+-- Description:	Inserts script HELP text in English
+--
+-- Usage:       This script is called from helpbld.sql
+--
+-- Change history:
+--   Vers:   1.0.0.0
+--     Auth: Velikikh M.
+--     Date: 2013/10/21 11:42
+--     Desc: Creation
+--
+-------------------------------------------------------------------------------
+
+SET AUTOCOMMIT 100
+
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 2, 'lcdep.sql');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 3, '-----------');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 5, 'Library cache dependencies.');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 7, 'lcdep.sql ');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 8, '  {');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 9, '    [<sql_id>] |');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 10, '    [sql_id=<sql_id>] |');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 11, '    [,kglnaobj=<kglnaobj>] |');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 12, '    [,kglnaown=<kglnaown>] |');
+insert into help(topic, seq, info) values ('vma/dba/lcdep.sql', 13, '  }');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 2, 'tsseg.sql');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 3, '----------');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 5, 'Tablespace segments report.');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 7, 'tsseg.sql {tablespace_name}');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 8, '  [');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 9, '    [<owner>] |');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 10, '    [,gby=<group by cols>] |');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 11, '    [,oby=<order by cols>] |');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 12, '    [,owner=<regexp>] |');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 13, '    [,partition_name=<regexp>] |');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 14, '    [,segment_name=<regexp>] |');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 15, '    [,segment_type=<regexp>] |');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 16, '  ]');
+insert into help(topic, seq, info) values ('vma/dba/tsseg.sql', 17, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/rsmrpt.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/rsmrpt.sql', 2, 'rsmrpt.sql');
+insert into help(topic, seq, info) values ('vma/dba/pt/rsmrpt.sql', 3, '----------');
+insert into help(topic, seq, info) values ('vma/dba/pt/rsmrpt.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/rsmrpt.sql', 5, 'Real Time SQL Monitoring report.');
+insert into help(topic, seq, info) values ('vma/dba/pt/rsmrpt.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/rsmrpt.sql', 7, 'rsmrpt.sql {<sql_id> | [sql_id=<sql_id>] | [,session_id=<session_id>] }');
+insert into help(topic, seq, info) values ('vma/dba/pt/rsmrpt.sql', 8, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/stautrpt.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/stautrpt.sql', 2, 'stautrpt.sql');
+insert into help(topic, seq, info) values ('vma/dba/pt/stautrpt.sql', 3, '------------');
+insert into help(topic, seq, info) values ('vma/dba/pt/stautrpt.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/stautrpt.sql', 5, 'SQL Tuning Advisor Auto Task report.');
+insert into help(topic, seq, info) values ('vma/dba/pt/stautrpt.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/stautrpt.sql', 7, 'stautrpt.sql');
+insert into help(topic, seq, info) values ('vma/dba/pt/stautrpt.sql', 8, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/extbind.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/extbind.sql', 2, 'extbind.sql');
+insert into help(topic, seq, info) values ('vma/dba/pt/extbind.sql', 3, '-----------');
+insert into help(topic, seq, info) values ('vma/dba/pt/extbind.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/extbind.sql', 5, 'Extract bind for given SQL and convert to human-readable format.');
+insert into help(topic, seq, info) values ('vma/dba/pt/extbind.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/extbind.sql', 7, 'extbind.sql {sql_id}');
+insert into help(topic, seq, info) values ('vma/dba/pt/extbind.sql', 8, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/stat.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/stat.sql', 2, 'stat.sql');
+insert into help(topic, seq, info) values ('vma/dba/pt/stat.sql', 3, '--------');
+insert into help(topic, seq, info) values ('vma/dba/pt/stat.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/stat.sql', 5, 'Table Statistics.');
+insert into help(topic, seq, info) values ('vma/dba/pt/stat.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/stat.sql', 7, 'stat.sql {<owner>} {<table_name>}');
+insert into help(topic, seq, info) values ('vma/dba/pt/stat.sql', 8, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/gps.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/gps.sql', 2, 'gps.sql');
+insert into help(topic, seq, info) values ('vma/dba/pt/gps.sql', 3, '----------');
+insert into help(topic, seq, info) values ('vma/dba/pt/gps.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/gps.sql', 5, 'Gather extended row source execution statistics for SQL in script.');
+insert into help(topic, seq, info) values ('vma/dba/pt/gps.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/gps.sql', 7, 'gps.sql {script_file}');
+insert into help(topic, seq, info) values ('vma/dba/pt/gps.sql', 8, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/ss.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/ss.sql', 2, 'ss.sql');
+insert into help(topic, seq, info) values ('vma/dba/pt/ss.sql', 3, '----------');
+insert into help(topic, seq, info) values ('vma/dba/pt/ss.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/ss.sql', 5, 'SQL Statistics.');
+insert into help(topic, seq, info) values ('vma/dba/pt/ss.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/ss.sql', 7, 'ss.sql {<sql_id>}');
+insert into help(topic, seq, info) values ('vma/dba/pt/ss.sql', 8, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/dp.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/dp.sql', 2, 'dp.sql');
+insert into help(topic, seq, info) values ('vma/dba/pt/dp.sql', 3, '----------');
+insert into help(topic, seq, info) values ('vma/dba/pt/dp.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/dp.sql', 5, 'Display Plan for given SQL.');
+insert into help(topic, seq, info) values ('vma/dba/pt/dp.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/pt/dp.sql', 7, 'dp.sql {sql_id} [child_number] [format]');
+insert into help(topic, seq, info) values ('vma/dba/pt/dp.sql', 8, '');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 2, 'getddl.sql');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 3, '----------');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 5, 'Display metadata for specified object.');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 7, 'getddl.sql {object_type} {name} ');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 8, '  [');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 9, '    [constraints_as_alter=<true|false>] |');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 10, '    [,emit_schema=<true|false>] |');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 11, '    [,owner=<owner>] |');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 12, '    [,segment_attributes=<true|false>] |');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 13, '    [,storage=<true|false>] |');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 14, '    [,sqlterminator=<true|false>] |');
+insert into help(topic, seq, info) values ('vma/dba/getddl.sql', 15, '  ]');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 1, '');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 2, 'getdddl.sql');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 3, '-----------');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 4, '');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 5, 'Display dependent metadata for specified object.');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 6, '');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 7, 'getdddl.sql {object_type} {name} ');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 8, '  [');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 9, '    [base_object_schema=<owner>] |');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 10, '    [,constraints_as_alter=<true|false>] |');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 11, '    [,segment_attributes=<true|false>] |');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 12, '    [,storage=<true|false>] |');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 13, '    [,sqlterminator=<true|false>] |');
+insert into help(topic, seq, info) values ('vma/dba/getdddl.sql', 14, '  ]');
+
+COMMIT;

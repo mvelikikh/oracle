@@ -1,0 +1,85 @@
+-------------------------------------------------------------------------------
+--
+-- Script:	dp.sql
+-- Purpose:	Launch display_cursor for given SQL
+--              ixora save/restore_s+ used for saving user environment
+--
+-- Copyright:	(c) FTC LLC
+-- Author:	Velikikh Mikhail
+--
+-- Description:	This script display information about given sql_id
+--
+-- Usage:       @dp.sql SQL_ID [CHILD_NUMBER] [FORMAT]
+--
+-- Change history:
+--   Vers:   1.0.1.1
+--     Auth: Velikikh M.
+--     Date: 13/09/09 15:27
+--     Desc: Removed garbage output. Added set term on/off for that.
+--   Vers:   1.0.0.0
+--     Auth: Velikikh M.
+--     Date: 07/12/09 09:59
+--     Desc: Creation
+--
+-------------------------------------------------------------------------------
+--DOCSTART
+--
+--dp.sql
+------------
+--
+--Display Plan for given SQL.
+--
+--dp.sql {sql_id} [child_number] [format]
+--
+--DOCEND
+@save_sqlplus_settings
+          
+set pages 200 timi off lin 250
+whenever sqlerror continue
+
+col 1 new_v 1 nopri
+col 2 new_v 2 nopri
+col 3 new_v 3 nopri
+
+set term off
+
+select '' "1", '' "2", '' "3" from dual where null=null;
+
+select nvl('&2.', 'null') "2" from dual;
+select nvl('&3.', 'peeked_binds') "3" from dual;
+
+def l_sql_id="&1."
+def l_sql_child_number="&2."
+def l_format="&3."
+
+col p fold_a
+set hea off
+
+set term on
+
+select 'SQL_ID: '||'&l_sql_id.' p,
+       'CHILD:  '||nvl(to_char(&l_sql_child_number.), 'null') p,
+       'FORMAT: '||'&l_format.' p
+  from dual;
+
+col sql_id new_value l_sql_id
+col sql_child_number new_value l_sql_child_number
+
+select plan_table_output from table (dbms_xplan.display_cursor('&l_sql_id.', &l_sql_child_number., '&l_format.'));
+
+undef 1
+undef 2
+undef 3
+
+undef l_sql_id
+undef l_sql_child_number
+undef l_format
+
+col 1 cle
+col 2 cle
+col 3 cle
+col p cle
+col sql_child_number cle
+col sql_id cle
+
+@restore_sqlplus_settings

@@ -1,0 +1,49 @@
+-------------------------------------------------------------------------------
+--
+-- Script:	evadef.sql
+-- Purpose:	Extract default value from command line in format var1=val1,var2=val2.
+--              save/loadseteva used for saving user environment
+--
+-- Copyright:	(c) FTC LLC
+-- Author:	Velikikh Mikhail
+--
+-- Description:	Extract VAriable DEFault value script
+--
+-- Usage: @evadef.sql var1=val1,var2=val2 var1
+--
+-- Change history:
+--   Vers:   1.0.0.0
+--     Auth: Velikikh M.
+--     Date: 2013/07/24 09:35
+--     Desc: Creation
+--
+-------------------------------------------------------------------------------
+--DOCSTART
+--
+--evadef.sql
+---------
+--
+--Extract variable default value script.
+--
+--evadef.sql <input_string> {<var1>}
+--
+--where <input_string> must be in format var1=val1,var2=val21,var22,var3=var3
+--
+--DOCEND
+@@saveseteva
+set feed off timi off ver off term off
+
+col defval new_v &2. nopri
+
+select decode(sign(instr('&1.', '=')), 0, '&1.', 
+         regexp_substr('dummy=dummy,&1.,dummy=dummy', ',&2.=([^=]+)(,[^,]+=)', 1, 1, 'c', 1)
+       ) 
+         defval
+  from dual;
+
+undef 1
+undef 2
+
+col defval cle
+
+@@loadseteva

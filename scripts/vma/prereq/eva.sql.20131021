@@ -1,0 +1,45 @@
+@@saveseteva
+set feed off timi off ver off term off
+def eva_input="&1."
+
+col 2 nopri new_v 2
+col 3 nopri new_v 3
+col 4 nopri new_v 4
+col 5 nopri new_v 5
+col 6 nopri new_v 6
+col 7 nopri new_v 7
+
+select 'var2' "2", 'var3' "3", 'var4' "4", 'var5' "5", 'var6' "6", 'var7' "7"
+  from dual 
+ where null^=null;
+
+select '&2.' "2", nvl('&3.', 'x') "3", nvl('&4.', 'x') "4", nvl('&5.', 'x') "5", nvl('&6.', 'x') "6", nvl('&7.', 'x') "7" from dual;
+
+col var2 nopri new_v &2.
+col var3 nopri new_v &3.
+col var4 nopri new_v &4.
+col var5 nopri new_v &5.
+col var6 nopri new_v &6.
+col var7 nopri new_v &7.
+
+select regexp_substr(regexp_substr('&eva_input.', '&2.=([^=,]+)', 1, 1, 'c', 1), '[^=]+$') var2,
+       regexp_substr(regexp_substr('&eva_input.', '&3.=([^=,]+)', 1, 1, 'c', 1), '[^=]+$') var3,
+       regexp_substr(regexp_substr('&eva_input.', '&4.=([^=,]+)', 1, 1, 'c', 1), '[^=]+$') var4,
+       regexp_substr(regexp_substr('&eva_input.', '&5.=([^=,]+)', 1, 1, 'c', 1), '[^=]+$') var5,
+       regexp_substr(regexp_substr('&eva_input.', '&6.=([^=,]+)', 1, 1, 'c', 1), '[^=]+$') var6,
+       regexp_substr(regexp_substr('&eva_input.', '&7.=([^=,]+)', 1, 1, 'c', 1), '[^=]+$') var7
+  from dual;
+
+undef 1
+undef 2
+undef 3
+undef 4
+undef 5
+undef 6
+undef 7
+
+undef eva_input
+
+undef nopri
+
+@@loadseteva
