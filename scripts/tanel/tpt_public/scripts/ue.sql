@@ -1,1 +1,0 @@
-select sys_context('USERENV', '&1') from dual;

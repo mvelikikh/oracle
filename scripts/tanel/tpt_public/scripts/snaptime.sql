@@ -1,3 +1,0 @@
-prompt Taking a &1 second snapshot...
-
-@@snapper "out,gather=t,tinclude=DB Time" &1 1 "select sid from v$session"

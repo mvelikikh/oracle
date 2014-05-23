@@ -1,1 +1,0 @@
-@hist_generic &1 &2 2

@@ -1,8 +1,0 @@
-def job_count="4"
-def objlst="select owner, table_name name from dba_tables where owner='TEST_MOVEP'"
-def par_count="2"
-def resumable_timeout="7200"
-def task_name="TEST"
-def ts_name="TEST"
-def objtab="MOVP_&task_name._TAB"
-def prc_name="MOVP_&task_name._PROC"

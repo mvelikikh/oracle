@@ -1,1 +1,0 @@
-oradebug tracefile_name

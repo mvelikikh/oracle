@@ -1,1 +1,0 @@
-@@dumpvar uga &1

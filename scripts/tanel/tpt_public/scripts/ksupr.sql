@@ -1,1 +1,0 @@
-select * from x$ksupr where addr='&1';

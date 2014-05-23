@@ -1,1 +1,0 @@
-select sql_text from v$sql where hash_value = &1;

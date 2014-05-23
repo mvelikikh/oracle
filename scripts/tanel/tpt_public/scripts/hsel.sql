@@ -1,1 +1,0 @@
-@@htmlrun "select * from &1"

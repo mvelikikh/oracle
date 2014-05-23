@@ -1,1 +1,0 @@
-select * from x$mutex_sleep where location_id = &1;
