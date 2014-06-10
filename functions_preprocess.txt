@@ -1,0 +1,4 @@
+- file format: <function> <description> .
+- add lines
+- unique sort: sort u
+- find functions with different descriptions: /^\([^ ]\+\).*\n\1\( \)
