@@ -125,3 +125,5 @@ endfunction
 function! Vma_space2a0()
   %s/ /\=nr2char(160)/g
 endfunction
+
+" test
