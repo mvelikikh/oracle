@@ -155,6 +155,12 @@ augroup filetype_vim
   autocmd FileType vim setlocal foldmethod=marker
 augroup end
 " }}}
+" SQL file settings ----------------------{{{
+augroup filetype_sql
+  autocmd!
+  autocmd FileType sql setlocal formatprg=java\ org.orasql.SQLBeautifier
+augroup end
+" }}}
 
 " My function: convert list of strings to select union all
 function! Vma_select_list() range
