@@ -51,6 +51,7 @@ kdlxDecompressSUnit [LOB_KDLX]
 kdlxDecompressUnit [LOB_KDLX]
 kdlx_read [LOB_KDLX]
 kdlxdup_read [LOB_KDLXDUP]
+kdsgrp             Get row piece */
 kesaiExecAction [SQL_Manage_Infra]
 kesaiTuneSqlDrv [SQL_Manage_Infra]
 kestsTuneSqlDrv [SQL_Tune]
@@ -165,6 +166,7 @@ kksParseCursor     KKS: Parse Cursor
 kksSetBindType [cursor]
 kksfbc             KKS: Find Bound Cursor
 kkspsc0 [cursor]
+kkxexe             KKX: execute plsql
 kkxrpc             ARGSUSED
 kllcqgf [DIRPATH_LOAD]
 klmalf [DIRPATH_LOAD]
@@ -175,6 +177,7 @@ kluuscn [DIRPATH_LOAD]
 kohalc             KOH: ALlocate memory Chunk
 kohdtg             KOH: DuRation Table Get an duration entry
 kokegkldai [OBJECTS_Images]
+kokligrd           kokligrd - KOK Lob Internal initialize kdllfn with row data */
 kokltcc [OBJECTS_Types]
 kokltcr [OBJECTS_Types]
 kokmrwo [OBJECTS_Types]
@@ -202,6 +205,7 @@ ksesin             # KSE: signal an internal error (named)
 ksfd_io [VOS]
 ksfd_kfioRequest [VOS]
 ksfd_osmio [VOS]
+ksfdmp             # Call relevant dump routine
 ksfdread [VOS]
 ksmsgfr [KSM]
 kssdch [VOS]
@@ -248,20 +252,21 @@ opimai_real
 opiodr             OPIODR: ORACLE code request driver - route the current request
 opiosq             OPIOSQ: prepare to parse a sql command
 opiosq0            OPI: prepare to parse a sql command
+opipls             opipls.c -- contains opi bundled call executor and support routines
 opirip             # Oracle Program Interface Run Independent Process (IGNORE)
 opitsk             opitsk - Two Task Oracle Side Function Dispatcher
 pcicmp0 [PLSQL_Infrastructure]
 pefcal [PLSQL_External_Proc]
 pefccal [PLSQL_External_Proc]
 peftrusted [PLSQL_External_Proc]
-peicnt [PLSQL_Code_Execution]
+peicnt PL/SQL controlled Execution [PLSQL_Code_Execution]
 pevm_BFTCHC [PLSQL_Code_Execution]
 pevm_FCAL [PLSQL_Code_Execution]
 pextproc [PLSQL_Code_Execution]
 pfrinstr_FCAL [PLSQL_Code_Execution]
 pfrinstr_FTCHC [PLSQL_Code_Execution]
-pfrrun [PLSQL_Code_Execution]
-pfrrun_no_tool [PLSQL_Code_Execution]
+pfrrun PSDEVN: PL/SQL Interpreter Main Instruction Loop [PLSQL_Code_Execution]
+pfrrun_no_tool fast interpretation loop [PLSQL_Code_Execution]
 ph2qeril_expand_rec_in_list IN-LIST  [SQL_Execution]
 phf_read_items [PLSQL_Infrastructure]
 phpcmp [PLSQL_Infrastructure]
@@ -269,7 +274,7 @@ plsql_run          single entry point for top level pfrrun and penrun [PLSQL_PSD
 pricbr             PL/SQL Remote Interface - Call Back, Remote
 prient             prient - Run given (RPC) entrypoint
 prient2            prient2 - common code to run given entrypoint: could be RPC or non-RPC
-psddr0 [PLSQL_PSD_Generic]
+psddr0 Null pointer definitions for ttcdrv callback and contet.  Used in psddrv. [PLSQL_PSD_Generic]
 psdexsp [PLSQL_PSD_Generic]
 psdextp [PLSQL_PSD_Generic]
 psdnal [PLSQL_PSD_Generic]
@@ -1354,6 +1359,7 @@ qksanAnalyzeSql [SQL_Analyze]
 qksanExecSql [SQL_Analyze]
 qksvcDoReplace [SQL_Virtual]
 qksvcReplaceIndexExpr [SQL_Virtual]
+rpidru             RPI: setup memory for the recursive session (unclear)
 rpidrus            RPI: Recursive program handling (unclear)
 rpidrv             RPI: Recursive Program Interface DRiVer
 rpiswu2            RPI: SWitch User in recursive sql
