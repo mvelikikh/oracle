@@ -196,8 +196,9 @@ kpudpxuls_ctxUnloadStream [DPAPI_Load]
 kqfd_WRT_qerfxtst_c FIXED TABLE  [SQL_Execution]
 kqlUpdateStubs [LIBCACHE]
 kqlvld [LIBCACHE]
-ksbabs [background_proc]
-ksbrdp [background_proc]
+ksbabs [background_proc] KSB: Background process: Action based server
+ksbcti             call timeout/interrupts
+ksbrdp [background_proc] KSB: run a detached (background) process
 ksedmp             # KSE: dump the process state
 ksedst             # KSE: dump the call stack
 ksepop [KSE]
