@@ -88,18 +88,23 @@ kghfrx             Free extent.  This is called  when a heap is  unpinned to req
 kghgex             KGH: Get a new extent
 kghnerror [KGH]
 kghssgfr [KGH]
+kghssggr [KGH]
+kglLock [LIBCACHE]
 kglMutexCleanupAll [LIBCACHE]
 kglMutexRecovery [LIBCACHE]
 kglOnErrorMutexCleanup [LIBCACHE]
+kglSessionHashInsert [LIBCACHE]
 kgldafr [LIBCACHE]
 kgldon [LIBCACHE]
 kgldpo [LIBCACHE]
 kgldpo0 [LIBCACHE]
+kglget [LIBCACHE]
 kglgob [LIBCACHE]
 kglhdd [LIBCACHE]
 kglhdda [LIBCACHE]
 kglhpd             kglhpd - KGL HeaP Deallocate */
 kgllccl [LIBCACHE]
+kgllkal [LIBCACHE]
 kgllkdl [LIBCACHE]
 kgllkds [LIBCACHE]
 kglobal            kglobal - KGL OBject AlLocate
@@ -162,7 +167,7 @@ kksLoadChild [cursor]
 kksOnErrorMutexCleanup [cursor]
 kksParentHandleFreeCbk [cursor]
 kksParseChildCursor [cursor]
-kksParseCursor     KKS: Parse Cursor
+kksParseCursor [cursor] KKS: Parse Cursor
 kksSetBindType [cursor]
 kksfbc             KKS: Find Bound Cursor
 kkspsc0 [cursor]

@@ -1,6 +1,6 @@
 " New buffer filetype
 autocmd BufEnter * if &filetype == "" | setlocal ft=sql | endif
-autocmd BufEnter *.txt setlocal formatoptions=aw2tq
+autocmd BufEnter *.txt setlocal formatoptions=w2tq
 " set iskeyword not working as expected without that
 autocmd FileType sql setlocal iskeyword=@,48-57,_,192-255
 autocmd FileType txt setlocal iskeyword=@,48-57,_,192-255
