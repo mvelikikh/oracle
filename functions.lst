@@ -87,6 +87,7 @@ kghfrunp           KGH: Ask client to free unpinned space
 kghfrx             Free extent.  This is called  when a heap is  unpinned to request that it
 kghgex             KGH: Get a new extent
 kghnerror [KGH]
+kghnospc KGH: There is no space available in the heap, signal an error.
 kghssgfr [KGH]
 kghssggr [KGH]
 kglLock [LIBCACHE]
@@ -118,6 +119,13 @@ kglpin             KGL: PIN heaps and load data pieces of an object [LIBCACHE]
 kglpndl [LIBCACHE]
 kglpnds [LIBCACHE]
 kglrfcl            kglrfcl - KGL ReFerence CLear
+kjblcrcbk [GCS]
+kjbmpocr [GCS]
+kjbrcrcvt [GCS]
+kjbrscrping [GCS]
+kjmpmsgi [RAC_MLMDS]
+kjmsm [RAC_MLMDS]
+kjmxmpm [RAC_MLMDS]
 kkdcico            Kkdc Insert COnstraint definition.
 kkeIdxSelectivity [SQL_Costing]
 kkeidc [SQL_Costing]
@@ -213,6 +221,7 @@ ksfd_kfioRequest [VOS]
 ksfd_osmio [VOS]
 ksfdmp             # Call relevant dump routine
 ksfdread [VOS]
+ksmasg Callback function for allocating an SGA extent.  The SGA is fixed size
 ksmsgfr [KSM]
 kssdch [VOS]
 kssdel [VOS]
