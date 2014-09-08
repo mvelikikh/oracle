@@ -18,7 +18,7 @@ delexe             delexe.c - delete execute [DML]
 delrow             delrow - Row Procedure used by KXRD to delete or lock a
 evaopn2            evaluate operand
 hshuid [PLSQL_KG_Interface]
-insexe [DML]
+insexe [DML] insexe - insert execute
 kaudel             ? Module Notes: perform inserts, updates, and deletes, modifying indexes on tables
 kcbchg1 [CACHE_RCV]
 kcbchg1_main [CACHE_RCV]
@@ -71,6 +71,7 @@ kfk_check_load_lib_asminst [KFK]
 kfk_load_by_idx_in_pga [KFK]
 kfk_oss_initialize [KFK]
 kfpkgDGReadFile [ASM]
+kgeadse            kgeadse - KGE ADd String Internal Error onto the error stack */
 kgerinv            kgerinv - KGE Record Internal (Named) error (with Va_list)
 kgesinv            kgesinv - KGE Signal Internal (Named) error (with VA_list)
 kghalf             KGH: Non-recoverably allocate a freeable chunk of memory 
@@ -255,6 +256,7 @@ kxfxmai [Parallel_Execution]
 kxfxsExecute [Parallel_Execution]
 kxfxsStmtExecute [Parallel_Execution]
 kxfxsp [Parallel_Execution]
+kxhrUnpack         KXHR: HJ: unpack a row
 kxsGetRuntimeLock [cursor]
 main               # Standard executable entry point
 opidrv             # opidrv - ORACLE Program Interface DRiVer (IGNORE)
@@ -525,7 +527,7 @@ qerghRowP HASH GROUP BY  [SQL_Execution]
 qerghRowPRowsets HASH GROUP BY  [SQL_Execution]
 qerghStart HASH GROUP BY  [SQL_Execution]
 qergiAllocate GRANULE ITERATOR  [SQL_Execution]
-qergiFetch GRANULE ITERATOR  [SQL_Execution]
+qergiFetch QERGR: FETCH procedure of PX Granule Iterator Row source, GRANULE ITERATOR [SQL_Execution]
 qergiFirstPartition GRANULE ITERATOR  [SQL_Execution]
 qergiGetIdentifier GRANULE ITERATOR  [SQL_Execution]
 qergiGetPap GRANULE ITERATOR  [SQL_Execution]
@@ -597,7 +599,7 @@ qerhjDisableHJCbk HASH JOIN  [SQL_Execution]
 qerhjExpandHashAreaCb HASH JOIN  [SQL_Execution]
 qerhjExtMemForPQBuffer HASH JOIN  [SQL_Execution]
 qerhjFOJSwapPartitions HASH JOIN  [SQL_Execution]
-qerhjFetch HASH JOIN  [SQL_Execution]
+qerhjFetch Hash join row source - Fetch Procedure [SQL_Execution]
 qerhjFetchOuterJoin HASH JOIN  [SQL_Execution]
 qerhjFetchPhase2 HASH JOIN  [SQL_Execution]
 qerhjFitInMemory HASH JOIN  [SQL_Execution]
@@ -737,7 +739,7 @@ qerjoRowProcedure NESTED LOOP OUTER  [SQL_Execution]
 qerjoSaveMethod NESTED LOOP OUTER  [SQL_Execution]
 qerjoStart NESTED LOOP OUTER  [SQL_Execution]
 qerjosIsNLCartesian NESTED LOOP OUTER  [SQL_Execution]
-qerjotFetch NESTED LOOP JOIN  [SQL_Execution]
+qerjotFetch Row Source: join - tunneling fetch NESTED LOOP JOIN  [SQL_Execution]
 qerjotRelease NESTED LOOP JOIN  [SQL_Execution]
 qerjotRowProc NESTED LOOP JOIN  [SQL_Execution]
 qerleAllocate LINEAR EXECUTION  IMPLEMENTATION  [SQL_Execution]
@@ -759,7 +761,7 @@ qerltCheckRow LOAD TABLE  [SQL_Execution]
 qerltClose LOAD TABLE  [SQL_Execution]
 qerltFRop LOAD TABLE  [SQL_Execution]
 qerltFast LOAD TABLE  [SQL_Execution]
-qerltFetch LOAD TABLE  [SQL_Execution]
+qerltFetch Query Execution Row source Load Table - Fetch LOAD TABLE  [SQL_Execution]
 qerltGetRowProc LOAD TABLE  [SQL_Execution]
 qerltGetStgdef LOAD TABLE  [SQL_Execution]
 qerltIDLM LOAD TABLE  [SQL_Execution]
@@ -1124,7 +1126,7 @@ qertbCanEvaluateUnderCRXCbk TABLE ACCESS  [SQL_Execution]
 qertbCheckExtentMapFilter TABLE ACCESS  [SQL_Execution]
 qertbClose TABLE ACCESS  [SQL_Execution]
 qertbEvaluateExtentMapFilter TABLE ACCESS  [SQL_Execution]
-qertbFetch TABLE ACCESS  [SQL_Execution]
+qertbFetch QERTB: FetCH procedure of table row source for scans TABLE ACCESS  [SQL_Execution]
 qertbFetchByRowID TABLE ACCESS  [SQL_Execution]
 qertbFetchByRowID_FDA TABLE ACCESS  [SQL_Execution]
 qertbFilter TABLE ACCESS  [SQL_Execution]
@@ -1378,6 +1380,7 @@ rpidru             RPI: setup memory for the recursive session (unclear)
 rpidrus            RPI: Recursive program handling (unclear)
 rpidrv             RPI: Recursive Program Interface DRiVer
 rpiswu2            RPI: SWitch User in recursive sql
+rwsfcd             RWSIMA: fetch from row source
 sighandler         ? Module Notes: Missing Information
 skgmstack          skgmstack - call specified function with extra STACK 
 skgpnumcpu returns the number of CPUs
