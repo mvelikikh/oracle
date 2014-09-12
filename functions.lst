@@ -16,7 +16,7 @@ dbgexProcessError [diag_dde]
 dbkePostKGE_kgsf [rdbms_dde]
 delexe             delexe.c - delete execute [DML]
 delrow             delrow - Row Procedure used by KXRD to delete or lock a
-evaopn2            evaluate operand
+evaopn2 evaluate operand
 hshuid [PLSQL_KG_Interface]
 insexe [DML] insexe - insert execute
 kaudel             ? Module Notes: perform inserts, updates, and deletes, modifying indexes on tables
@@ -191,6 +191,9 @@ kluuscn [DIRPATH_LOAD]
 kohalc             KOH: ALlocate memory Chunk
 kohdtg             KOH: DuRation Table Get an duration entry
 kokegkldai [OBJECTS_Images]
+koklcre [OBJECTS_Types]
+kokleva [OBJECTS_Types]
+kokliccb [OBJECTS_Types]
 kokligrd           kokligrd - KOK Lob Internal initialize kdllfn with row data */
 kokltcc [OBJECTS_Types]
 kokltcr [OBJECTS_Types]
@@ -1356,6 +1359,8 @@ qeshPTInsertURowForGBY [SQL_Execution]
 qeshfFindFreeSlot [SQL_Execution]
 qeshsAddChunk [SQL_Execution]
 qeshsFindFreeSlot [SQL_Execution]
+qesltcBeforeRowProcessing [SQL_Execution]
+qesltcEvalOutofLineCols [SQL_Execution]
 qesltcLoadIndexList [SQL_Execution]
 qesltcLoadIndexes [SQL_Execution]
 qesrcCM_Acquire [SQL_Execution]
