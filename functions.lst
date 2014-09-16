@@ -136,6 +136,7 @@ kkestBuildMCCtxFromKeys [SQL_Costing]
 kketac [SQL_Costing]
 kkmupd [SQL_Semantic]
 kkmups [SQL_Semantic]
+kkmupsViewDestFro [SQL_Semantic]
 kkoBitmapAccPath [SQL_Costing]
 kkoabr [SQL_Costing]
 kkobmp [SQL_Costing]
@@ -178,7 +179,8 @@ kksParentHandleFreeCbk [cursor]
 kksParseChildCursor [cursor]
 kksParseCursor [cursor] KKS: Parse Cursor
 kksSetBindType [cursor]
-kksfbc             KKS: Find Bound Cursor
+kksfbc [cursor] KKS: Find Bound Cursor
+kkspbd0 [cursor]
 kkspsc0 [cursor]
 kkxexe             KKX: execute plsql
 kkxrpc             ARGSUSED
@@ -273,7 +275,10 @@ opiodr             OPIODR: ORACLE code request driver - route the current reques
 opiosq             OPIOSQ: prepare to parse a sql command
 opiosq0            OPI: prepare to parse a sql command
 opipls             opipls.c -- contains opi bundled call executor and support routines
+opiprsdml []
+opiprsdmlcb []
 opirip             # Oracle Program Interface Run Independent Process (IGNORE)
+opitca []
 opitsk             opitsk - Two Task Oracle Side Function Dispatcher
 pcicmp0 [PLSQL_Infrastructure]
 pefcal [PLSQL_External_Proc]
