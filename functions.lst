@@ -185,6 +185,7 @@ kkspbd0 [cursor]
 kkspsc0 [cursor]
 kkxexe             KKX: execute plsql
 kkxrpc             ARGSUSED
+kkxtexe - KKX Trigger EXEcute
 kllcqgf [DIRPATH_LOAD]
 klmalf [DIRPATH_LOAD]
 kluprd [DIRPATH_LOAD]
@@ -264,6 +265,7 @@ kxfxsStmtExecute [Parallel_Execution]
 kxfxsp [Parallel_Execution]
 kxhrUnpack         KXHR: HJ: unpack a row
 kxsGetRuntimeLock [cursor]
+kxtexe KXT: EXEcute trigger
 main               # Standard executable entry point
 opidrv             # opidrv - ORACLE Program Interface DRiVer (IGNORE)
 opiexe             opiexe - ORACLE Program Interface EXEcute
@@ -1243,7 +1245,7 @@ qerusRop UPSERT  [SQL_Execution]
 qerusStart UPSERT  [SQL_Execution]
 qerusStatus UPSERT  [SQL_Execution]
 qervwAllocate VIEW  [SQL_Execution]
-qervwFetch VIEW  [SQL_Execution]
+qervwFetch VIEW View row source - fetch [SQL_Execution]
 qervwRelease VIEW  [SQL_Execution]
 qervwRestoreViewBufPtrs [SQL_Execution]
 qervwRowProcedure VIEW  [SQL_Execution]
@@ -1391,7 +1393,7 @@ rpidru             RPI: setup memory for the recursive session (unclear)
 rpidrus            RPI: Recursive program handling (unclear)
 rpidrv             RPI: Recursive Program Interface DRiVer
 rpiswu2            RPI: SWitch User in recursive sql
-rwsfcd             RWSIMA: fetch from row source
+rwsfcd RWSIMA: fetch from row source
 sighandler         ? Module Notes: Missing Information
 skgmstack          skgmstack - call specified function with extra STACK 
 skgpnumcpu returns the number of CPUs
@@ -1402,7 +1404,7 @@ ttcpip             TTCPIP: Two Task Common PIPe read/write
 updCheckConstraints [DML]
 updConstraintsAndART [DML]
 updThreePhaseExe [DML]
-updaul [DML]
+updaul updaul - UPDate Attempt Update of all rows or Lock all rows [DML]
 updrow [DML]
 xsqerstDimGetDisVals QUERY EXECUTION STATISTICS  [SQL_Execution]
 xsqerstFirstPass QUERY EXECUTION STATISTICS  [SQL_Execution]
