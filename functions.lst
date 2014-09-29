@@ -212,6 +212,7 @@ kolttcr [OBJECTS_Types]
 kotgatc [OBJECTS_Types]
 kpoal8             kpoal8.c - Kernel Programmatic Oracle ALl Version 8
 kpodpuls [DIRPATH_LOAD]
+kpolob kpolob.c - KPP Lob operations
 kporpc             kporpc.c - The oracle side function to start rpc
 kpudpxuls_ctxUnloadStream [DPAPI_Load]
 kqfd_WRT_qerfxtst_c FIXED TABLE  [SQL_Execution]
