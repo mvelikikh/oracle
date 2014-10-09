@@ -150,6 +150,7 @@ kkoixo [SQL_Costing]
 kkojnp [SQL_Costing]
 kkonxc [SQL_Costing]
 kkooqb [SQL_Costing]
+kkopmCheckSmbUpdate KKOPM Check if updates to the Sql Management Base are pending.
 kkoqbc [SQL_Costing]
 kkotap [SQL_Costing]
 kkpalt [PART]
@@ -1390,13 +1391,14 @@ qksanAnalyzeSql [SQL_Analyze]
 qksanExecSql [SQL_Analyze]
 qksvcDoReplace [SQL_Virtual]
 qksvcReplaceIndexExpr [SQL_Virtual]
+qsmoAlterPlans     QSMO ALTER PLANS driver
 rpidru             RPI: setup memory for the recursive session (unclear)
 rpidrus            RPI: Recursive program handling (unclear)
 rpidrv             RPI: Recursive Program Interface DRiVer
 rpiswu2            RPI: SWitch User in recursive sql
 rwsfcd RWSIMA: fetch from row source
 sighandler         ? Module Notes: Missing Information
-skgmstack          skgmstack - call specified function with extra STACK 
+skgmstack          skgmstack - call specified function with extra STACK space
 skgpnumcpu returns the number of CPUs
 sou2o              # Main Oracle executable entry point
 ssexhd             # ** DUMP ROUTINE - IGNORE stuff above this on the stack
