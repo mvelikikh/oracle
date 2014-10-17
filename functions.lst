@@ -128,6 +128,7 @@ kjbrscrping [GCS]
 kjmpmsgi [RAC_MLMDS]
 kjmsm [RAC_MLMDS]
 kjmxmpm [RAC_MLMDS]
+kkcnrli [AQ]
 kkdcico            Kkdc Insert COnstraint definition.
 kkeIdxSelectivity [SQL_Costing]
 kkeidc [SQL_Costing]
@@ -214,6 +215,7 @@ kotgatc [OBJECTS_Types]
 kpoal8             kpoal8.c - Kernel Programmatic Oracle ALl Version 8
 kpodpuls [DIRPATH_LOAD]
 kpolob kpolob.c - KPP Lob operations
+kponPurgeUnreachLoc [AQ]
 kporpc             kporpc.c - The oracle side function to start rpc
 kpudpxuls_ctxUnloadStream [DPAPI_Load]
 kqfd_WRT_qerfxtst_c FIXED TABLE  [SQL_Execution]
@@ -249,6 +251,7 @@ ksuxds [ksu]
 ksvrdp [ksv_trace]
 ktsiseg_info                    KTS Segment INFo
 ktsisegstg                      Given a ktid fills the stgdef
+kwqmnslv [AQ_TM]
 kxfpProcessError [Parallel_Execution]
 kxfpProcessMsg [Parallel_Execution]
 kxfpValidateSlaveGroup [Parallel_Execution]
