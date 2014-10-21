@@ -197,9 +197,11 @@ kluuscn [DIRPATH_LOAD]
 kohalc             KOH: ALlocate memory Chunk
 kohdtg             KOH: DuRation Table Get an duration entry
 kokegkldai [OBJECTS_Images]
+kokl_pdbaware_kdlf_copy [OBJECTS_Types]
 koklcre [OBJECTS_Types]
 kokleva [OBJECTS_Types]
 kokliccb [OBJECTS_Types]
+kokliclo [OBJECTS_Types]
 kokligrd           kokligrd - KOK Lob Internal initialize kdllfn with row data */
 kokltcc [OBJECTS_Types]
 kokltcr [OBJECTS_Types]
