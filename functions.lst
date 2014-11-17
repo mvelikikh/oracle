@@ -20,6 +20,7 @@ evaopn2 evaluate operand
 hshuid [PLSQL_KG_Interface]
 insexe [DML] insexe - insert execute
 kaudel             ? Module Notes: perform inserts, updates, and deletes, modifying indexes on tables
+kauupd KAU: update table and modify indexes
 kcbassertsd [CACHE_RCV]
 kcbchg1 [CACHE_RCV]
 kcbchg1_main [CACHE_RCV]
@@ -42,6 +43,7 @@ kcra_scan_redo [CACHE_RCV]
 kdblGetBlockDba [DIRPATH_LOAD]
 kdblai [DIRPATH_LOAD]
 kdblba [DIRPATH_LOAD]
+kdddgb KDD: Kernel Data Delete Get Block
 kdicdrv            KDI: create index driver routine
 kdiciitk_idx_ids_to_qerli PARALLEL CREATE INDEX  [SQL_Execution]
 kdicrws            KDI: create index using row source
@@ -59,6 +61,7 @@ kdlxDecompressUnit [LOB_KDLX]
 kdlx_read [LOB_KDLX]
 kdlxdup_read [LOB_KDLXDUP]
 kdsgrp             Get row piece */
+kdusru KDU: Single Row Update, main entry
 kdzhGetBlockDba [ADVCMP_COMP]
 kdzhailseb [ADVCMP_COMP]
 kdzhbirc [ADVCMP_COMP]
@@ -83,6 +86,7 @@ kfk_load_by_idx_in_pga [KFK]
 kfk_oss_initialize [KFK]
 kfpkgDGReadFile [ASM]
 kgeadse            kgeadse - KGE ADd String Internal Error onto the error stack */
+kgeasi Raise an error on an ASSERTION failure (IGNORE)
 kgerinv            kgerinv - KGE Record Internal (Named) error (with Va_list)
 kgesinv            kgesinv - KGE Signal Internal (Named) error (with VA_list)
 kghalf             KGH: Non-recoverably allocate a freeable chunk of memory 
@@ -1250,7 +1254,7 @@ qeruaStart UNION-ALL  [SQL_Execution]
 qeruacpy UNION-ALL  [SQL_Execution]
 qerupAllocate UPDATE  [SQL_Execution]
 qerupCubeRowProcedure UPDATE  [SQL_Execution]
-qerupFetch UPDATE  [SQL_Execution]
+qerupFetch QERUP: Update Row source FetCH [SQL_Execution]
 qerupPAllocate UPDATE  [SQL_Execution]
 qerupStart UPDATE  [SQL_Execution]
 qerupStatus UPDATE  [SQL_Execution]
@@ -1435,7 +1439,8 @@ updCheckConstraints [DML]
 updConstraintsAndART [DML]
 updThreePhaseExe [DML]
 updaul updaul - UPDate Attempt Update of all rows or Lock all rows [DML]
-updrow [DML]
+updexe updexe - update execute
+updrow Row Procedure used by KXRD to update or lock a row [DML]
 xsqerstDimGetDisVals QUERY EXECUTION STATISTICS  [SQL_Execution]
 xsqerstFirstPass QUERY EXECUTION STATISTICS  [SQL_Execution]
 xsqerstGetHLObjStats QUERY EXECUTION STATISTICS  [SQL_Execution]
