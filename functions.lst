@@ -68,10 +68,15 @@ kdzhbirc [ADVCMP_COMP]
 kdzhcl [ADVCMP_COMP]
 kesaiExecAction [SQL_Manage_Infra]
 kesaiTuneSqlDrv [SQL_Manage_Infra]
+kespmEvolveDrv [SQL_Perf]
 kestsTuneSqlDrv [SQL_Tune]
 kestsaAutoTuneDrv [SQL_Tune_Auto]
 kestsaAutoTuneSql [SQL_Tune_Auto]
 kestsaDoRounds [SQL_Tune_Auto]
+kestseDoOneExec [SQL_Test_Exec]
+kestseDoOneRound [SQL_Test_Exec]
+kestseExecutePlans [SQL_Test_Exec]
+kestsePlansDoRounds [SQL_Test_Exec]
 kestsiIndexAnalyzeDrv [SQL_Tune_Index]
 kfddsGet [ASM]
 kfioRequest [ASM]
@@ -274,6 +279,7 @@ ksvrdp [ksv_trace]
 ktsiseg_info                    KTS Segment INFo
 ktsisegstg                      Given a ktid fills the stgdef
 kwqmnslv [AQ_TM]
+kxe_push_env_internal_pp_ [SQL_Execution]
 kxfpProcessError [Parallel_Execution]
 kxfpProcessMsg [Parallel_Execution]
 kxfpValidateSlaveGroup [Parallel_Execution]
@@ -282,6 +288,9 @@ kxfpqdqr [Parallel_Execution]
 kxfpqidqr [Parallel_Execution]
 kxfprdp [Parallel_Execution]
 kxfrAllocSlaves [Parallel_Execution]
+kxfrDmpGen [Parallel_Execution]
+kxfrDmpSm [Parallel_Execution]
+kxfrDmpState [Parallel_Execution]
 kxfralo [Parallel_Execution]
 kxfrialo [Parallel_Execution]
 kxfxcp [Parallel_Execution]
@@ -313,11 +322,11 @@ opitsk             opitsk - Two Task Oracle Side Function Dispatcher
 pcicmp0 [PLSQL_Infrastructure]
 pefcal [PLSQL_External_Proc]
 pefccal [PLSQL_External_Proc]
-peftrusted [PLSQL_External_Proc]
+peftrusted [PLSQL_External_Proc] Execute a trusted Callout.
 peicnt PL/SQL controlled Execution [PLSQL_Code_Execution]
 pevm_BFTCHC [PLSQL_Code_Execution]
 pevm_FCAL [PLSQL_Code_Execution]
-pextproc [PLSQL_Code_Execution]
+pextproc [PLSQL_Code_Execution] Pefm call EXTernal PROCedure
 pfrinstr_FCAL [PLSQL_Code_Execution]
 pfrinstr_FTCHC [PLSQL_Code_Execution]
 pfrrun PSDEVN: PL/SQL Interpreter Main Instruction Loop [PLSQL_Code_Execution]
@@ -331,7 +340,7 @@ prient             prient - Run given (RPC) entrypoint
 prient2            prient2 - common code to run given entrypoint: could be RPC or non-RPC
 psddr0 Null pointer definitions for ttcdrv callback and contet.  Used in psddrv. [PLSQL_PSD_Generic]
 psdexsp [PLSQL_PSD_Generic]
-psdextp [PLSQL_PSD_Generic]
+psdextp [PLSQL_PSD_Generic] The only public routine, the actual PSD *
 psdnal [PLSQL_PSD_Generic]
 qcsogati [OBJECTS_Semanal]
 qcspafq [SQL_Parser]
@@ -1428,6 +1437,7 @@ qknDoRwsAllocate [SQL_Code_Generator]
 qknRwsAllocateTree [SQL_Code_Generator]
 qksanAnalyzeSegSql [SQL_Analyze]
 qksanAnalyzeSql [SQL_Analyze]
+qksanAnalyzeSqlConCbk [SQL_Analyze]
 qksanExecSql [SQL_Analyze]
 qksvcDoReplace [SQL_Virtual]
 qksvcReplaceIndexExpr [SQL_Virtual]
@@ -1441,6 +1451,7 @@ sighandler         ? Module Notes: Missing Information
 skgmstack          skgmstack - call specified function with extra STACK space
 skgpnumcpu returns the number of CPUs
 sou2o              # Main Oracle executable entry point
+spefmccallstd      OSD C Calling Standard
 ssexhd             # ** DUMP ROUTINE - IGNORE stuff above this on the stack
 start              # C program entry point (IGNORE)
 ttcpip             TTCPIP: Two Task Common PIPe read/write
