@@ -279,6 +279,8 @@ ksuxds [ksu]
 ksvrdp [ksv_trace]
 ktsiseg_info                    KTS Segment INFo
 ktsisegstg                      Given a ktid fills the stgdef
+ktspfmdb - Format a range of data blocks
+ktspfmtrng - Format one range or less of data blocks
 kwqmnslv [AQ_TM]
 kxe_push_env_internal_pp_ [SQL_Execution]
 kxfpProcessError [Parallel_Execution]
