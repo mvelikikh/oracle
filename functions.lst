@@ -225,7 +225,7 @@ kksParseCursor [cursor] KKS: Parse Cursor
 kksSetBindType [cursor]
 kksfbc [cursor] KKS: Find Bound Cursor
 kkspbd0 [cursor]
-kkspsc0 [cursor]
+kkspsc0 [cursor] KKS: Parse Shared Cursor
 kkxexe             KKX: execute plsql
 kkxrpc             ARGSUSED
 kkxtexe - KKX Trigger EXEcute
@@ -258,6 +258,7 @@ koltitcr [OBJECTS_Types]
 kolttcr [OBJECTS_Types]
 kotgatc [OBJECTS_Types]
 kpoal8             kpoal8.c - Kernel Programmatic Oracle ALl Version 8
+kpoauth            KPO AUTHenticate
 kpodpuls [DIRPATH_LOAD]
 kpolob kpolob.c - KPP Lob operations
 kponPurgeUnreachLoc [AQ]
@@ -266,9 +267,11 @@ kpudpxuls_ctxUnloadStream [DPAPI_Load]
 kqfd_WRT_qerfxtst_c FIXED TABLE  [SQL_Execution]
 kqlUpdateStubs [LIBCACHE]
 kqlvld [LIBCACHE]
+kqrsrd             subordinate cache object read
 ksbabs [background_proc] KSB: Background process: Action based server
 ksbcti             call timeout/interrupts
 ksbrdp [background_proc] KSB: run a detached (background) process
+ksdxcb             # CallBack for sosd layer signal handler (IGNORE)
 ksedmp             # KSE: dump the process state
 ksedst             # KSE: dump the call stack
 ksepop [KSE]
@@ -278,6 +281,7 @@ ksfd_kfioRequest [VOS]
 ksfd_osmio [VOS]
 ksfdmp             # Call relevant dump routine
 ksfdread [VOS]
+ksliwat            KSL: Latching: Awaken a wait event
 ksmasg Callback function for allocating an SGA extent.  The SGA is fixed size
 ksmsgfr [KSM]
 kssdch [VOS]
@@ -329,6 +333,7 @@ kxsGetRuntimeLock [cursor]
 kxsScanCursors [cursor]
 kxsffir [cursor]
 kxtexe KXT: EXEcute trigger
+kzpcap             kzpcsp - KZP Check System Privilege
 main               # Standard executable entry point
 opidrv             # opidrv - ORACLE Program Interface DRiVer (IGNORE)
 opiexe             opiexe - ORACLE Program Interface EXEcute
@@ -1485,6 +1490,7 @@ skgpnumcpu returns the number of CPUs
 sou2o              # Main Oracle executable entry point
 spefmccallstd      OSD C Calling Standard
 ssexhd             # ** DUMP ROUTINE - IGNORE stuff above this on the stack
+sspuser            SSPUSER: handle SIGUSR2 for ORACLE.
 start              # C program entry point (IGNORE)
 ttcpip             TTCPIP: Two Task Common PIPe read/write
 updCheckConstraints [DML]
