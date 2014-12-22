@@ -37,7 +37,9 @@ kcblrd [CACHE_RCV]
 kcbnew [CACHE_RCV]
 kcbr_apply_change [CACHE_RCV]
 kcbr_media_apply [CACHE_RCV]
+kcfbsy synch the control file with the SGA
 kcfis_finalize_cached_sessions [KCFIS]
+kcfmta mount all files
 kcra_dump_redo [CACHE_RCV]
 kcra_dump_redo_internal [CACHE_RCV]
 kcra_scan_redo [CACHE_RCV]
@@ -268,6 +270,7 @@ kqfd_WRT_qerfxtst_c FIXED TABLE  [SQL_Execution]
 kqlUpdateStubs [LIBCACHE]
 kqlvld [LIBCACHE]
 kqrsrd             subordinate cache object read
+krtchk check consistency of specied with translation table
 ksbabs [background_proc] KSB: Background process: Action based server
 ksbcti             call timeout/interrupts
 ksbrdp [background_proc] KSB: run a detached (background) process
