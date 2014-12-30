@@ -110,6 +110,7 @@ kgerinv            kgerinv - KGE Record Internal (Named) error (with Va_list)
 kgesinv            kgesinv - KGE Signal Internal (Named) error (with VA_list)
 kghalf             KGH: Non-recoverably allocate a freeable chunk of memory 
 kghalo             KGH: main allocation entry point
+kghalp             KGH: Allocate permanent memory
 kghasp [KGH]
 kghbigasp [KGH]
 kgherror [KGH]
@@ -654,7 +655,7 @@ qergrSetupB2N GROUP BY ROLLUP  [SQL_Execution]
 qergrStart GROUP BY ROLLUP  [SQL_Execution]
 qergsAllocate GROUP BY SORT  [SQL_Execution]
 qergsClose GROUP BY SORT  [SQL_Execution]
-qergsFetch GROUP BY SORT  [SQL_Execution]
+qergsFetch GROUP BY SORT  [SQL_Execution] group by sort row source fetch
 qergsPAggRowP GROUP BY SORT  [SQL_Execution]
 qergsPAggRowPRowsets GROUP BY SORT  [SQL_Execution]
 qergsPrepareForNextRun GROUP BY SORT  [SQL_Execution]
@@ -1490,6 +1491,9 @@ rwsfcd RWSIMA: fetch from row source
 sighandler         ? Module Notes: Missing Information
 skgmstack          skgmstack - call specified function with extra STACK space
 skgpnumcpu returns the number of CPUs
+smbalo             SMBIMA: allocate an smkdef from specified storage bin
+smbput             SMBIMA: put a record into the memory buffer.
+sorputqb           SORt PUTQB:  Insert record into sort
 sou2o              # Main Oracle executable entry point
 spefmccallstd      OSD C Calling Standard
 ssexhd             # ** DUMP ROUTINE - IGNORE stuff above this on the stack
