@@ -113,9 +113,10 @@ kghalo             KGH: main allocation entry point
 kghalp             KGH: Allocate permanent memory
 kghasp [KGH]
 kghbigasp [KGH]
-kgherror [KGH]
+kgherror [KGH] KGH: Internal routine for signaling an error
 kghfnd             KGH: Find a chunk of at least the minimum size
 kghfre [KGH]
+kghfrf             KGH: Non-recoverably free a freeable chunk of space
 kghfrh [KGH]
 kghfrh_internal [KGH]
 kghfrmrg [KGH]
@@ -380,7 +381,7 @@ pricbr             PL/SQL Remote Interface - Call Back, Remote
 prient             prient - Run given (RPC) entrypoint
 prient2            prient2 - common code to run given entrypoint: could be RPC or non-RPC
 psddr0 Null pointer definitions for ttcdrv callback and contet.  Used in psddrv. [PLSQL_PSD_Generic]
-psdexsp [PLSQL_PSD_Generic]
+psdexsp [PLSQL_PSD_Generic] All Private Routines
 psdextp [PLSQL_PSD_Generic] The only public routine, the actual PSD *
 psdnal [PLSQL_PSD_Generic]
 qcsogati [OBJECTS_Semanal]
