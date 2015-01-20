@@ -336,7 +336,7 @@ kxsFreeExecutionHeap [cursor]
 kxsFreeWorkArea [cursor]
 kxsGetRuntimeLock [cursor]
 kxsScanCursors [cursor]
-kxsffir [cursor]
+kxsffir [cursor] kxsffir - KXS Function FIRe 
 kxtexe KXT: EXEcute trigger
 kzpcap             kzpcsp - KZP Check System Privilege
 main               # Standard executable entry point
@@ -1010,12 +1010,12 @@ qeroicfo EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
 qeroicii EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
 qeroicso EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
 qeroifalo EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
-qeroifcc EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
+qeroifcc EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution] QEROI Fast Call Close
 qeroifcf EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
-qeroifcsu EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
+qeroifcsu EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution] QEROI Fast Call Switch User
 qeroifgoe EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
 qeroiifm EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
-qeroiirc EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
+qeroiirc EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution] QEROI Invoke Rowsource Close
 qeroisfm EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
 qeroisfs EXTENSIBLE INDEXING QUERY COMPONENT  [SQL_Execution]
 qerpfActive QUERY EXECUTION PREFETCH  [SQL_Execution]
