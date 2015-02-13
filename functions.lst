@@ -104,6 +104,7 @@ kfk_check_load_lib_asminst [KFK]
 kfk_load_by_idx_in_pga [KFK]
 kfk_oss_initialize [KFK]
 kfpkgDGReadFile [ASM]
+kgeade             kgeade - KGE ADd Error onto the error stack
 kgeadse            kgeadse - KGE ADd String Internal Error onto the error stack */
 kgeasi Raise an error on an ASSERTION failure (IGNORE)
 kgerinv            kgerinv - KGE Record Internal (Named) error (with Va_list)
@@ -264,6 +265,7 @@ kole_templob_init [LOB_Default]
 koltitcr [OBJECTS_Types]
 kolttcr [OBJECTS_Types]
 kotgatc [OBJECTS_Types]
+kpndbcon           Kernel Prog Network - DBlink CONNection
 kpoal8             kpoal8.c - Kernel Programmatic Oracle ALl Version 8
 kpoauth            KPO AUTHenticate
 kpodpuls [DIRPATH_LOAD]
@@ -343,6 +345,8 @@ kxsffir [cursor] kxsffir - KXS Function FIRe
 kxtexe KXT: EXEcute trigger
 kzpcap             kzpcsp - KZP Check System Privilege
 main               # Standard executable entry point
+npicon0            npicon0 - Network Program Interface CONnnect
+npigdn0            npigdn: Get Database link info by Name.                   
 opidrv             # opidrv - ORACLE Program Interface DRiVer (IGNORE)
 opiexe             opiexe - ORACLE Program Interface EXEcute
 opifch             OPIFCH: oracle side of the fetch interface
