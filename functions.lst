@@ -249,11 +249,14 @@ kohdtg             KOH: DuRation Table Get an duration entry
 kokbXformCollItersInQbc [OBJECTS_Types]
 kokegkldai [OBJECTS_Images]
 kokl_pdbaware_kdlf_copy [OBJECTS_Types]
+koklcopy2 [OBJECTS_Types]
 koklcre [OBJECTS_Types]
 kokleva [OBJECTS_Types]
+koklglfn [OBJECTS_Types]
 kokliccb [OBJECTS_Types]
 kokliclo [OBJECTS_Types]
 kokligrd           kokligrd - KOK Lob Internal initialize kdllfn with row data */
+koklivrl [OBJECTS_Types]
 kokltcc [OBJECTS_Types]
 kokltcr [OBJECTS_Types]
 kokmrwo [OBJECTS_Types]
@@ -367,26 +370,28 @@ pcicmp0 [PLSQL_Infrastructure]
 pefcal [PLSQL_External_Proc]
 pefccal [PLSQL_External_Proc]
 peftrusted [PLSQL_External_Proc] Execute a trusted Callout.
-peicnt PL/SQL controlled Execution [PLSQL_Code_Execution]
+peicnt [PLSQL_Code_Execution] PL/SQL controlled Execution 
 pevm_BFTCHC [PLSQL_Code_Execution]
 pevm_FCAL [PLSQL_Code_Execution]
 pevm_NCAL [PLSQL_Code_Execution]
+pevm_icd_call_common [PLSQL_Code_Execution]
 pextproc [PLSQL_Code_Execution] Pefm call EXTernal PROCedure
 pfri3_inst_body [PLSQL_Code_Execution]
 pfri7_inst_body_common [PLSQL_Code_Execution]
 pfrins [PLSQL_Code_Execution]
 pfrinstr_FCAL [PLSQL_Code_Execution]
 pfrinstr_FTCHC [PLSQL_Code_Execution]
+pfrinstr_ICAL [PLSQL_Code_Execution]
 pfrinstr_XCAL [PLSQL_Code_Execution]
-pfrrun PSDEVN: PL/SQL Interpreter Main Instruction Loop [PLSQL_Code_Execution]
-pfrrun_no_tool fast interpretation loop [PLSQL_Code_Execution]
+pfrrun [PLSQL_Code_Execution] PSDEVN: PL/SQL Interpreter Main Instruction Loop 
+pfrrun_no_tool [PLSQL_Code_Execution] fast interpretation loop 
 ph2qeril_expand_rec_in_list IN-LIST  [SQL_Execution]
 phf_read_items [PLSQL_Infrastructure]
 phpcmp [PLSQL_Infrastructure]
-plsql_run          single entry point for top level pfrrun and penrun [PLSQL_PSD_Standalones]
-pricbr             PL/SQL Remote Interface - Call Back, Remote
-prient             prient - Run given (RPC) entrypoint
-prient2            prient2 - common code to run given entrypoint: could be RPC or non-RPC
+plsql_run [PLSQL_PSD_Standalones] single entry point for top level pfrrun and penrun 
+pricbr PL/SQL Remote Interface - Call Back, Remote
+prient prient - Run given (RPC) entrypoint
+prient2 prient2 - common code to run given entrypoint: could be RPC or non-RPC
 psddr0 Null pointer definitions for ttcdrv callback and contet.  Used in psddrv. [PLSQL_PSD_Generic]
 psdexsp [PLSQL_PSD_Generic] All Private Routines
 psdextp [PLSQL_PSD_Generic] The only public routine, the actual PSD *
