@@ -284,6 +284,11 @@ krtchk check consistency of specied with translation table
 ksbabs [background_proc] KSB: Background process: Action based server
 ksbcti             call timeout/interrupts
 ksbrdp [background_proc] KSB: run a detached (background) process
+ksdhng_analyze_graph [hang_analysis]
+ksdhng_graph_build_local [hang_analysis]
+ksdhng_local_detect [hang_analysis]
+ksdhng_request_msg_get [hang_analysis]
+ksdhng_request_msg_get_phase_di [hang_analysis]
 ksdxcb             # CallBack for sosd layer signal handler (IGNORE)
 ksedmp             # KSE: dump the process state
 ksedst             # KSE: dump the call stack
