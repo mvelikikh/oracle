@@ -394,9 +394,10 @@ ph2qeril_expand_rec_in_list IN-LIST  [SQL_Execution]
 phf_read_items [PLSQL_Infrastructure]
 phpcmp [PLSQL_Infrastructure]
 plsql_run [PLSQL_PSD_Standalones] single entry point for top level pfrrun and penrun 
-pricbr PL/SQL Remote Interface - Call Back, Remote
-prient prient - Run given (RPC) entrypoint
-prient2 prient2 - common code to run given entrypoint: could be RPC or non-RPC
+pricar [PLSQL_Code_Execution]
+pricbr PL/SQL Remote Interface Call Back, Remote
+prient [PLSQL_Code_Execution] Run given (RPC) entrypoint
+prient2 [PLSQL_Code_Execution] common code to run given entrypoint: could be RPC or non-RPC
 psddr0 Null pointer definitions for ttcdrv callback and contet.  Used in psddrv. [PLSQL_PSD_Generic]
 psdexsp [PLSQL_PSD_Generic] All Private Routines
 psdextp [PLSQL_PSD_Generic] The only public routine, the actual PSD *
