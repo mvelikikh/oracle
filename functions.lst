@@ -945,6 +945,7 @@ qerltdsrDumpStatusRow [SQL_Execution] LOAD TABLE
 qerltefie [SQL_Execution] LOAD TABLE
 qerltgsrGenStatusRow [SQL_Execution] LOAD TABLE
 qerltssrSendStatusRow [SQL_Execution] LOAD TABLE
+qerlxtProcessRow [SQL_Execution]
 qernsAllocate GROUP BY NO SORT  [SQL_Execution]
 qernsClose GROUP BY NO SORT  [SQL_Execution]
 qernsFetch GROUP BY NO SORT  [SQL_Execution]
@@ -1501,6 +1502,13 @@ qksanAnalyzeSqlConCbk [SQL_Analyze]
 qksanExecSql [SQL_Analyze]
 qksvcDoReplace [SQL_Virtual]
 qksvcReplaceIndexExpr [SQL_Virtual]
+qmcxeEncEndElement [XDB_CSX]
+qmcxeEncEvent_Helper [XDB_CSX]
+qmcxeEncodeEvents [XDB_CSX]
+qmcxeEncodeXobExt [XDB_CSX]
+qmcxeFlushBuffer [XDB_CSX]
+qmcxeWriteSimpleNode [XDB_CSX]
+qmxtkEvalXML2SC [XML]
 qsmoAlterPlans     QSMO ALTER PLANS driver
 rpidru             RPI: setup memory for the recursive session (unclear)
 rpidrus            RPI: Recursive program handling (unclear)
