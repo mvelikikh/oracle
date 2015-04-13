@@ -1515,6 +1515,7 @@ rpidru             RPI: setup memory for the recursive session (unclear)
 rpidrus            RPI: Recursive program handling (unclear)
 rpidrv             RPI: Recursive Program Interface DRiVer
 rpiswu2            RPI: SWitch User in recursive sql
+rwoima RoW Operand vector IMPlementation A
 rwsfcd RWSIMA: fetch from row source
 sighandler         ? Module Notes: Missing Information
 skgmstack          skgmstack - call specified function with extra STACK space
