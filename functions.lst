@@ -26,7 +26,7 @@ kcbchg1 [CACHE_RCV]
 kcbchg1_main [CACHE_RCV]
 kcbflc_keep_all [CACHE_RCV]
 kcbflc_keep_range [CACHE_RCV]
-kcbgcur [CACHE_RCV]
+kcbgcur [CACHE_RCV] KCB: Get a block in current mode.
 kcbgcurstdby [CACHE_RCV]
 kcbgtcr [CACHE_RCV]
 kcbldrget [CACHE_RCV]
@@ -47,9 +47,14 @@ kdblGetBlockDba [DIRPATH_LOAD]
 kdblai [DIRPATH_LOAD]
 kdblba [DIRPATH_LOAD]
 kdddgb KDD: Kernel Data Delete Get Block
+kdiblFinish1       KDIBL: Callback processing for KXIB
+kdiblLockRange     KDIBL lock the range associated with a given dml target
+kdiblcfls          kdiblcfls - KDIBL conventional flush batch with undo overhead
+kdibliFinish       KXIB insert callback
 kdicdrv            KDI: create index driver routine
 kdiciitk_idx_ids_to_qerli PARALLEL CREATE INDEX  [SQL_Execution]
 kdicrws            KDI: create index using row source
+kdifind            At any given moment, each possible key has a unique ASSOCIATED BLOCK at a kdiblLockPiece      
 kdla_read [LOB_KDLA]
 kdliReadX [LOB_INODE]
 kdliXfmCheck [LOB_INODE]
@@ -105,7 +110,7 @@ kfk_load_by_idx_in_pga [KFK]
 kfk_oss_initialize [KFK]
 kfpkgDGReadFile [ASM]
 kgeade             kgeade - KGE ADd Error onto the error stack
-kgeadse            kgeadse - KGE ADd String Internal Error onto the error stack */
+kgeadse            kgeadse - KGE ADd String Internal Error onto the error stack
 kgeasi Raise an error on an ASSERTION failure (IGNORE)
 kgerinv            kgerinv - KGE Record Internal (Named) error (with Va_list)
 kgesinv            kgesinv - KGE Signal Internal (Named) error (with VA_list)
@@ -316,6 +321,7 @@ ksuxda_del_proc [ksu]
 ksuxdl [ksu]
 ksuxds [ksu]
 ksvrdp [ksv_trace]
+ktbgcur            Kernel Transaction Block GET
 ktsiseg_info                    KTS Segment INFo
 ktsisegstg                      Given a ktid fills the stgdef
 ktspfmdb - Format a range of data blocks
@@ -343,6 +349,8 @@ kxfxsExecute [Parallel_Execution]
 kxfxsStmtExecute [Parallel_Execution]
 kxfxsp [Parallel_Execution]
 kxhrUnpack         KXHR: HJ: unpack a row
+kxibDoFinish       kxibDoFinish      - do finish processing for a specified index
+kxibFinish         kxibFinish        - kxib Finish index maintenance
 kxsClean [cursor]
 kxsCloseXsc [cursor]
 kxsFreeExecutionHeap [cursor]
