@@ -133,6 +133,7 @@ kghnerror [KGH]
 kghnospc KGH: There is no space available in the heap, signal an error.
 kghssgfr [KGH]
 kghssggr [KGH]
+kghxal Allocate a fixed size piece of shared memory
 kglLock [LIBCACHE]
 kglMutexCleanupAll [LIBCACHE]
 kglMutexRecovery [LIBCACHE]
@@ -167,6 +168,7 @@ kjbmpocr [GCS]
 kjbmundocr [GCS]
 kjbrcrcvt [GCS]
 kjbrscrping [GCS]
+kjcsmpav allocate a msg b 0 1 1 
 kjmpmsgi [RAC_MLMDS]
 kjmsm [RAC_MLMDS]
 kjmxmpm [RAC_MLMDS]
