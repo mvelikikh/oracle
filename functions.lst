@@ -320,6 +320,7 @@ ksucln_dpc_dfs [ksu]
 ksucln_dpc_main [ksu]
 ksudlp [ksu]
 ksudss system state dump
+ksupop KSU: pop user or recursive call
 ksuxda_del_proc [ksu]
 ksuxdl [ksu]
 ksuxds [ksu]
