@@ -246,6 +246,7 @@ kkxexe             KKX: execute plsql
 kkxrpc             ARGSUSED
 kkxtexe - KKX Trigger EXEcute
 klclil1r [DIRPATH_LOAD]
+klcslod load NLS data object
 kllcqgf [DIRPATH_LOAD]
 klmalf [DIRPATH_LOAD]
 kluprd [DIRPATH_LOAD]
