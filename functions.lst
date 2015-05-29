@@ -10,10 +10,12 @@ ctcdrv             ctcdrv - Create Table or Cluster DRiVer.
 dbgeEndDDEInvocation [diag_dde]
 dbgeEndDDEInvocationImpl [diag_dde]
 dbgeExecuteForError [diag_dde]
-dbgePostErrorKGE [diag_dde]
+dbgePostErrorKGE [diag_dde] Post the error for DDE invocation from KGE
 dbgexExplicitEndInc [diag_dde]
-dbgexProcessError [diag_dde]
-dbkePostKGE_kgsf [rdbms_dde]
+dbgexPhaseII       DBGEX Phase II
+dbgexProcessError [diag_dde] Process the Error
+dbkePostKGE_kgsf [rdbms_dde] DBKE Post KGE error for KGSF
+dbkedDefDump       Do DDE default dump
 delexe             delexe.c - delete execute [DML]
 delrow             delrow - Row Procedure used by KXRD to delete or lock a
 evaopn2 evaluate operand
@@ -112,7 +114,9 @@ kfpkgDGReadFile [ASM]
 kgeade             kgeade - KGE ADd Error onto the error stack
 kgeadse            kgeadse - KGE ADd String Internal Error onto the error stack
 kgeasi Raise an error on an ASSERTION failure (IGNORE)
-kgerinv            kgerinv - KGE Record Internal (Named) error (with Va_list)
+kgeasnmierr         
+kgerinv            KGE Record Internal (Named) error (with Va_list)
+kgerinv_internal   record internal or soft internal named error
 kgesinv            kgesinv - KGE Signal Internal (Named) error (with VA_list)
 kghalf             KGH: Non-recoverably allocate a freeable chunk of memory 
 kghalo             KGH: main allocation entry point
@@ -163,6 +167,7 @@ kglpin             KGL: PIN heaps and load data pieces of an object [LIBCACHE]
 kglpndl [LIBCACHE]
 kglpnds [LIBCACHE]
 kglrfcl            kglrfcl - KGL ReFerence CLear
+kglsscn            Scan a loaded set invoking a supplied callback for each element
 kjblcrcbk [GCS]
 kjbmpocr [GCS]
 kjbmundocr [GCS]
@@ -174,6 +179,9 @@ kjmsm [RAC_MLMDS]
 kjmxmpm [RAC_MLMDS]
 kkcnrli [AQ]
 kkdcico            Kkdc Insert COnstraint definition.
+kkdlacd            KKDL get All Column Definitions: Get all column definitions
+kkdlcod             
+kkdoloi            Load Objects-related Information
 kkeIdxSelectivity [SQL_Costing]
 kkeidc [SQL_Costing]
 kkestAddMCPredToCtx [SQL_Costing]
@@ -181,6 +189,7 @@ kkestAllocMCCtx [SQL_Costing]
 kkestBuildMCCtxFromKeys [SQL_Costing]
 kketac [SQL_Costing]
 kkmatr [SQL_Semantic]
+kkmdel             extra semantic processing for deletes
 kkmdrv [SQL_Semantic]
 kkmfcbbt [SQL_Semantic]
 kkmfcblo [SQL_Semantic]
@@ -233,7 +242,7 @@ kkqvmdrv [SQL_VMerge]
 kkqvmdrv2 [SQL_VMerge]
 kksCloseCursor [cursor]
 kksFullTypeCheck [cursor]
-kksLoadChild [cursor]
+kksLoadChild [cursor] Load Child
 kksOnErrorMutexCleanup [cursor]
 kksParentHandleFreeCbk [cursor]
 kksParseChildCursor [cursor]
@@ -283,6 +292,7 @@ kpoauth            KPO AUTHenticate
 kpodpuls [DIRPATH_LOAD]
 kpolob kpolob.c - KPP Lob operations
 kponPurgeUnreachLoc [AQ]
+kpooprx            open, parse, and optionally execute
 kporpc             kporpc.c - The oracle side function to start rpc
 kpudpxuls_ctxUnloadStream [DPAPI_Load]
 kqfd_WRT_qerfxtst_c FIXED TABLE  [SQL_Execution]
@@ -301,6 +311,7 @@ ksdhng_request_msg_get_phase_di [hang_analysis]
 ksdxcb             # CallBack for sosd layer signal handler (IGNORE)
 ksedmp             # KSE: dump the process state
 ksedst             # KSE: dump the call stack
+ksedst1            Kernel Service Error Debug Stack Trace 1 (helper)
 ksepop [KSE]
 ksesin             # KSE: signal an internal error (named)
 ksfd_io [VOS]
@@ -360,7 +371,7 @@ kxsClean [cursor]
 kxsCloseXsc [cursor]
 kxsFreeExecutionHeap [cursor]
 kxsFreeWorkArea [cursor]
-kxsGetRuntimeLock [cursor]
+kxsGetRuntimeLock [cursor] eXecute Shared cursor - Get Runtime Lock
 kxsScanCursors [cursor]
 kxsffir [cursor] kxsffir - KXS Function FIRe 
 kxtexe KXT: EXEcute trigger
@@ -368,21 +379,22 @@ kzpcap             kzpcsp - KZP Check System Privilege
 main               # Standard executable entry point
 npicon0            npicon0 - Network Program Interface CONnnect
 npigdn0            npigdn: Get Database link info by Name.                   
+opiDeferredSem     OPI perform Deferred semantic Analysis
+opiSem             OPI SEMantic analysis driver
 opidrv             # opidrv - ORACLE Program Interface DRiVer (IGNORE)
 opiexe             opiexe - ORACLE Program Interface EXEcute
 opifch             OPIFCH: oracle side of the fetch interface
 opifch2            program interface oracle fetch - main routine [SQL_Execution]
 opiino             opiino - ORACLE Program Interface INitialize Opi
 opimai              
-opimai_real       
 opiodr             OPIODR: ORACLE code request driver - route the current request
 opiosq             OPIOSQ: prepare to parse a sql command
 opiosq0            OPI: prepare to parse a sql command
 opipls             opipls.c -- contains opi bundled call executor and support routines
-opiprsdml []
-opiprsdmlcb []
+opiprsdml
+opiprsdmlcb opiprsdml callback fucntion
 opirip             # Oracle Program Interface Run Independent Process (IGNORE)
-opitca []
+opitca             OPITCA: sets up the context area
 opitsk             opitsk - Two Task Oracle Side Function Dispatcher
 pcicmp0 [PLSQL_Infrastructure]
 pefcal [PLSQL_External_Proc]
@@ -415,6 +427,7 @@ psddr0 Null pointer definitions for ttcdrv callback and contet.  Used in psddrv.
 psdexsp [PLSQL_PSD_Generic] All Private Routines
 psdextp [PLSQL_PSD_Generic] The only public routine, the actual PSD *
 psdnal [PLSQL_PSD_Generic]
+qcdoloi            Load Object-specific Information
 qcsogati [OBJECTS_Semanal]
 qcspafq [SQL_Parser]
 qcspqb [SQL_Parser]
@@ -1536,10 +1549,11 @@ skgpnumcpu returns the number of CPUs
 smbalo             SMBIMA: allocate an smkdef from specified storage bin
 smbput             SMBIMA: put a record into the memory buffer.
 sorputqb           SORt PUTQB:  Insert record into sort
-sou2o              # Main Oracle executable entry point
+sou2o              soseh - establish  exception handler # Main Oracle executable entry point
 spefmccallstd      OSD C Calling Standard
 ssexhd             # ** DUMP ROUTINE - IGNORE stuff above this on the stack
 sspuser            SSPUSER: handle SIGUSR2 for ORACLE.
+ssthrdmain         Main for every thread in a threaded oracle
 start              # C program entry point (IGNORE)
 ttcpip             TTCPIP: Two Task Common PIPe read/write
 updCheckConstraints [DML]
