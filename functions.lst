@@ -322,19 +322,20 @@ ksfdread [VOS]
 ksliwat            KSL: Latching: Awaken a wait event
 ksmasg Callback function for allocating an SGA extent.  The SGA is fixed size
 ksmsgfr [KSM]
-kssdch [VOS]
+kssdch [VOS] KSS: delete children of state obj.
 kssdel [VOS]
-kssxdl [VOS]
-ksucln [ksu]
+kssxdl [VOS] KSS: delete SO ignoring all except severe errors. cleans latches
+ksucln [ksu] KSUCLN: Cleanup detached process
 ksucln_dpc [ksu]
 ksucln_dpc_cleanup [ksu]
 ksucln_dpc_dfs [ksu]
 ksucln_dpc_main [ksu]
-ksudlp [ksu]
+ksudlc             delete call                                               
+ksudlp [ksu] KSU: delete process.called when user detaches or during cleanup by PMON
 ksudss system state dump
 ksupop KSU: pop user or recursive call
 ksuxda_del_proc [ksu]
-ksuxdl [ksu]
+ksuxdl [ksu] KSUCLN: Delete state object for PMON
 ksuxds [ksu]
 ksvrdp [ksv_trace]
 ktbgcur            Kernel Transaction Block GET
