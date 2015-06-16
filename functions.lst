@@ -19,6 +19,7 @@ dbkedDefDump       Do DDE default dump
 delexe             delexe.c - delete execute [DML]
 delrow             delrow - Row Procedure used by KXRD to delete or lock a
 evaopn2 evaluate operand
+expepr             expepr evaluates the argument predicate.
 hshuid [PLSQL_KG_Interface]
 insexe [DML] insexe - insert execute
 kaudel             ? Module Notes: perform inserts, updates, and deletes, modifying indexes on tables
@@ -295,6 +296,8 @@ kponPurgeUnreachLoc [AQ]
 kpooprx            open, parse, and optionally execute
 kporpc             kporpc.c - The oracle side function to start rpc
 kpudpxuls_ctxUnloadStream [DPAPI_Load]
+kpuexec            kpuexec - KPU : Execute
+kpurcsc            kpurcsc - KPU Remote Call with ServiceContext, Callbacks
 kqfd_WRT_qerfxtst_c FIXED TABLE  [SQL_Execution]
 kqlUpdateStubs [LIBCACHE]
 kqlvld [LIBCACHE]
@@ -351,7 +354,7 @@ kxfpValidateSlaveGroup [Parallel_Execution]
 kxfpgsg [Parallel_Execution]
 kxfpqdqr [Parallel_Execution]
 kxfpqidqr [Parallel_Execution]
-kxfprdp [Parallel_Execution]
+kxfprdp [Parallel_Execution] KXFP: Run Detached Process
 kxfrAllocSlaves [Parallel_Execution]
 kxfrDmpGen [Parallel_Execution]
 kxfrDmpSm [Parallel_Execution]
@@ -361,10 +364,10 @@ kxfrialo [Parallel_Execution]
 kxfxcp [Parallel_Execution]
 kxfxcw [Parallel_Execution]
 kxfxgs [Parallel_Execution]
-kxfxmai [Parallel_Execution]
+kxfxmai [Parallel_Execution] KXFX: slave process main entry point
 kxfxsExecute [Parallel_Execution]
 kxfxsStmtExecute [Parallel_Execution]
-kxfxsp [Parallel_Execution]
+kxfxsp [Parallel_Execution] KXFX: open, parse, bind entire dfo
 kxhrUnpack         KXHR: HJ: unpack a row
 kxibDoFinish       kxibDoFinish      - do finish processing for a specified index
 kxibFinish         kxibFinish        - kxib Finish index maintenance
@@ -617,7 +620,7 @@ qerfiAllocate FIRST ROW  [SQL_Execution]
 qerfiFetch FIRST ROW  [SQL_Execution]
 qerflAllocate FILTER DEFINITION  [SQL_Execution]
 qerflFetch FILTER DEFINITION  [SQL_Execution]
-qerflFetchOutside FILTER DEFINITION  [SQL_Execution]
+qerflFetchOutside [SQL_Execution] FILTER DEFINITION fetch operation for a filter
 qerflRestoreFetchState FILTER DEFINITION  [SQL_Execution]
 qerflRop FILTER DEFINITION  [SQL_Execution]
 qerflRopAllowUnknown FILTER DEFINITION  [SQL_Execution]
@@ -738,7 +741,7 @@ qerhjDisableHJCbk HASH JOIN  [SQL_Execution]
 qerhjExpandHashAreaCb HASH JOIN  [SQL_Execution]
 qerhjExtMemForPQBuffer HASH JOIN  [SQL_Execution]
 qerhjFOJSwapPartitions HASH JOIN  [SQL_Execution]
-qerhjFetch Hash join row source - Fetch Procedure [SQL_Execution]
+qerhjFetch [SQL_Execution] Hash join row source - Fetch Procedure
 qerhjFetchOuterJoin HASH JOIN  [SQL_Execution]
 qerhjFetchPhase2 HASH JOIN  [SQL_Execution]
 qerhjFitInMemory HASH JOIN  [SQL_Execution]
@@ -778,7 +781,7 @@ qerhjStart HASH JOIN  [SQL_Execution]
 qerhjSyncPendingIO HASH JOIN  [SQL_Execution]
 qerhjUpdateFilterStats HASH JOIN  [SQL_Execution]
 qerhjWalkBuffSemiJoin HASH JOIN  [SQL_Execution]
-qerhjWalkHashBucket HASH JOIN  [SQL_Execution]
+qerhjWalkHashBucket [SQL_Execution] HASH JOIN EXEC HashJ - walk list of pointers in a hash bucket and check for a match
 qerhjWalkHashBucket2 HASH JOIN  [SQL_Execution]
 qerhjadf HASH JOIN  [SQL_Execution]
 qerilAllocate IN-LIST  [SQL_Execution]
@@ -1208,7 +1211,7 @@ qersoClose SORT  [SQL_Execution]
 qersoCompare SORT  [SQL_Execution]
 qersoCursorEnd SORT  [SQL_Execution]
 qersoFKeyCompare SORT  [SQL_Execution]
-qersoFetch QERSO: Fetch from a sort row source [SQL_Execution]
+qersoFetch [SQL_Execution] QERSO: Fetch from a sort row source
 qersoFetchSimple SORT  [SQL_Execution]
 qersoGetNextRow SORT  [SQL_Execution]
 qersoInitTopN SORT  [SQL_Execution]
@@ -1556,6 +1559,7 @@ ssexhd             # ** DUMP ROUTINE - IGNORE stuff above this on the stack
 sspuser            SSPUSER: handle SIGUSR2 for ORACLE.
 ssthrdmain         Main for every thread in a threaded oracle
 start              # C program entry point (IGNORE)
+subsr3             subsr3 - evaluate SUBquery; Single Row subquery method 3
 ttcpip             TTCPIP: Two Task Common PIPe read/write
 updCheckConstraints [DML]
 updConstraintsAndART [DML]
