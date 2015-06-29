@@ -1,6 +1,6 @@
 ainIMakeUnus                    ALTER INDEX MAKE UNUSABLE for a non-partitioned index
 apadrv [SQL_APA]
-apakkoqb [SQL_APA]
+apakkoqb [SQL_APA] Drive access path analysis for each Query block
 apaqbd [SQL_APA]
 apaqbdDescendents [SQL_APA]
 apaqbdList [SQL_APA]
@@ -206,13 +206,13 @@ kkobrfak [SQL_Costing]
 kkocnp [SQL_Costing]
 kkofbp [SQL_Costing]
 kkofmp [SQL_Costing]
-kkoiqb [SQL_Costing]
+kkoiqb [SQL_Costing] KKO: Initialize Query Block
 kkoixo [SQL_Costing]
 kkojnp [SQL_Costing]
 kkonxc [SQL_Costing]
-kkooqb [SQL_Costing]
+kkooqb [SQL_Costing] KKO: Optimize Query Block
 kkopmCheckSmbUpdate KKOPM Check if updates to the Sql Management Base are pending.
-kkoqbc [SQL_Costing]
+kkoqbc [SQL_Costing] KKO:  Query block optimization start point
 kkotap [SQL_Costing]
 kkpalt [PART]
 kkpamDGSPam [PART]
@@ -381,6 +381,7 @@ kxsffir [cursor] kxsffir - KXS Function FIRe
 kxtexe KXT: EXEcute trigger
 kzpcap             kzpcsp - KZP Check System Privilege
 main               # Standard executable entry point
+msqapp Append character string to SQL statement.
 npicon0            npicon0 - Network Program Interface CONnnect
 npigdn0            npigdn: Get Database link info by Name.                   
 opiDeferredSem     OPI perform Deferred semantic Analysis
