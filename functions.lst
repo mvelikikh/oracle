@@ -116,6 +116,7 @@ kgeade             kgeade - KGE ADd Error onto the error stack
 kgeadse            kgeadse - KGE ADd String Internal Error onto the error stack
 kgeasi Raise an error on an ASSERTION failure (IGNORE)
 kgeasnmierr         
+kgerev             kgerev - KGE Record Error code (with Va_list) */
 kgerinv            KGE Record Internal (Named) error (with Va_list)
 kgerinv_internal   record internal or soft internal named error
 kgesinv            kgesinv - KGE Signal Internal (Named) error (with VA_list)
@@ -306,11 +307,14 @@ krtchk check consistency of specied with translation table
 ksbabs [background_proc] KSB: Background process: Action based server
 ksbcti             call timeout/interrupts
 ksbrdp [background_proc] KSB: run a detached (background) process
+ksddoa             # Debug support Do an Action
 ksdhng_analyze_graph [hang_analysis]
 ksdhng_graph_build_local [hang_analysis]
 ksdhng_local_detect [hang_analysis]
 ksdhng_request_msg_get [hang_analysis]
 ksdhng_request_msg_get_phase_di [hang_analysis]
+ksdpcg             # KSD: Post and check event in the specified event group
+ksdpec             # KSD: Post Event and Check trigger condition
 ksdxcb             # CallBack for sosd layer signal handler (IGNORE)
 ksedmp             # KSE: dump the process state
 ksedst             # KSE: dump the call stack
@@ -322,10 +326,12 @@ ksfd_kfioRequest [VOS]
 ksfd_osmio [VOS]
 ksfdmp             # Call relevant dump routine
 ksfdread [VOS]
+ksfpec             # KSF: Post an event??
 ksliwat            KSL: Latching: Awaken a wait event
 ksmasg Callback function for allocating an SGA extent.  The SGA is fixed size
 ksmsgfr [KSM]
 kssdch [VOS] KSS: delete children of state obj.
+kssdct KSS: delete children of specified type
 kssdel [VOS]
 kssxdl [VOS] KSS: delete SO ignoring all except severe errors. cleans latches
 ksucln [ksu] KSUCLN: Cleanup detached process
@@ -333,19 +339,21 @@ ksucln_dpc [ksu]
 ksucln_dpc_cleanup [ksu]
 ksucln_dpc_dfs [ksu]
 ksucln_dpc_main [ksu]
+ksudel             KSU: delete specified user session
 ksudlc             delete call                                               
 ksudlp [ksu] KSU: delete process.called when user detaches or during cleanup by PMON
 ksudss system state dump
 ksupop KSU: pop user or recursive call
 ksuxda_del_proc [ksu]
 ksuxdl [ksu] KSUCLN: Delete state object for PMON
-ksuxds [ksu]
+ksuxds [ksu] KSU: acquires the ksupol, the so latch protects access to sniper bit
 ksvrdp [ksv_trace]
 ktbgcur            Kernel Transaction Block GET
 ktsiseg_info                    KTS Segment INFo
 ktsisegstg                      Given a ktid fills the stgdef
 ktspfmdb - Format a range of data blocks
 ktspfmtrng - Format one range or less of data blocks
+kwqbcsecl           
 kwqmnslv [AQ_TM]
 kxe_push_env_internal_pp_ [SQL_Execution]
 kxfpProcessError [Parallel_Execution]
@@ -386,6 +394,7 @@ npicon0            npicon0 - Network Program Interface CONnnect
 npigdn0            npigdn: Get Database link info by Name.                   
 opiDeferredSem     OPI perform Deferred semantic Analysis
 opiSem             OPI SEMantic analysis driver
+opidcl             cleanup after the sqlnet connection is terminated. Put the cleanup actions
 opidrv             # opidrv - ORACLE Program Interface DRiVer (IGNORE)
 opiexe             opiexe - ORACLE Program Interface EXEcute
 opifch             OPIFCH: oracle side of the fetch interface
