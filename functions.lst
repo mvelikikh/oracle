@@ -353,11 +353,17 @@ ksuxda_del_proc [ksu]
 ksuxdl [ksu] KSUCLN: Delete state object for PMON
 ksuxds [ksu] KSU: acquires the ksupol, the so latch protects access to sniper bit
 ksvrdp [ksv_trace]
+ktbgcl1 KTB General CLean 1.  DESCRIPTION: Performs ITL cleanout for read consistency and for current blocks.  For read consistency (KTB_CR), always cleanout until the CR scan time For current (KTB_CUR)
 ktbgcur            Kernel Transaction Block GET
+ktrgcm common CR read code
+ktrget get a read consistent block
 ktsiseg_info                    KTS Segment INFo
 ktsisegstg                      Given a ktid fills the stgdef
 ktspfmdb - Format a range of data blocks
 ktspfmtrng - Format one range or less of data blocks
+ktugct Kernel Transaction Undo Get Commit Times */ This routine will return the commit times for transaction ids in */ a data block`s itl.  It uses ktbisr and ktbisn to scan the block and      */
+kturbk Kernel transaction Undo Roll BacK This is for CR only. Read the undo record (CRX) pointed by  the uba and call ktundo to actually backs out the change.
+kturbt Kernel Transactrion Undo Roll Back To (time scn)             */ Routine to roll a transaction back so that "time" is           */ in range on the block.
 kwqbcsecl           
 kwqmnslv [AQ_TM]
 kxe_push_env_internal_pp_ [SQL_Execution]
