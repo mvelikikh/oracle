@@ -24,6 +24,7 @@ hshuid [PLSQL_KG_Interface]
 insexe [DML] insexe - insert execute
 kaudel             ? Module Notes: perform inserts, updates, and deletes, modifying indexes on tables
 kauupd KAU: update table and modify indexes
+kcbapl                  Cache Buffers APpLy
 kcbassertsd [CACHE_RCV]
 kcbchg1 [CACHE_RCV]
 kcbchg1_main [CACHE_RCV]
@@ -43,9 +44,14 @@ kcbr_media_apply [CACHE_RCV]
 kcfbsy synch the control file with the SGA
 kcfis_finalize_cached_sessions [KCFIS]
 kcfmta mount all files
+kco_blkchk              Cache Op block check
+kcoapl                  Cache Op APpLy
+kcoubk                  undo callback routine
 kcra_dump_redo [CACHE_RCV]
 kcra_dump_redo_internal [CACHE_RCV]
 kcra_scan_redo [CACHE_RCV]
+kcrfw_redo_gen          REDO GENeration
+kdBlkCheckError         Block Check Error
 kdblGetBlockDba [DIRPATH_LOAD]
 kdblai [DIRPATH_LOAD]
 kdblba [DIRPATH_LOAD]
@@ -353,15 +359,21 @@ ksuxda_del_proc [ksu]
 ksuxdl [ksu] KSUCLN: Delete state object for PMON
 ksuxds [ksu] KSU: acquires the ksupol, the so latch protects access to sniper bit
 ksvrdp [ksv_trace]
+ktbapundo               Block APply UNdo
 ktbgcl1 KTB General CLean 1.  DESCRIPTION: Performs ITL cleanout for read consistency and for current blocks.  For read consistency (KTB_CR), always cleanout until the CR scan time For current (KTB_CUR)
 ktbgcur            Kernel Transaction Block GET
+ktcrsp1                 KTC Rollback to SavePoint
 ktrgcm common CR read code
 ktrget get a read consistent block
 ktsiseg_info                    KTS Segment INFo
 ktsisegstg                      Given a ktid fills the stgdef
 ktspfmdb - Format a range of data blocks
 ktspfmtrng - Format one range or less of data blocks
+ktuapundo               Undo APply UNdo
 ktugct Kernel Transaction Undo Get Commit Times */ This routine will return the commit times for transaction ids in */ a data block`s itl.  It uses ktbisr and ktbisn to scan the block and      */
+ktundo                  Kernel Transaction UNDO
+kturCurrBackoutOneChg   Get undo rec to RB txn, non-CR only (Undo BacK Out)
+kturRollbackToSavepoint Undo Roll back to Save Point
 kturbk Kernel transaction Undo Roll BacK This is for CR only. Read the undo record (CRX) pointed by  the uba and call ktundo to actually backs out the change.
 kturbt Kernel Transactrion Undo Roll Back To (time scn)             */ Routine to roll a transaction back so that "time" is           */ in range on the block.
 kwqbcsecl           
