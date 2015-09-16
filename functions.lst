@@ -1,5 +1,5 @@
 ainIMakeUnus                    ALTER INDEX MAKE UNUSABLE for a non-partitioned index
-apadrv [SQL_APA]
+apadrv [SQL_APA] DRIVE THE ACCESS PATH SELECTION FOR A SQL COMMAND
 apakkoqb [SQL_APA] Drive access path analysis for each Query block
 apaqbd [SQL_APA]
 apaqbdDescendents [SQL_APA]
@@ -192,11 +192,14 @@ kkdlacd            KKDL get All Column Definitions: Get all column definitions
 kkdlcod             
 kkdoloi            Load Objects-related Information
 kkeIdxSelectivity [SQL_Costing]
+kkeapr             KKE: anaylze predicates for optimization - returns stat ptr
+kkecpst            Create copy of column statistics in compile time memory nt                  
 kkeidc [SQL_Costing]
 kkestAddMCPredToCtx [SQL_Costing]
 kkestAllocMCCtx [SQL_Costing]
 kkestBuildMCCtxFromKeys [SQL_Costing]
 kketac [SQL_Costing]
+kkevcs             set view column stats from underlying column
 kkmatr [SQL_Semantic]
 kkmdel             extra semantic processing for deletes
 kkmdrv [SQL_Semantic]
@@ -232,11 +235,16 @@ kkpapFMParts [PART]
 kkpapSetBounds [PART]
 kkpoati_alter_table_index_maint index maintenance driver
 kkpomiu_mark_index_unusable     Marks an index unusable
-kkqctdrvIT [SQL_Transform]
+kkqctdrvIT [SQL_Transform] KKQCT DRiVer Initiate cost-based Transformation
 kkqctdrvJF [SQL_Transform]
-kkqctdrvTD [SQL_Transform]
+kkqctdrvTD [SQL_Transform] KKQCT DRiVer for Transformation Directives
 kkqcttcalo [SQL_Transform]
-kkqdrv [SQL_Transform]
+kkqdrv [SQL_Transform] Kernel Kompile Query transformations DRiVer
+kkqgbpCheckPred    KKQGBP Check Validity of Pred
+kkqgbpCheckValidity KKQGBP Check Basic Validity
+kkqgbpColHasHighNDV KKQGBP Column Has High NDV
+kkqgbpTravChkTran  KKQGBP Traverse, Check and Transform
+kkqgbpdrv          KKQGBP DRiVer
 kkqjfUnitTrans [SQL_Transform]
 kkqjfdrv [SQL_Transform]
 kkqjfgdtr [SQL_Transform]
@@ -1566,6 +1574,8 @@ qksanAnalyzeSegSql [SQL_Analyze]
 qksanAnalyzeSql [SQL_Analyze]
 qksanAnalyzeSqlConCbk [SQL_Analyze]
 qksanExecSql [SQL_Analyze]
+qksqbApplyToQbc    QKSQB Apply To Query Block
+qksqbApplyToQbcLoc QKSQB Apply To Query Block (Local implementation
 qksvcDoReplace [SQL_Virtual]
 qksvcReplaceIndexExpr [SQL_Virtual]
 qmcxeEncEndElement [XDB_CSX]
