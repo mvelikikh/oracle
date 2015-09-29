@@ -1,3 +1,6 @@
+dbkedDefDump       Do DDE default dump
+ksedst             # KSE: dump the call stack
+ksedst1            Kernel Service Error Debug Stack Trace 1 (helper)
 ainIMakeUnus                    ALTER INDEX MAKE UNUSABLE for a non-partitioned index
 apadrv [SQL_APA] DRIVE THE ACCESS PATH SELECTION FOR A SQL COMMAND
 apakkoqb [SQL_APA] Drive access path analysis for each Query block
@@ -193,7 +196,7 @@ kkdlcod
 kkdoloi            Load Objects-related Information
 kkeIdxSelectivity [SQL_Costing]
 kkeapr             KKE: anaylze predicates for optimization - returns stat ptr
-kkecpst            Create copy of column statistics in compile time memory nt                  
+kkecpst            Create copy of column statistics in compile time memory
 kkeidc [SQL_Costing]
 kkestAddMCPredToCtx [SQL_Costing]
 kkestAllocMCCtx [SQL_Costing]
