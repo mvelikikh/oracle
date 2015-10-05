@@ -1,6 +1,3 @@
-dbkedDefDump       Do DDE default dump
-ksedst             # KSE: dump the call stack
-ksedst1            Kernel Service Error Debug Stack Trace 1 (helper)
 ainIMakeUnus                    ALTER INDEX MAKE UNUSABLE for a non-partitioned index
 apadrv [SQL_APA] DRIVE THE ACCESS PATH SELECTION FOR A SQL COMMAND
 apakkoqb [SQL_APA] Drive access path analysis for each Query block
@@ -1581,6 +1578,7 @@ qksqbApplyToQbc    QKSQB Apply To Query Block
 qksqbApplyToQbcLoc QKSQB Apply To Query Block (Local implementation
 qksvcDoReplace [SQL_Virtual]
 qksvcReplaceIndexExpr [SQL_Virtual]
+qkswcDriver        WITH Clause execution: Recursively traverse through all query blocks
 qmcxeEncEndElement [XDB_CSX]
 qmcxeEncEvent_Helper [XDB_CSX]
 qmcxeEncodeEvents [XDB_CSX]
