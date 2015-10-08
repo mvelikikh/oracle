@@ -220,7 +220,7 @@ kkestAllocMCCtx [SQL_Costing]
 kkestBuildMCCtxFromKeys [SQL_Costing]
 kketac [SQL_Costing]
 kkevcs             set view column stats from underlying column
-kkmatr [SQL_Semantic]
+kkmatr [SQL_Semantic] get All TRiggers
 kkmdel             extra semantic processing for deletes
 kkmdrv [SQL_Semantic]
 kkmfcbbt [SQL_Semantic]
