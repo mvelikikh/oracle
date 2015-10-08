@@ -18,12 +18,19 @@ dbkePostKGE_kgsf [rdbms_dde] DBKE Post KGE error for KGSF
 dbkedDefDump       Do DDE default dump
 delexe             delexe.c - delete execute [DML]
 delrow             delrow - Row Procedure used by KXRD to delete or lock a
+dreb_populate [Text]
+drekmap [Text]
+drepklm [Text]
+drepprep [Text]
+drextmain [Text]
+drftdisp [Text]
 evaopn2 evaluate operand
 expepr             expepr evaluates the argument predicate.
 hshuid [PLSQL_KG_Interface]
 insexe [DML] insexe - insert execute
 kaudel             ? Module Notes: perform inserts, updates, and deletes, modifying indexes on tables
 kauupd KAU: update table and modify indexes
+kcbAdoptBuffers [CACHE_RCV]
 kcbapl                  Cache Buffers APpLy
 kcbassertsd [CACHE_RCV]
 kcbchg1 [CACHE_RCV]
@@ -65,17 +72,30 @@ kdiciitk_idx_ids_to_qerli PARALLEL CREATE INDEX  [SQL_Execution]
 kdicrws            KDI: create index using row source
 kdifind            At any given moment, each possible key has a unique ASSOCIATED BLOCK at a kdiblLockPiece      
 kdla_read [LOB_KDLA]
+kdla_write [LOB_KDLA]
+kdld_write [Data]
+kdlf_write [Data]
+kdliAppendData [LOB_INODE]
+kdliInjectBuffer [LOB_INODE]
+kdliOpAppend [LOB_INODE]
 kdliReadX [LOB_INODE]
+kdliWriteData [LOB_INODE]
+kdliWriteV [LOB_INODE]
 kdliXfmCheck [LOB_INODE]
+kdli_fwritev [LOB_INODE]
 kdli_readx [LOB_INODE]
 kdlrci_get_inline_data [LOB_KDLRCI]
+kdlwFlush [LOB_KDLW]
+kdlwFlushLobInt [LOB_KDLW]
 kdlw_read [LOB_KDLW]
 kdlw_read_data [LOB_KDLW]
+kdlw_write [LOB_KDLW]
 kdlxDecompress1 [LOB_KDLX]
 kdlxDecompressCbk [LOB_KDLX]
 kdlxDecompressSUnit [LOB_KDLX]
 kdlxDecompressUnit [LOB_KDLX]
 kdlx_read [LOB_KDLX]
+kdlxdup_flush [LOB_KDLXDUP]
 kdlxdup_read [LOB_KDLXDUP]
 kdsgrp             Get row piece */
 kdst_fetch Kernel Data Scan Table Fetch
@@ -268,6 +288,7 @@ kksSetBindType [cursor]
 kksfbc [cursor] KKS: Find Bound Cursor
 kkspbd0 [cursor]
 kkspsc0 [cursor] KKS: Parse Shared Cursor
+kkx_push_env_for_ICD_for_new_session [PROGINT_PLSQL]
 kkxexe             KKX: execute plsql
 kkxrpc             ARGSUSED
 kkxtexe - KKX Trigger EXEcute
@@ -295,6 +316,7 @@ kokligrd           kokligrd - KOK Lob Internal initialize kdllfn with row data *
 koklivrl [OBJECTS_Types]
 kokltcc [OBJECTS_Types]
 kokltcr [OBJECTS_Types]
+koklwrite1 [OBJECTS_Types]
 kokmrwo [OBJECTS_Types]
 kokmrwo_agg [OBJECTS_Types]
 kolaCreateFromSource [LOB]
@@ -308,13 +330,15 @@ kpndbcon           Kernel Prog Network - DBlink CONNection
 kpoal8             kpoal8.c - Kernel Programmatic Oracle ALl Version 8
 kpoauth            KPO AUTHenticate
 kpodpuls [DIRPATH_LOAD]
-kpolob kpolob.c - KPP Lob operations
+kpolob [PROGINT_MISC] kpolob.c - KPP Lob operations
 kponPurgeUnreachLoc [AQ]
 kpooprx            open, parse, and optionally execute
 kporpc             kporpc.c - The oracle side function to start rpc
 kpudpxuls_ctxUnloadStream [DPAPI_Load]
 kpuexec            kpuexec - KPU : Execute
-kpurcsc            kpurcsc - KPU Remote Call with ServiceContext, Callbacks
+kpulfwr [PROGINT]
+kpulfwrarr [PROGINT]
+kpurcsc [PROGINT] kpurcsc - KPU Remote Call with ServiceContext, Callbacks
 kqfd_WRT_qerfxtst_c FIXED TABLE  [SQL_Execution]
 kqlUpdateStubs [LIBCACHE]
 kqlvld [LIBCACHE]
@@ -443,6 +467,7 @@ opirip             # Oracle Program Interface Run Independent Process (IGNORE)
 opistr             STaRt Oracle
 opitca             OPITCA: sets up the context area
 opitsk             Two Task Oracle Side Function Dispatcher
+osnsglw [Two_Task]
 pcicmp0 [PLSQL_Infrastructure]
 pefcal [PLSQL_External_Proc]
 pefccal [PLSQL_External_Proc]
@@ -471,8 +496,8 @@ pricbr PL/SQL Remote Interface Call Back, Remote
 prient [PLSQL_Code_Execution] Run given (RPC) entrypoint
 prient2 [PLSQL_Code_Execution] common code to run given entrypoint: could be RPC or non-RPC
 psddr0 Null pointer definitions for ttcdrv callback and contet.  Used in psddrv. [PLSQL_PSD_Generic]
-psdexsp [PLSQL_PSD_Generic] All Private Routines
-psdextp [PLSQL_PSD_Generic] The only public routine, the actual PSD *
+psdexsp [PLSQL_PSD_Generic] [PROGINT_PLSQL] All Private Routines
+psdextp [PLSQL_PSD_Generic] [PROGINT_PLSQL] The only public routine, the actual PSD *
 psdnal [PLSQL_PSD_Generic]
 qcdoloi            Load Object-specific Information
 qcsogati [OBJECTS_Semanal]
