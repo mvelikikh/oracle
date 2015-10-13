@@ -48,6 +48,7 @@ kcblrd [CACHE_RCV]
 kcbnew [CACHE_RCV]
 kcbr_apply_change [CACHE_RCV]
 kcbr_media_apply [CACHE_RCV]
+kcbrbr             kcbrbr: Reuse Block Range: Called by space management 
 kcfbsy synch the control file with the SGA
 kcfis_finalize_cached_sessions [KCFIS]
 kcfmta mount all files
@@ -392,6 +393,7 @@ ksuxda_del_proc [ksu]
 ksuxdl [ksu] KSUCLN: Delete state object for PMON
 ksuxds [ksu] KSU: acquires the ksupol, the so latch protects access to sniper bit
 ksvrdp [ksv_trace]
+kswsdls            KSWS DeLete Service 
 ktbapundo               Block APply UNdo
 ktbgcl1 KTB General CLean 1.  DESCRIPTION: Performs ITL cleanout for read consistency and for current blocks.  For read consistency (KTB_CR), always cleanout until the CR scan time For current (KTB_CUR)
 ktbgcur            Kernel Transaction Block GET
@@ -409,8 +411,10 @@ kturCurrBackoutOneChg   Get undo rec to RB txn, non-CR only (Undo BacK Out)
 kturRollbackToSavepoint Undo Roll back to Save Point
 kturbk Kernel transaction Undo Roll BacK This is for CR only. Read the undo record (CRX) pointed by  the uba and call ktundo to actually backs out the change.
 kturbt Kernel Transactrion Undo Roll Back To (time scn)             */ Routine to roll a transaction back so that "time" is           */ in range on the block.
+kwqadrpq           Kernel queue Administration DRoP Queue 
 kwqbcsecl           
 kwqmnslv [AQ_TM]
+kwqvdsvc           Drop SerViCe 
 kxe_push_env_internal_pp_ [SQL_Execution]
 kxfpProcessError [Parallel_Execution]
 kxfpProcessMsg [Parallel_Execution]
@@ -1626,6 +1630,7 @@ smbalo             SMBIMA: allocate an smkdef from specified storage bin
 smbput             SMBIMA: put a record into the memory buffer.
 sorputqb           SORt PUTQB:  Insert record into sort
 sou2o              soseh - establish  exception handler
+spefcmpa           Marshall Procedure arguments 
 spefmccallstd      OSD C Calling Standard
 ssexhd             # ** DUMP ROUTINE - IGNORE stuff above this on the stack
 sspuser            SSPUSER: handle SIGUSR2 for ORACLE.
