@@ -216,6 +216,9 @@ kkeIdxSelectivity [SQL_Costing]
 kkeapr             KKE: anaylze predicates for optimization - returns stat ptr
 kkecpst            Create copy of column statistics in compile time memory
 kkeidc [SQL_Costing]
+kkejcd         returns cardinality of a join between two tables
+kkejeq         Computes the join cardinality for an equijoin predicate
+kkepsl         selectivity of single predicate
 kkestAddMCPredToCtx [SQL_Costing]
 kkestAllocMCCtx [SQL_Costing]
 kkestBuildMCCtxFromKeys [SQL_Costing]
@@ -235,12 +238,12 @@ kkoBitmapAccPath [SQL_Costing]
 kkoabr [SQL_Costing]
 kkobmp [SQL_Costing]
 kkobrfak [SQL_Costing]
-kkocnp [SQL_Costing]
+kkocnp [SQL_Costing] kkocnp - KKO Cost Next Permutation
 kkofbp [SQL_Costing]
 kkofmp [SQL_Costing]
 kkoiqb [SQL_Costing] KKO: Initialize Query Block
 kkoixo [SQL_Costing]
-kkojnp [SQL_Costing]
+kkojnp [SQL_Costing] KKO: Join Order Path
 kkonxc [SQL_Costing]
 kkooqb [SQL_Costing] KKO: Optimize Query Block
 kkopmCheckSmbUpdate KKOPM Check if updates to the Sql Management Base are pending.
