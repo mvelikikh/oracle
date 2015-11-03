@@ -468,6 +468,7 @@ opiodr             OPIODR: ORACLE code request driver - route the current reques
 opiosq             OPIOSQ: prepare to parse a sql command
 opiosq0            OPI: prepare to parse a sql command
 opipls             opipls.c -- contains opi bundled call executor and support routines
+opiprs             opiprs - ORACLE Program Interface: PaRSe
 opiprsdml
 opiprsdmlcb opiprsdml callback fucntion
 opirip             # Oracle Program Interface Run Independent Process (IGNORE)
