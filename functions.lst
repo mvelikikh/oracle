@@ -100,6 +100,7 @@ kdlxdup_flush [LOB_KDLXDUP]
 kdlxdup_read [LOB_KDLXDUP]
 kdsgrp             Get row piece */
 kdst_fetch Kernel Data Scan Table Fetch
+kdugetpart         KDT: get partition information for a deleted/updated row
 kdusru KDU: Single Row Update, main entry
 kdzhGetBlockDba [ADVCMP_COMP]
 kdzhailseb [ADVCMP_COMP]
