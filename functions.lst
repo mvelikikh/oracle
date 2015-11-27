@@ -476,6 +476,7 @@ opirip             # Oracle Program Interface Run Independent Process (IGNORE)
 opistr             STaRt Oracle
 opitca             OPITCA: sets up the context area
 opitsk             Two Task Oracle Side Function Dispatcher
+osnsgl3            osnsgl3 - OSN SinGLe task connect to the server process for 3gl callbacks
 osnsglw [Two_Task]
 pcicmp0 [PLSQL_Infrastructure]
 pefcal [PLSQL_External_Proc]
@@ -1649,6 +1650,8 @@ updThreePhaseExe [DML]
 updaul updaul - UPDate Attempt Update of all rows or Lock all rows [DML]
 updexe updexe - update execute
 updrow Row Procedure used by KXRD to update or lock a row [DML]
+upiah0             UPICDC: User Program Interface Attach to a HoSt
+upiini             UPIPRV: Initialize the user program interface.
 xsqerstDimGetDisVals QUERY EXECUTION STATISTICS  [SQL_Execution]
 xsqerstFirstPass QUERY EXECUTION STATISTICS  [SQL_Execution]
 xsqerstGetHLObjStats QUERY EXECUTION STATISTICS  [SQL_Execution]
