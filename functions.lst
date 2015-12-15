@@ -72,10 +72,12 @@ kdicdrv            KDI: create index driver routine
 kdiciitk_idx_ids_to_qerli PARALLEL CREATE INDEX  [SQL_Execution]
 kdicrws            KDI: create index using row source
 kdifind            At any given moment, each possible key has a unique ASSOCIATED BLOCK at a kdiblLockPiece      
+kdl_write1         write into an ILOB instance
 kdla_read [LOB_KDLA]
 kdla_write [LOB_KDLA]
 kdld_write [Data]
-kdlf_write [Data]
+kdlf_write [Data] write data to a lob (via buffers or callbacks)
+kdlgsp_init        Space management batching */
 kdliAppendData [LOB_INODE]
 kdliInjectBuffer [LOB_INODE]
 kdliOpAppend [LOB_INODE]
@@ -321,7 +323,7 @@ kokligrd           kokligrd - KOK Lob Internal initialize kdllfn with row data *
 koklivrl [OBJECTS_Types]
 kokltcc [OBJECTS_Types]
 kokltcr [OBJECTS_Types]
-koklwrite1 [OBJECTS_Types]
+koklwrite1 [OBJECTS_Types] KOKL Write with Conversions
 kokmrwo [OBJECTS_Types]
 kokmrwo_agg [OBJECTS_Types]
 kolaCreateFromSource [LOB]
@@ -408,6 +410,10 @@ ktsiseg_info                    KTS Segment INFo
 ktsisegstg                      Given a ktid fills the stgdef
 ktspfmdb - Format a range of data blocks
 ktspfmtrng - Format one range or less of data blocks
+ktspgfblk3         KTSP Get first level bitmap block
+ktspgsp_main       Get Space for inserts
+ktsplbfmb          KTSPLB Move space from Freelist to Bitmap
+ktsplbrecl         reclaim space
 ktuapundo               Undo APply UNdo
 ktugct Kernel Transaction Undo Get Commit Times */ This routine will return the commit times for transaction ids in */ a data block`s itl.  It uses ktbisr and ktbisn to scan the block and      */
 ktundo                  Kernel Transaction UNDO
