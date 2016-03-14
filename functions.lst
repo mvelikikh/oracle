@@ -1599,7 +1599,7 @@ qkaTraverseQkn [SQL_Code_Generator]
 qkaTraverseQknDescendents [SQL_Code_Generator]
 qkabxo             Bitmap indeX Only
 qkaconPreUA [SQL_Code_Generator]
-qkadrv [SQL_Code_Generator]
+qkadrv [SQL_Code_Generator] QKADRV: allocate query structures
 qkadrv2 [SQL_Code_Generator]
 qkadrv2Post [SQL_Code_Generator]
 qkadrv2Pre [SQL_Code_Generator]
@@ -1608,7 +1608,7 @@ qkagby [SQL_Code_Generator]
 qkajoi [SQL_Code_Generator] QKAJOI: Query Kernel Allocation: JOIn processing
 qkanindex          qkanindex analyzes the usage of the argument
 qkaqerbxalo BITMAP INDEX ACCESS  [SQL_Execution]
-qkaqkn [SQL_Code_Generator]
+qkaqkn [SQL_Code_Generator] Query Kernel Allocation: RoW Source allocation
 qkatab [SQL_Code_Generator] QKATAB: runtime allocation for base table row sources
 qkebValidateOpn [SQL_Code_Generator]
 qknDoRwsAllocate [SQL_Code_Generator]
