@@ -341,6 +341,7 @@ kpolob [PROGINT_MISC] kpolob.c - KPP Lob operations
 kponPurgeUnreachLoc [AQ]
 kpooprx            open, parse, and optionally execute
 kporpc             kporpc.c - The oracle side function to start rpc
+kprball execute ALL bundled KPR (RPI) operations
 kpudpxuls_ctxUnloadStream [DPAPI_Load]
 kpuexec            kpuexec - KPU : Execute
 kpulfwr [PROGINT]
