@@ -300,7 +300,7 @@ kkxexe             KKX: execute plsql
 kkxrpc             ARGSUSED
 kkxtexe - KKX Trigger EXEcute
 kkyase             ? Module Notes: kky - Kerner Kompilation sYstem/session
-klclil1r [DIRPATH_LOAD]
+klclil1r [DIRPATH_LOAD] Kernel Loader C Level Interface Load 1 Row
 klcslod load NLS data object
 kllcqgf [DIRPATH_LOAD]
 klmalf [DIRPATH_LOAD]
@@ -314,11 +314,11 @@ kokbXformCollItersInQbc [OBJECTS_Types]
 kokegkldai [OBJECTS_Images]
 kokl_pdbaware_kdlf_copy [OBJECTS_Types]
 koklcopy2 [OBJECTS_Types]
-koklcre [OBJECTS_Types]
-kokleva [OBJECTS_Types]
+koklcre [OBJECTS_Types] KOK Lob CREate
+kokleva [OBJECTS_Types] lob EVAluate
 koklglfn [OBJECTS_Types]
 kokliccb [OBJECTS_Types]
-kokliclo [OBJECTS_Types]
+kokliclo [OBJECTS_Types] KOK Lob Internal Create with another LOcator
 kokligrd           kokligrd - KOK Lob Internal initialize kdllfn with row data */
 koklivrl [OBJECTS_Types]
 kokltcc [OBJECTS_Types]
@@ -327,6 +327,7 @@ koklwrite1 [OBJECTS_Types] KOKL Write with Conversions
 kokmrwo [OBJECTS_Types]
 kokmrwo_agg [OBJECTS_Types]
 kolaCreateFromSource [LOB]
+kolaErrorHandler   KOLA ERROR handler
 kolarsAssign [LOB]
 kole_substr [LOB_Default]
 kole_templob_init [LOB_Default]
@@ -533,6 +534,7 @@ qeraeRestoreFetchState AND-EQUAL  [SQL_Execution]
 qeraeRowProcedure AND-EQUAL  [SQL_Execution]
 qeraeSaveFetchState AND-EQUAL  [SQL_Execution]
 qeraeStart AND-EQUAL  [SQL_Execution]
+qerandvFetch       Approximate NDV fetch method
 qerbaAllocate BITMAP INDEXAND   [SQL_Execution]
 qerbaClose BITMAP INDEXAND   [SQL_Execution]
 qerbaFetch BITMAP INDEXAND   [SQL_Execution]
@@ -1000,7 +1002,7 @@ qerltOolColInfoIter_Init [SQL_Execution] LOAD TABLE
 qerltOolColInfoIter_Next [SQL_Execution] LOAD TABLE
 qerltPAllocate [SQL_Execution] LOAD TABLE
 qerltPushStats [SQL_Execution] LOAD TABLE
-qerltRop [SQL_Execution] LOAD TABLE
+qerltRop [SQL_Execution] LOAD TABLE ROw Procedure callback
 qerltSendFileInfo [SQL_Execution] LOAD TABLE
 qerltStart [SQL_Execution] LOAD TABLE
 qerltTTCreate [SQL_Execution] LOAD TABLE
@@ -1010,8 +1012,8 @@ qerlt_ape [SQL_Execution] LOAD TABLE
 qerlt_isr [SQL_Execution] LOAD TABLE
 qerlt_lsa [SQL_Execution] LOAD TABLE
 qerlt_lsa_cbk [SQL_Execution] LOAD TABLE
-qerlt_olev [SQL_Execution] LOAD TABLE
-qerlt_snv [SQL_Execution] LOAD TABLE
+qerlt_olev [SQL_Execution] LOAD TABLE QERLT Out-of-Line columns, EValuate and stash away
+qerlt_snv [SQL_Execution] LOAD TABLE QERLT Stash away New Values
 qerltcAddUserIterationtoHash [SQL_Execution] LOAD TABLE
 qerltcAllocate [SQL_Execution] LOAD TABLE
 qerltcBatchErrorSetup [SQL_Execution] LOAD TABLE
