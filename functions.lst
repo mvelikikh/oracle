@@ -1639,6 +1639,7 @@ rpidrv             RPI: Recursive Program Interface DRiVer
 rpiswu2            RPI: SWitch User in recursive sql
 rwoima RoW Operand vector IMPlementation A
 rwsfcd RWSIMA: fetch from row source
+selexe             SELEXE: prepare context area for fetch
 sighandler         ? Module Notes: Missing Information
 skdstdst           Dump a Stack Trace
 skgmstack          skgmstack - call specified function with extra STACK space
