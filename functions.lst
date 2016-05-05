@@ -416,6 +416,7 @@ ktspgfblk3         KTSP Get first level bitmap block
 ktspgsp_main       Get Space for inserts
 ktsplbfmb          KTSPLB Move space from Freelist to Bitmap
 ktsplbrecl         reclaim space
+ktssdrp_segment converts segment to temp in preparation for dropping. This procedure gets a lock on the segment (so the object cleanup will actually drop it at commit time) and converts segment to TEMPORARY type
 ktuapundo               Undo APply UNdo
 ktugct Kernel Transaction Undo Get Commit Times */ This routine will return the commit times for transaction ids in */ a data block`s itl.  It uses ktbisr and ktbisn to scan the block and      */
 ktundo                  Kernel Transaction UNDO
