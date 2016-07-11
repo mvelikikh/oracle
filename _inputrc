@@ -1,0 +1,14 @@
+set editing-mode vi
+# cursor keys: CTRL-left/right
+"\e[1;5D": backward-word
+"\e[1;5C": forward-word
+# history search with typed lines: PgUp/PgDown/F8 (cmd style)
+"\033[5~": history-search-backward
+"\e[19~": history-search-backward
+"\033[6~": history-search-forward
+# use CTRL-b to strip the words from command line
+C-b:unix-filename-rubout
+#$if sqlplus
+#  "s*": "\C-vselect * from "
+#  "desc": "\C-v@\C-vde\C-vsc "
+#$endif
