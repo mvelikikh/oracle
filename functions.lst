@@ -109,6 +109,7 @@ kdzhailseb [ADVCMP_COMP]
 kdzhbirc [ADVCMP_COMP]
 kdzhcl [ADVCMP_COMP]
 kebm_slave_main [MMON]
+kernel             Kernel Service User management RESet Iterrupt in process
 kesaiExecAction [SQL_Manage_Infra]
 kesaiTuneSqlDrv [SQL_Manage_Infra]
 kespmEvolveDrv [SQL_Perf]
@@ -207,8 +208,14 @@ kjbmundocr [GCS]
 kjbrcrcvt [GCS]
 kjbrscrping [GCS]
 kjcsmpav allocate a msg b 0 1 1 
+kjcsrmg            receive a vector of messages
+kjctr_pbmsg        process batch message
+kjctr_rksxp        read messages from KSXP service
+kjctr_watq         read messages from wait queue
+kjctrcv            Receive messages
+kjcts_dmpbmsg      dump batch message content
 kjmpmsgi [RAC_MLMDS]
-kjmsm [RAC_MLMDS]
+kjmsm [RAC_MLMDS] lmS Main loop
 kjmxmpm [RAC_MLMDS]
 kkcnrli [AQ]
 kkdcico            Kkdc Insert COnstraint definition.
@@ -366,6 +373,7 @@ ksdhng_request_msg_get_phase_di [hang_analysis]
 ksdpcg             # KSD: Post and check event in the specified event group
 ksdpec             # KSD: Post Event and Check trigger condition
 ksdxcb             # CallBack for sosd layer signal handler (IGNORE)
+ksdxfstk           dump abridged os STacK
 ksedmp             # KSE: dump the process state
 ksedst             # KSE: dump the call stack
 ksedst1            Kernel Service Error Debug Stack Trace 1 (helper)
@@ -1652,7 +1660,7 @@ sou2o              soseh - establish  exception handler
 spefcmpa           Marshall Procedure arguments 
 spefmccallstd      OSD C Calling Standard
 ssexhd             # ** DUMP ROUTINE - IGNORE stuff above this on the stack
-sspuser            SSPUSER: handle SIGUSR2 for ORACLE.
+sspuser            SSPUSER: handle SIGUSR2 for ORACLE
 ssthrdmain         Main for every thread in a threaded oracle
 start              # C program entry point (IGNORE)
 subsr3             subsr3 - evaluate SUBquery; Single Row subquery method 3
