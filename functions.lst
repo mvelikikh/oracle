@@ -25,6 +25,7 @@ drepprep [Text]
 drextmain [Text]
 drftdisp [Text]
 evaopn2 evaluate operand
+evapls             EVAluate any PLSql function
 expepr             expepr evaluates the argument predicate.
 hshuid [PLSQL_KG_Interface]
 insexe [DML] insexe - insert execute
@@ -202,6 +203,9 @@ kglpndl [LIBCACHE]
 kglpnds [LIBCACHE]
 kglrfcl            kglrfcl - KGL ReFerence CLear
 kglsscn            Scan a loaded set invoking a supplied callback for each element
+kgmgaicn           KGM Generic Arguments Input Conversions
+kgmtconv           KGMT perform CONVersion
+kgmtimob           IMage to OBject (named types)
 kjblcrcbk [GCS]
 kjbmpocr [GCS]
 kjbmundocr [GCS]
@@ -315,6 +319,7 @@ kluprd [DIRPATH_LOAD]
 kluuld [DIRPATH_LOAD]
 kluuldcs [DIRPATH_LOAD]
 kluuscn [DIRPATH_LOAD]
+kodpunp            kodpunp - KOD (Pickler) UNPickle an image into an object
 kohalc             KOH: ALlocate memory Chunk
 kohdtg             KOH: DuRation Table Get an duration entry
 kokbXformCollItersInQbc [OBJECTS_Types]
@@ -341,6 +346,7 @@ kole_templob_init [LOB_Default]
 koltitcr [OBJECTS_Types]
 kolttcr [OBJECTS_Types]
 kotgatc [OBJECTS_Types]
+koxsihread         koxsihread - KOXS Image Handle WRITE (from buffer)
 kpndbcon           Kernel Prog Network - DBlink CONNection
 kpoal8             kpoal8.c - Kernel Programmatic Oracle ALl Version 8
 kpoauth            KPO AUTHenticate
