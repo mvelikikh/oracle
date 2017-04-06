@@ -65,10 +65,12 @@ kdblGetBlockDba [DIRPATH_LOAD]
 kdblai [DIRPATH_LOAD]
 kdblba [DIRPATH_LOAD]
 kdddgb KDD: Kernel Data Delete Get Block
+kdibc3position     kdibc3position - KDIBC position input stream at rowid
 kdiblFinish1       KDIBL: Callback processing for KXIB
 kdiblLockRange     KDIBL lock the range associated with a given dml target
 kdiblcfls          kdiblcfls - KDIBL conventional flush batch with undo overhead
 kdibliFinish       KXIB insert callback
+kdibr1sf           kdibr1sf - KDIBR bit Stream Fetch
 kdicdrv            KDI: create index driver routine
 kdiciitk_idx_ids_to_qerli PARALLEL CREATE INDEX  [SQL_Execution]
 kdicrws            KDI: create index using row source
@@ -564,7 +566,7 @@ qerbaInitQB BITMAP INDEXAND   [SQL_Execution]
 qerbaPruneInputs BITMAP INDEXAND   [SQL_Execution]
 qerbaStart BITMAP INDEXAND   [SQL_Execution]
 qerbaStartWithQB BITMAP INDEXAND   [SQL_Execution]
-qerbaStrmAnd BITMAP INDEXAND   [SQL_Execution]
+qerbaStrmAnd BITMAP INDEXAND   [SQL_Execution] QERBA Stream And
 qerbaUUStrmAnd BITMAP INDEXAND   [SQL_Execution]
 qerbaUUStrmNOT BITMAP INDEXAND   [SQL_Execution]
 qerbaUUStrmOR BITMAP INDEXAND   [SQL_Execution]
