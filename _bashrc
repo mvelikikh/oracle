@@ -1,0 +1,40 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# Fix autocompletion for environment variables: http://askubuntu.com/questions/41891/bash-auto-complete-for-environment-variables
+shopt -s direxpand
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+
+alias cdob='cd $ORACLE_BASE'
+alias cdoh='cd $ORACLE_HOME'
+alias tns='cd $TNS_ADMIN'
+alias envo='env | grep ORACLE'
+
+alias sp='rlwrap -D2 -cir -b'"'"'@(){}[],+=&^%#;|'"'"' -I -f ~/oracle/scripts/tanel/tpt_public/scripts/setup/wordfile_11gR2.txt sqlplus'
+alias sp9='. ~/.profile11 ; sp'
+alias sp12='. ~/.bash_profile ; sp'
+
+alias vim='gvim -v'
+alias vi='gvim -v'
+
+alias chromium='chromium --proxy-pac-url=http://frida.ftc.ru/cache.pac'
+alias google-chrome='google-chrome --proxy-pac-url=http://frida.ftc.ru/cache.pac --auth-server-whitelist="*ftc.ru"'
+alias la='ls -la'
+alias lt='ls -ltr'
+alias tlf='tail -f'
+function grep_excl() {
+  ps -ef | grep '['${1:0:1}']'${1:1}
+}
+
+#alias psg='ps -ef | grep'
+alias psg=grep_excl
+alias info='info --vi-keys'
+alias oratop='oratop -d -f -i 10'
