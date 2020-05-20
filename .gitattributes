@@ -1,1 +1,1 @@
-**/*.sql linguist-detectable=true
+blog/*/*.sql linguist-detectable=true
