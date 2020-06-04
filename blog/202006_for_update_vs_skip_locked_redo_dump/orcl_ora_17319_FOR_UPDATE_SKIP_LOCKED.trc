@@ -1,0 +1,160 @@
+Trace file /u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_17319_FOR_UPDATE_SKIP_LOCKED.trc
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.2.0.0.0
+Build label:    RDBMS_19.2.0.0.0_LINUX.X64_190204
+ORACLE_HOME:    /u01/app/oracle/product/db_19
+System name:	Linux
+Node name:	db-19-siha
+Release:	4.1.12-124.26.7.el7uek.x86_64
+Version:	#2 SMP Fri Mar 29 17:05:02 PDT 2019
+Machine:	x86_64
+Instance name: orcl
+Redo thread mounted by this instance: 1
+Oracle process number: 40
+Unix process pid: 17319, image: oracle@db-19-siha
+
+
+*** 2020-06-04T11:13:30.964161+01:00 (PDB(3))
+*** SESSION ID:(128.31843) 2020-06-04T11:13:30.964174+01:00
+*** CLIENT ID:() 2020-06-04T11:13:30.964178+01:00
+*** SERVICE NAME:(pdb) 2020-06-04T11:13:30.964180+01:00
+*** MODULE NAME:(SQL*Plus) 2020-06-04T11:13:30.964183+01:00
+*** ACTION NAME:() 2020-06-04T11:13:30.964186+01:00
+*** CLIENT DRIVER:(SQL*PLUS) 2020-06-04T11:13:30.964189+01:00
+*** CONTAINER ID:(3) 2020-06-04T11:13:30.964192+01:00
+ 
+
+*** TRACE CONTINUED FROM FILE /u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_17319_FOR_UPDATE.trc ***
+
+EXEC #139992772259880:c=217,e=217,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=0,plh=0,tim=9271904162
+CLOSE #139992772259880:c=2,e=2,dep=0,type=1,tim=9271904618
+PARSE #139992772267640:c=133,e=134,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271904780
+EXEC #139992772267640:c=27,e=27,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271904826
+FETCH #139992772267640:c=274,e=885,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=735420252,tim=9271905742
+FETCH #139992772267640:c=1,e=1,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271905867
+CLOSE #139992772267640:c=6,e=6,dep=0,type=3,tim=9271906130
+=====================
+PARSING IN CURSOR #139992772185192 len=77 dep=0 uid=78 oct=47 lid=78 tim=9271906356 hv=2052533423 ad='67767070' sqlid='1rad18tx5fb5g'
+BEGIN open :rc for select * from t1 order by n1 for update skip locked; END;
+
+END OF STMT
+PARSE #139992772185192:c=202,e=202,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=0,tim=9271906355
+STAT #139992772255920 id=1 cnt=0 pid=0 pos=1 obj=0 op='FOR UPDATE  (cr=2 pr=0 pw=0 str=1 time=129 us)'
+STAT #139992772255920 id=2 cnt=10 pid=1 pos=1 obj=0 op='SORT ORDER BY (cr=2 pr=0 pw=0 str=2 time=54 us cost=4 size=30 card=10)'
+STAT #139992772255920 id=3 cnt=10 pid=2 pos=1 obj=23729 op='TABLE ACCESS FULL T1 (cr=2 pr=0 pw=0 str=1 time=45 us cost=3 size=30 card=10)'
+CLOSE #139992772255920:c=66,e=66,dep=1,type=1,tim=9271906495
+=====================
+PARSING IN CURSOR #139992771657856 len=51 dep=1 uid=78 oct=3 lid=78 tim=9271906529 hv=3591817954 ad='67838e18' sqlid='an02m83b1dkr2'
+SELECT * FROM T1 ORDER BY N1 FOR UPDATE SKIP LOCKED
+END OF STMT
+PARSE #139992771657856:c=28,e=28,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=1,plh=3991553210,tim=9271906529
+EXEC #139992771657856:c=25,e=25,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=1,plh=3991553210,tim=9271906577
+EXEC #139992772185192:c=223,e=223,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=0,tim=9271906616
+CLOSE #139992772185192:c=0,e=7,dep=0,type=1,tim=9271906880
+PARSE #139992772257744:c=0,e=60,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=1388734953,tim=9271907063
+EXEC #139992772257744:c=303,e=10,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=1388734953,tim=9271907104
+FETCH #139992772257744:c=111,e=111,p=0,cr=0,cu=1,mis=0,r=1,dep=0,og=1,plh=1388734953,tim=9271907242
+FETCH #139992772257744:c=0,e=0,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=0,plh=1388734953,tim=9271907369
+CLOSE #139992772257744:c=4,e=4,dep=0,type=3,tim=9271907623
+PARSE #139992772182872:c=10,e=9,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271907668
+EXEC #139992772182872:c=30,e=30,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271907717
+FETCH #139992772182872:c=0,e=983,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=735420252,tim=9271908725
+FETCH #139992772182872:c=0,e=2,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271908832
+CLOSE #139992772182872:c=0,e=4,dep=0,type=3,tim=9271909105
+=====================
+PARSING IN CURSOR #139992771660136 len=34 dep=0 uid=78 oct=47 lid=78 tim=9271909219 hv=1704641643 ad='65b28ff8' sqlid='a8f2kd9ktpj3b'
+BEGIN dbms_session.sleep(5); END;
+
+END OF STMT
+PARSE #139992771660136:c=0,e=73,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=0,tim=9271909219
+
+*** 2020-06-04T11:13:35.968912+01:00 (PDB(3))
+EXEC #139992771660136:c=119,e=4999831,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=0,tim=9276909094
+CLOSE #139992771660136:c=11,e=11,dep=0,type=1,tim=9276909542
+XCTEND rlbk=1, rd_only=1, tim=9276909576
+=====================
+PARSING IN CURSOR #139992771742968 len=121 dep=0 uid=78 oct=49 lid=78 tim=9276910138 hv=764474206 ad='0' sqlid='cfc62acqt1wuy'
+alter system dump logfile '+DATA/ORCL/ONLINELOG/group_2.259.1010265797' scn min    4852529 scn max    4852530 xid 3 6 580
+END OF STMT
+PARSE #139992771742968:c=0,e=166,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=0,plh=0,tim=9276910138
+ 
+DUMP OF REDO FROM FILE '+DATA/ORCL/ONLINELOG/group_2.259.1010265797'
+ Container ID: 3
+ Container UID: 3628136135
+ Opcodes *.*
+ Container ID: 3
+ Container UID: 3628136135
+ RBAs: 0x000000.00000000.0000 thru 0xffffffff.ffffffff.ffff
+ SCNs: scn: 0x00000000004a0b31 thru scn: 0x00000000004a0b32
+ Times: creation thru eternity
+  xid: 0x0003.006.00000244
+ FILE HEADER:
+	Compatibility Vsn = 318767104=0x13000000
+	Db ID=1538046516=0x5bacba34, Db Name='ORCL'
+	Activation ID=1538038836=0x5bac9c34
+	Control Seq=10179=0x27c3, File size=409600=0x64000
+	File Number=2, Blksiz=512, File Type=2 LOG
+ descrip:"T 0001, S 0000000047, SCN 0x000000000049ac37-0xffffffffffffffff"
+ thread: 1 nab: 0xffffffff seq: 0x0000002f hws: 0x2 eot: 1 dis: 0
+ resetlogs count: 0x3c376eb4 scn: 0x0000000000000001
+ prev resetlogs count: 0x0 scn: 0x0000000000000000
+ Low  scn: 0x000000000049ac37 06/04/2020 08:40:45
+ Next scn: 0xffffffffffffffff 01/01/1988 00:00:00
+ Enabled scn: 0x0000000000000001 06/06/2019 21:23:47
+ Thread closed scn: 0x000000000049ac37 06/04/2020 08:40:45
+ Real next scn: 0xffffffffffffffff
+ Disk cksum: 0x66cf Calc cksum: 0x66cf
+ Terminal recovery stop scn: 0x0000000000000000
+ Terminal recovery  01/01/1988 00:00:00
+ Most recent redo scn: 0x0000000000000000
+ Largest LWN: 0 blocks
+ End-of-redo stream : No
+ Unprotected mode
+ Miscellaneous flags: 0x800000
+ Miscellaneous second flags: 0x0
+ Thread internal enable indicator: thr: 0, seq: 0 scn: 0x0000000000000000
+ Zero blocks: 0
+ Format ID is 18
+ redo log key is 1ba0fe18a2d84dad4c7544306e82c991
+ redo log key flag is 15
+ High watermark block number: 0 
+ Enabled redo threads: 1 
+(LWN RBA: 0x00002f.00008fba.0010 LEN: 0x00000001 NST: 0x0001 SCN: 0x00000000004a0b30)
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008fba.0010 LEN: 0x0168 VLD: 0x05 CON_UID: 3628136135
+SCN: 0x00000000004a0b31 SUBSCN:  1 06/04/2020 11:13:31
+CHANGE #1 CON_ID:3 TYP:0 CLS:21 AFN:10 DBA:0x018000a0 OBJ:4294967295 SCN:0x00000000004a08bd SEQ:1 OP:5.2 ENC:0 RBL:0 FLG:0x0000
+ktudh redo: slt: 0x0006 sqn: 0x00000244 flg: 0x0051 siz: 80 fbi: 0
+            uba: 0x018025eb.0053.1c    pxid:  0x0000.000.00000000        pdbid:3628136135
+CHANGE #2 CON_ID:3 TYP:0 CLS:22 AFN:10 DBA:0x018025eb OBJ:4294967295 SCN:0x00000000004a08bc SEQ:1 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 80 spc: 3152 flg: 0x0010 seq: 0x0053 rec: 0x1c
+            xid:  0x0003.006.00000244  
+ktubl redo: slt: 6 wrp: 1 flg: 0x0c08 prev dba:  0x00000000 rci: 0 opc: 5.7 [objn: 0 objd: 0 tsn: 0]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+Begin trans    
+ prev ctl uba: 0x018025eb.0053.1b prev ctl max cmt scn:  0x000000000049b8df 
+ prev tx cmt scn:  0x000000000049b8f2 
+ txn start scn:  0xffffffffffffffff  logon user: 78
+ prev brb:  0x018025e9  prev bcl:  0x00000000
+BuExt idx: 0 flg2: 0
+CHANGE #3 MEDIA RECOVERY MARKER CON_ID:3 SCN:0x0000000000000000 SEQ:0 OP:5.20 ENC:0 FLG:0x0000
+session number   = 128
+serial  number   = 31843
+transaction name = 
+version 318767104
+audit sessionid 680044
+Client Id = 
+login   username = TC
+END OF REDO DUMP
+==== Redo read statistics for thread 1 ====
+Total physical reads (from disk and memory): 22527Kb
+-- Redo read_disk statistics --
+Read rate (ASYNC): 18398Kb in 0.36s => 49.91 Mb/sec
+Total redo bytes: 22527Kb Longest record: 11Kb, moves: 11/26092 moved: 0Mb (0%)
+Longest LWN: 1114Kb, reads: 9179 
+Last redo scn: 0x00000000004a0b31 (4852529)
+Change vector header moves = 4147/51182 (8%)
+----------------------------------------------
+EXEC #139992772199824:c=303,e=303,p=0,cr=0,cu=3,mis=0,r=1,dep=1,og=4,plh=0,tim=9277279785
+EXEC #139992771742968:c=15631,e=369835,p=0,cr=1,cu=6,mis=0,r=0,dep=0,og=0,plh=0,tim=9277280005

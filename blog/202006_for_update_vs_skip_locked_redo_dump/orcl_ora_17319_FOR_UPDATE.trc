@@ -1,0 +1,442 @@
+Trace file /u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_17319_FOR_UPDATE.trc
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.2.0.0.0
+Build label:    RDBMS_19.2.0.0.0_LINUX.X64_190204
+ORACLE_HOME:    /u01/app/oracle/product/db_19
+System name:	Linux
+Node name:	db-19-siha
+Release:	4.1.12-124.26.7.el7uek.x86_64
+Version:	#2 SMP Fri Mar 29 17:05:02 PDT 2019
+Machine:	x86_64
+Instance name: orcl
+Redo thread mounted by this instance: 1
+Oracle process number: 40
+Unix process pid: 17319, image: oracle@db-19-siha
+
+
+*** 2020-06-04T11:13:30.690704+01:00 (PDB(3))
+*** SESSION ID:(128.31843) 2020-06-04T11:13:30.690723+01:00
+*** CLIENT ID:() 2020-06-04T11:13:30.690726+01:00
+*** SERVICE NAME:(pdb) 2020-06-04T11:13:30.690729+01:00
+*** MODULE NAME:(SQL*Plus) 2020-06-04T11:13:30.690733+01:00
+*** ACTION NAME:() 2020-06-04T11:13:30.690736+01:00
+*** CLIENT DRIVER:(SQL*PLUS) 2020-06-04T11:13:30.690738+01:00
+*** CONTAINER ID:(3) 2020-06-04T11:13:30.690741+01:00
+ 
+CLOSE #139992772289424:c=0,e=3,dep=0,type=1,tim=9271630496
+=====================
+PARSING IN CURSOR #139992772267640 len=44 dep=0 uid=78 oct=3 lid=78 tim=9271631068 hv=4053328060 ad='655a9710' sqlid='cmjp7rmstjs5w'
+select current_scn start_scn from v$database
+END OF STMT
+PARSE #139992772267640:c=46,e=46,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271631068
+EXEC #139992772267640:c=35,e=35,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271631135
+FETCH #139992772267640:c=647,e=955,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=735420252,tim=9271632137
+FETCH #139992772267640:c=1,e=2,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271632284
+STAT #139992772267640 id=1 cnt=1 pid=0 pos=1 obj=0 op='MERGE JOIN CARTESIAN (cr=0 pr=0 pw=0 str=1 time=962 us cost=0 size=13 card=1)'
+STAT #139992772267640 id=2 cnt=1 pid=1 pos=1 obj=0 op='FIXED TABLE FULL X$KCCDI (cr=0 pr=0 pw=0 str=1 time=577 us cost=0 size=13 card=1)'
+STAT #139992772267640 id=3 cnt=1 pid=1 pos=2 obj=0 op='BUFFER SORT (cr=0 pr=0 pw=0 str=1 time=380 us cost=0 size=0 card=1)'
+STAT #139992772267640 id=4 cnt=1 pid=3 pos=1 obj=0 op='FIXED TABLE FULL X$KCCDI2 (cr=0 pr=0 pw=0 str=1 time=370 us cost=0 size=0 card=1)'
+CLOSE #139992772267640:c=6,e=6,dep=0,type=1,tim=9271632671
+=====================
+PARSING IN CURSOR #139992772266344 len=65 dep=0 uid=78 oct=47 lid=78 tim=9271632882 hv=1830665835 ad='64e9d6d8' sqlid='bjz7cajqjvgmb'
+BEGIN open :rc for select * from t1 order by n1 for update; END;
+
+END OF STMT
+PARSE #139992772266344:c=190,e=190,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=0,tim=9271632881
+=====================
+PARSING IN CURSOR #139992772255920 len=39 dep=1 uid=78 oct=3 lid=78 tim=9271632990 hv=1684063745 ad='65de44b8' sqlid='3xqfvxdk61jh1'
+SELECT * FROM T1 ORDER BY N1 FOR UPDATE
+END OF STMT
+PARSE #139992772255920:c=26,e=26,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=1,plh=3991553210,tim=9271632990
+EXEC #139992772255920:c=0,e=163,p=0,cr=2,cu=11,mis=0,r=0,dep=1,og=1,plh=3991553210,tim=9271633180
+EXEC #139992772266344:c=98,e=323,p=0,cr=2,cu=11,mis=0,r=1,dep=0,og=1,plh=0,tim=9271633242
+CLOSE #139992772266344:c=0,e=20,dep=0,type=1,tim=9271633618
+=====================
+PARSING IN CURSOR #139992772257744 len=141 dep=0 uid=78 oct=3 lid=78 tim=9271633820 hv=1525005628 ad='649f4b58' sqlid='b3k65n5dfbg9w'
+select dbms_transaction.local_transaction_id xid,
+       replace(dbms_transaction.local_transaction_id, '.', ' ') xid_with_spaces
+  from dual
+END OF STMT
+PARSE #139992772257744:c=0,e=150,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=1388734953,tim=9271633819
+EXEC #139992772257744:c=0,e=17,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=1388734953,tim=9271633868
+FETCH #139992772257744:c=0,e=137,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=1388734953,tim=9271634031
+STAT #139992772257744 id=1 cnt=1 pid=0 pos=1 obj=0 op='FAST DUAL  (cr=0 pr=0 pw=0 str=1 time=1 us cost=2 size=0 card=1)'
+FETCH #139992772257744:c=1,e=1,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=0,plh=1388734953,tim=9271634186
+CLOSE #139992772257744:c=4,e=4,dep=0,type=1,tim=9271634428
+=====================
+PARSING IN CURSOR #139992772182872 len=42 dep=0 uid=78 oct=3 lid=78 tim=9271634519 hv=3669693436 ad='649f8380' sqlid='8yjchdmdbq4zw'
+select current_scn end_scn from v$database
+END OF STMT
+PARSE #139992772182872:c=59,e=59,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271634519
+EXEC #139992772182872:c=27,e=26,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271634686
+FETCH #139992772182872:c=245,e=891,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=735420252,tim=9271635606
+FETCH #139992772182872:c=1,e=2,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=735420252,tim=9271635726
+STAT #139992772182872 id=1 cnt=1 pid=0 pos=1 obj=0 op='MERGE JOIN CARTESIAN (cr=0 pr=0 pw=0 str=1 time=899 us cost=0 size=13 card=1)'
+STAT #139992772182872 id=2 cnt=1 pid=1 pos=1 obj=0 op='FIXED TABLE FULL X$KCCDI (cr=0 pr=0 pw=0 str=1 time=395 us cost=0 size=13 card=1)'
+STAT #139992772182872 id=3 cnt=1 pid=1 pos=2 obj=0 op='BUFFER SORT (cr=0 pr=0 pw=0 str=1 time=501 us cost=0 size=0 card=1)'
+STAT #139992772182872 id=4 cnt=1 pid=3 pos=1 obj=0 op='FIXED TABLE FULL X$KCCDI2 (cr=0 pr=0 pw=0 str=1 time=482 us cost=0 size=0 card=1)'
+CLOSE #139992772182872:c=6,e=7,dep=0,type=1,tim=9271636038
+XCTEND rlbk=1, rd_only=0, tim=9271636095
+=====================
+PARSING IN CURSOR #139992772201120 len=122 dep=0 uid=78 oct=49 lid=78 tim=9271636931 hv=3599003853 ad='0' sqlid='128bc13b88w6d'
+alter system dump logfile '+DATA/ORCL/ONLINELOG/group_2.259.1010265797' scn min    4852518 scn max    4852519 xid 8 16 595
+END OF STMT
+PARSE #139992772201120:c=0,e=220,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=0,plh=0,tim=9271636931
+ 
+DUMP OF REDO FROM FILE '+DATA/ORCL/ONLINELOG/group_2.259.1010265797'
+ Container ID: 3
+ Container UID: 3628136135
+ Opcodes *.*
+ Container ID: 3
+ Container UID: 3628136135
+ RBAs: 0x000000.00000000.0000 thru 0xffffffff.ffffffff.ffff
+ SCNs: scn: 0x00000000004a0b26 thru scn: 0x00000000004a0b27
+ Times: creation thru eternity
+  xid: 0x0008.010.00000253
+ FILE HEADER:
+	Compatibility Vsn = 318767104=0x13000000
+	Db ID=1538046516=0x5bacba34, Db Name='ORCL'
+	Activation ID=1538038836=0x5bac9c34
+	Control Seq=10179=0x27c3, File size=409600=0x64000
+	File Number=2, Blksiz=512, File Type=2 LOG
+ descrip:"T 0001, S 0000000047, SCN 0x000000000049ac37-0xffffffffffffffff"
+ thread: 1 nab: 0xffffffff seq: 0x0000002f hws: 0x2 eot: 1 dis: 0
+ resetlogs count: 0x3c376eb4 scn: 0x0000000000000001
+ prev resetlogs count: 0x0 scn: 0x0000000000000000
+ Low  scn: 0x000000000049ac37 06/04/2020 08:40:45
+ Next scn: 0xffffffffffffffff 01/01/1988 00:00:00
+ Enabled scn: 0x0000000000000001 06/06/2019 21:23:47
+ Thread closed scn: 0x000000000049ac37 06/04/2020 08:40:45
+ Real next scn: 0xffffffffffffffff
+ Disk cksum: 0x66cf Calc cksum: 0x66cf
+ Terminal recovery stop scn: 0x0000000000000000
+ Terminal recovery  01/01/1988 00:00:00
+ Most recent redo scn: 0x0000000000000000
+ Largest LWN: 0 blocks
+ End-of-redo stream : No
+ Unprotected mode
+ Miscellaneous flags: 0x800000
+ Miscellaneous second flags: 0x0
+ Thread internal enable indicator: thr: 0, seq: 0 scn: 0x0000000000000000
+ Zero blocks: 0
+ Format ID is 18
+ redo log key is 1ba0fe18a2d84dad4c7544306e82c991
+ redo log key flag is 15
+ High watermark block number: 0 
+ Enabled redo threads: 1 
+(LWN RBA: 0x00002f.00008fa8.0010 LEN: 0x0000000a NST: 0x0001 SCN: 0x00000000004a0b25)
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008fa8.0010 LEN: 0x0208 VLD: 0x05 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:31 AFN:10 DBA:0x018000f0 OBJ:4294967295 SCN:0x00000000004a08b9 SEQ:1 OP:5.2 ENC:0 RBL:0 FLG:0x0000
+ktudh redo: slt: 0x0010 sqn: 0x00000253 flg: 0x0052 siz: 160 fbi: 0
+            uba: 0x0180298e.005e.31    pxid:  0x0000.000.00000000        pdbid:3628136135
+CHANGE #2 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a08b8 SEQ:1 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 160 spc: 3354 flg: 0x0012 seq: 0x005e rec: 0x31
+            xid:  0x0008.010.00000253  
+ktubl redo: slt: 16 wrp: 1 flg: 0x0c08 prev dba:  0x00000000 rci: 0 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+Begin trans    
+ prev ctl uba: 0x0180298e.005e.30 prev ctl max cmt scn:  0x000000000049b8f0 
+ prev tx cmt scn:  0x000000000049b902 
+ txn start scn:  0xffffffffffffffff  logon user: 78
+ prev brb:  0x0180298a  prev bcl:  0x00000000
+BuExt idx: 0 flg2: 0
+KDO undo record:
+KTB Redo 
+op: 0x04  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: L  itl: xid:  0xffff.000.00000000 uba: 0x00000000.0000.00
+                      flg: C---    lkc:  0     scn:  0x0000000000480d7c
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 0 to: 0
+CHANGE #3 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0a70 SEQ:10 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x01  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: F  xid:  0x0008.010.00000253    uba: 0x0180298e.005e.31
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 0 to: 1
+CHANGE #4 MEDIA RECOVERY MARKER CON_ID:3 SCN:0x0000000000000000 SEQ:0 OP:5.20 ENC:0 FLG:0x0000
+session number   = 128
+serial  number   = 31843
+transaction name = 
+version 318767104
+audit sessionid 680044
+Client Id = 
+login   username = TC
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008fa9.0028 LEN: 0x00f4 VLD: 0x01 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a0b26 SEQ:1 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 92 spc: 3192 flg: 0x0022 seq: 0x005e rec: 0x32
+            xid:  0x0008.010.00000253  
+ktubu redo: slt: 16 wrp: 595 flg: 0x0000 prev dba:  0x00000000 rci: 49 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+KDO undo record:
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.31
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 1 to: 0
+CHANGE #2 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0b26 SEQ:1 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.32
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 1 to: 1
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008fa9.011c LEN: 0x00f4 VLD: 0x01 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a0b26 SEQ:2 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 92 spc: 3098 flg: 0x0022 seq: 0x005e rec: 0x33
+            xid:  0x0008.010.00000253  
+ktubu redo: slt: 16 wrp: 595 flg: 0x0000 prev dba:  0x00000000 rci: 50 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+KDO undo record:
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.32
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 2 to: 0
+CHANGE #2 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0b26 SEQ:2 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.33
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 2 to: 1
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008faa.0020 LEN: 0x00f4 VLD: 0x01 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a0b26 SEQ:3 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 92 spc: 3004 flg: 0x0022 seq: 0x005e rec: 0x34
+            xid:  0x0008.010.00000253  
+ktubu redo: slt: 16 wrp: 595 flg: 0x0000 prev dba:  0x00000000 rci: 51 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+KDO undo record:
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.33
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 3 to: 0
+CHANGE #2 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0b26 SEQ:3 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.34
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 3 to: 1
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008faa.0114 LEN: 0x00f4 VLD: 0x01 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a0b26 SEQ:4 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 92 spc: 2910 flg: 0x0022 seq: 0x005e rec: 0x35
+            xid:  0x0008.010.00000253  
+ktubu redo: slt: 16 wrp: 595 flg: 0x0000 prev dba:  0x00000000 rci: 52 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+KDO undo record:
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.34
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 4 to: 0
+CHANGE #2 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0b26 SEQ:4 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.35
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 4 to: 1
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008fab.0018 LEN: 0x00f4 VLD: 0x01 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a0b26 SEQ:5 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 92 spc: 2816 flg: 0x0022 seq: 0x005e rec: 0x36
+            xid:  0x0008.010.00000253  
+ktubu redo: slt: 16 wrp: 595 flg: 0x0000 prev dba:  0x00000000 rci: 53 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+KDO undo record:
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.35
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 5 to: 0
+CHANGE #2 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0b26 SEQ:5 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.36
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 5 to: 1
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008fab.010c LEN: 0x00f4 VLD: 0x01 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a0b26 SEQ:6 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 92 spc: 2722 flg: 0x0022 seq: 0x005e rec: 0x37
+            xid:  0x0008.010.00000253  
+ktubu redo: slt: 16 wrp: 595 flg: 0x0000 prev dba:  0x00000000 rci: 54 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+KDO undo record:
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.36
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 6 to: 0
+CHANGE #2 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0b26 SEQ:6 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.37
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 6 to: 1
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008fac.0010 LEN: 0x00f4 VLD: 0x01 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a0b26 SEQ:7 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 92 spc: 2628 flg: 0x0022 seq: 0x005e rec: 0x38
+            xid:  0x0008.010.00000253  
+ktubu redo: slt: 16 wrp: 595 flg: 0x0000 prev dba:  0x00000000 rci: 55 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+KDO undo record:
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.37
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 7 to: 0
+CHANGE #2 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0b26 SEQ:7 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.38
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 7 to: 1
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008fac.0104 LEN: 0x00f4 VLD: 0x01 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a0b26 SEQ:8 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 92 spc: 2534 flg: 0x0022 seq: 0x005e rec: 0x39
+            xid:  0x0008.010.00000253  
+ktubu redo: slt: 16 wrp: 595 flg: 0x0000 prev dba:  0x00000000 rci: 56 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+KDO undo record:
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.38
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 8 to: 0
+CHANGE #2 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0b26 SEQ:8 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.39
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 8 to: 1
+ 
+REDO RECORD - Thread:1 RBA: 0x00002f.00008fad.0010 LEN: 0x00f4 VLD: 0x01 CON_UID: 3628136135
+SCN: 0x00000000004a0b26 SUBSCN:  1 06/04/2020 11:13:30
+CHANGE #1 CON_ID:3 TYP:0 CLS:32 AFN:10 DBA:0x0180298e OBJ:4294967295 SCN:0x00000000004a0b26 SEQ:9 OP:5.1 ENC:0 RBL:0 FLG:0x0000
+ktudb redo: siz: 92 spc: 2440 flg: 0x0022 seq: 0x005e rec: 0x3a
+            xid:  0x0008.010.00000253  
+ktubu redo: slt: 16 wrp: 595 flg: 0x0000 prev dba:  0x00000000 rci: 57 opc: 11.1 [objn: 23729 objd: 23729 tsn: 4]
+[Undo type  ] Regular undo  [User undo done   ]  No  [Last buffer split]  No 
+[Temp object]           No  [Tablespace Undo  ]  No  [User only        ]  No 
+KDO undo record:
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.39
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 9 to: 0
+CHANGE #2 CON_ID:3 TYP:0 CLS:1 AFN:11 DBA:0x02c0b4c3 OBJ:23729 SCN:0x00000000004a0b26 SEQ:9 OP:11.4 ENC:0 RBL:0 FLG:0x0000
+KTB Redo 
+op: 0x02  ver: 0x01  
+compat bit: 4 (post-11) padding: 1
+op: C  uba: 0x0180298e.005e.3a
+KDO Op code: LKR row dependencies Disabled
+  xtype: XA flags: 0x00000000  bdba: 0x02c0b4c3  hdba: 0x02c0b4c2
+itli: 1  ispac: 0  maxfr: 4858
+tabn: 0 slot: 9 to: 1
+END OF REDO DUMP
+==== Redo read statistics for thread 1 ====
+Total physical reads (from disk and memory): 24575Kb
+-- Redo read_disk statistics --
+Read rate (ASYNC): 18392Kb in 0.26s => 69.08 Mb/sec
+Total redo bytes: 24575Kb Longest record: 11Kb, moves: 11/26069 moved: 0Mb (0%)
+Longest LWN: 1114Kb, reads: 9176 
+Last redo scn: 0x00000000004a0b26 (4852518)
+Change vector header moves = 4145/51140 (8%)
+----------------------------------------------
+=====================
+PARSING IN CURSOR #139992772199824 len=1360 dep=1 uid=0 oct=2 lid=0 tim=9271901794 hv=4063277245 ad='646b6528' sqlid='6gp608vt31c5x'
+INSERT INTO AUDSYS.AUD$UNIFIED (AUDIT_TYPE, SESSIONID, PROXY_SESSIONID, OS_USER, HOST_NAME, TERMINAL, INSTANCE_ID, DBID, AUTHENTICATION_TYPE, USERID, PROXY_USERID, EXTERNAL_USERID, GLOBAL_USERID, CLIENT_PROGRAM_NAME, DBLINK_INFO, XS_USER_NAME, XS_SESSIONID, ENTRY_ID, STATEMENT_ID, EVENT_TIMESTAMP, ACTION, RETURN_CODE, OS_PROCESS, TRANSACTION_ID, SCN, EXECUTION_ID, OBJ_OWNER, OBJ_NAME, SQL_TEXT, CLIENT_IDENTIFIER, NEW_OWNER, NEW_NAME, OBJECT_EDITION, SYSTEM_PRIVILEGE_USED, SYSTEM_PRIVILEGE, AUDIT_OPTION, OBJECT_PRIVILEGES, ROLE, TARGET_USER, EXCLUDED_USER, EXCLUDED_SCHEMA, EXCLUDED_OBJECT, CURRENT_USER, ADDITIONAL_INFO, UNIFIED_AUDIT_POLICIES) values (:AUDIT_TYPE, :SESSIONID, :PROXY_SESSIONID, :OS_USER, :HOST_NAME, :TERMINAL, :INSTANCE_ID, :DBID, :AUTHENTICATION_TYPE, :USERID, :PROXY_USERID, :EXTERNAL_USERID, :GLOBAL_USERID, :CLIENT_PROGRAM_NAME, :DBLINK_INFO, :XS_USER_NAME, :XS_SESSIONID, :ENTRY_ID, :STATEMENT_ID, :EVENT_TIMESTAMP, :ACTION, :RETURN_CODE, :OS_PROCESS, :TRANSACTION_ID, :SCN, :EXECUTION_ID, :OBJ_OWNER, :OBJ_NAME, empty_clob(), :CLIENT_IDENTIFIER, :NEW_OWNER, :NEW_NAME, :OBJECT_EDITION, :SYSTEM_PRIVILEGE_USED, :SYSTEM_PRIVILEGE, :AUDIT_OPTION, :OBJECT_PRIVILEGES, :ROLE, :TARGET_USER, :EXCLUDED_USER, :EXCLUDED_SCHEMA, :EXCLUDED_OBJECT, :CURRENT_USER, :ADDITIONAL_INFO, :UNIFIED_AUDIT_POLICIES) returning SQL_TEXT into :SQL_TEXT
+END OF STMT
+PARSE #139992772199824:c=54,e=53,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=0,tim=9271901793
+EXEC #139992772199824:c=569,e=570,p=0,cr=1,cu=5,mis=0,r=1,dep=1,og=4,plh=0,tim=9271902473
+STAT #139992772199824 id=1 cnt=1 pid=0 pos=1 obj=0 op='LOAD TABLE CONVENTIONAL  AUD$UNIFIED (cr=1 pr=0 pw=0 str=1 time=378 us)'
+EXEC #139992772201120:c=16456,e=265746,p=0,cr=2,cu=8,mis=0,r=0,dep=0,og=0,plh=0,tim=9271902716
+CLOSE #139992772201120:c=4,e=4,dep=0,type=1,tim=9271903869
+=====================
+PARSING IN CURSOR #139992772259880 len=61 dep=0 uid=78 oct=42 lid=78 tim=9271903909 hv=565927905 ad='0' sqlid='czyh99chvqrz1'
+alter session set tracefile_identifier=for_update_skip_locked
+END OF STMT
+PARSE #139992772259880:c=13,e=13,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=0,plh=0,tim=9271903909
+
+*** TRACE CONTINUES IN FILE /u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_17319_FOR_UPDATE_SKIP_LOCKED.trc ***
+

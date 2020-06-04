@@ -1,0 +1,120 @@
+SQL> @for_update_skip_locked_redo_dump
+SQL> set echo on
+SQL>
+SQL> col log_file old_v log_file
+SQL>
+SQL> select f.member log_file
+  2    from v$log g,
+  3         v$logfile f
+  4   where g.status = 'CURRENT'
+  5     and f.group# = g.group#
+  6     and rownum = 1 /* any member is okay*/
+  7  /
+
+LOG_FILE
+--------------------------------------------------------------------------------
++DATA/ORCL/ONLINELOG/group_2.259.1010265797
+
+SQL>
+SQL> alter session set tracefile_identifier=for_update -
+>   events 'sql_trace';
+
+Session altered.
+
+SQL>
+SQL> col start_scn old_v start_scn
+SQL> select current_scn start_scn from v$database;
+
+ START_SCN
+----------
+   4852518
+
+SQL>
+SQL> var rc refcursor
+SQL>
+SQL> exec open :rc for select * from t1 order by n1 for update
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> col xid for a20
+SQL> col xid_with_spaces like xid
+SQL> col xid_with_spaces old_v xid_with_spaces
+SQL>
+SQL> select dbms_transaction.local_transaction_id xid,
+  2         replace(dbms_transaction.local_transaction_id, '.', ' ') xid_with_spaces
+  3    from dual;
+
+XID                  XID_WITH_SPACES
+-------------------- --------------------
+8.16.595             8 16 595
+
+SQL>
+SQL> col end_scn old_v end_scn
+SQL> select current_scn end_scn from v$database;
+
+   END_SCN
+----------
+   4852519
+
+SQL>
+SQL> roll
+Rollback complete.
+SQL>
+SQL> alter system dump logfile '&log_file.' scn min &start_scn. scn max &end_scn. xid &xid_with_spaces.;
+old   1: alter system dump logfile '&log_file.' scn min &start_scn. scn max &end_scn. xid &xid_with_spaces.
+new   1: alter system dump logfile '+DATA/ORCL/ONLINELOG/group_2.259.1010265797' scn min    4852518 scn max    4852519 xid 8 16 595
+
+System altered.
+
+SQL>
+SQL> alter session set tracefile_identifier=for_update_skip_locked;
+
+Session altered.
+
+SQL>
+SQL> col start_scn old_v start_scn
+SQL> select current_scn start_scn from v$database;
+
+ START_SCN
+----------
+   4852529
+
+SQL>
+SQL> exec open :rc for select * from t1 order by n1 for update skip locked
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> col xid_with_spaces old_v xid_with_spaces
+SQL>
+SQL> select dbms_transaction.local_transaction_id xid,
+  2         replace(dbms_transaction.local_transaction_id, '.', ' ') xid_with_spaces
+  3    from dual;
+
+XID                  XID_WITH_SPACES
+-------------------- --------------------
+3.6.580              3 6 580
+
+SQL>
+SQL> col end_scn old_v end_scn
+SQL> select current_scn end_scn from v$database;
+
+   END_SCN
+----------
+   4852530
+
+SQL>
+SQL> exec dbms_session.sleep(5)
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> roll
+Rollback complete.
+SQL>
+SQL> alter system dump logfile '&log_file.' scn min &start_scn. scn max &end_scn. xid &xid_with_spaces.;
+old   1: alter system dump logfile '&log_file.' scn min &start_scn. scn max &end_scn. xid &xid_with_spaces.
+new   1: alter system dump logfile '+DATA/ORCL/ONLINELOG/group_2.259.1010265797' scn min    4852529 scn max    4852530 xid 3 6 580
+
+System altered.
