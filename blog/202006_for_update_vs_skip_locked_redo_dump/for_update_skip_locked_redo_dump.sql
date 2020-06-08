@@ -10,6 +10,12 @@ select f.member log_file
    and rownum = 1 /* any member is okay*/
 /
 
+create table t1
+as
+select level n1 
+  from dual
+  connect by level <= 10;
+
 alter session set tracefile_identifier=for_update -
   events 'sql_trace';
 
