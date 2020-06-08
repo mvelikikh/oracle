@@ -1,0 +1,116 @@
+SQL> @or_expand_test_use_concat
+SQL> set def on lin 124 pages 100
+SQL>
+SQL> col tfi old_v tfi nopri
+SQL>
+SQL> select to_char(sysdate, 'yyyymmdd_hh24miss') tfi from dual;
+
+
+
+
+SQL>
+SQL> alter session set tracefile_identifier='&tfi.';
+old   1: alter session set tracefile_identifier='&tfi.'
+new   1: alter session set tracefile_identifier='20200608_181301'
+
+Session altered.
+
+SQL>
+SQL> alter session set events 'trace[sql_optimizer.*]';
+
+Session altered.
+
+SQL>
+SQL>
+SQL> var part_key varchar2(10)='P1'
+SQL> var param    varchar2(12)='WAITING'
+SQL>
+SQL> select --+ gather_plan_statistics use_concat(or_predicates(2))
+  2         count(pad1)
+  3    from t1
+  4   where part_key = :part_key
+  5     and (:param = 'WAITING' and status = 'UNPROCESSED'
+  6          or
+  7          :param = 'ALL' and status <> 'PENDING');
+
+COUNT(PAD1)
+-----------
+       1000
+
+SQL>
+SQL> select *
+  2    from dbms_xplan.display_cursor(format=> 'allstats last outline');
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------
+SQL_ID  cygpq5hyy2uu2, child number 0
+-------------------------------------
+select --+ gather_plan_statistics use_concat(or_predicates(2))
+count(pad1)   from t1  where part_key = :part_key    and (:param =
+'WAITING' and status = 'UNPROCESSED'         or         :param = 'ALL'
+and status <> 'PENDING')
+
+Plan hash value: 496678280
+
+-----------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                                     | Name        | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+-----------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                              |             |      1 |        |      1 |00:00:00.01 |      83 |
+|   1 |  SORT AGGREGATE                               |             |      1 |      1 |      1 |00:00:00.01 |      83 |
+|   2 |   CONCATENATION                               |             |      1 |        |   1000 |00:00:00.01 |      83 |
+|*  3 |    FILTER                                     |             |      1 |        |      0 |00:00:00.01 |       0 |
+|   4 |     PARTITION LIST SINGLE                     |             |      0 |  90992 |      0 |00:00:00.01 |       0 |
+|*  5 |      TABLE ACCESS FULL                        | T1          |      0 |  90992 |      0 |00:00:00.01 |       0 |
+|*  6 |    FILTER                                     |             |      1 |        |   1000 |00:00:00.01 |      83 |
+|   7 |     PARTITION LIST SINGLE                     |             |      1 |    990 |   1000 |00:00:00.01 |      83 |
+|*  8 |      TABLE ACCESS BY LOCAL INDEX ROWID BATCHED| T1          |      1 |    990 |   1000 |00:00:00.01 |      83 |
+|*  9 |       INDEX RANGE SCAN                        | T1_STATUS_I |      1 |    990 |   1000 |00:00:00.01 |       6 |
+-----------------------------------------------------------------------------------------------------------------------
+
+Outline Data
+-------------
+
+  /*+
+      BEGIN_OUTLINE_DATA
+      IGNORE_OPTIM_EMBEDDED_HINTS
+      OPTIMIZER_FEATURES_ENABLE('19.1.0')
+      DB_VERSION('19.1.0')
+      ALL_ROWS
+      OUTLINE_LEAF(@"SEL$1")
+      OUTLINE_LEAF(@"SEL$1_1")
+      USE_CONCAT(@"SEL$1" OR_PREDICATES(2))
+      OUTLINE_LEAF(@"SEL$1_2")
+      FULL(@"SEL$1_1" "T1"@"SEL$1")
+      INDEX_RS_ASC(@"SEL$1_2" "T1"@"SEL$1_2" ("T1"."STATUS"))
+      BATCH_TABLE_ACCESS_BY_ROWID(@"SEL$1_2" "T1"@"SEL$1_2")
+      END_OUTLINE_DATA
+  */
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   3 - filter(:PARAM='ALL')
+   5 - filter(("STATUS"<>'PENDING' AND "PART_KEY"=:PART_KEY))
+   6 - filter(:PARAM='WAITING')
+   8 - filter("PART_KEY"=:PART_KEY)
+   9 - access("STATUS"='UNPROCESSED')
+       filter((LNNVL(:PARAM='ALL') OR LNNVL("STATUS"<>'PENDING')))
+
+
+53 rows selected.
+
+SQL>
+SQL> alter session set events 'trace[sql_optimizer.*] off';
+
+Session altered.
+
+SQL>
+SQL> col value for a80
+SQL>
+SQL> select value
+  2    from v$diag_info
+  3   where name='Default Trace File';
+
+VALUE
+--------------------------------------------------------------------------------
+/u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_7253_20200608_181301.trc

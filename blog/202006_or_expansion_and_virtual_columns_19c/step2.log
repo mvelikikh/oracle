@@ -1,0 +1,120 @@
+SQL> @or_expand_test_rewrite
+SQL> set def on lin 124 pages 100
+SQL>
+SQL> col tfi old_v tfi nopri
+SQL>
+SQL> select to_char(sysdate, 'yyyymmdd_hh24miss') tfi from dual;
+
+
+
+
+SQL>
+SQL> alter session set tracefile_identifier='&tfi.';
+old   1: alter session set tracefile_identifier='&tfi.'
+new   1: alter session set tracefile_identifier='20200608_180825'
+
+Session altered.
+
+SQL>
+SQL> alter session set events 'trace[sql_optimizer.*]';
+
+Session altered.
+
+SQL>
+SQL>
+SQL> var part_key varchar2(10)='P1'
+SQL> var param    varchar2(12)='WAITING'
+SQL>
+SQL> select --+ gather_plan_statistics or_expand(@sel$1 (1) (2))
+  2         count(pad1)
+  3    from t1
+  4   where 1 = 1
+  5     and (part_key = :part_key and :param = 'WAITING' and status = 'UNPROCESSED'
+  6          or
+  7          part_key = :part_key||'' and :param = 'ALL' and status <> 'PENDING');
+
+COUNT(PAD1)
+-----------
+       1000
+
+SQL>
+SQL> select *
+  2    from dbms_xplan.display_cursor(format=> 'allstats last outline');
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------
+SQL_ID  99zvump911bc7, child number 0
+-------------------------------------
+select --+ gather_plan_statistics or_expand(@sel$1 (1) (2))
+count(pad1)   from t1  where 1 = 1    and (part_key = :part_key and
+:param = 'WAITING' and status = 'UNPROCESSED'         or
+part_key = :part_key||'' and :param = 'ALL' and status <> 'PENDING')
+
+Plan hash value: 3973059565
+
+----------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                                      | Name            | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+----------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                               |                 |      1 |        |      1 |00:00:00.01 |      83 |
+|   1 |  SORT AGGREGATE                                |                 |      1 |      1 |      1 |00:00:00.01 |      83 |
+|   2 |   VIEW                                         | VW_ORE_BA8ECEFB |      1 |  91982 |   1000 |00:00:00.01 |      83 |
+|   3 |    UNION-ALL                                   |                 |      1 |        |   1000 |00:00:00.01 |      83 |
+|*  4 |     FILTER                                     |                 |      1 |        |   1000 |00:00:00.01 |      83 |
+|   5 |      PARTITION LIST SINGLE                     |                 |      1 |    999 |   1000 |00:00:00.01 |      83 |
+|*  6 |       TABLE ACCESS BY LOCAL INDEX ROWID BATCHED| T1              |      1 |    999 |   1000 |00:00:00.01 |      83 |
+|*  7 |        INDEX RANGE SCAN                        | T1_STATUS_I     |      1 |   1000 |   1000 |00:00:00.01 |       6 |
+|*  8 |     FILTER                                     |                 |      1 |        |      0 |00:00:00.01 |       0 |
+|   9 |      PARTITION LIST SINGLE                     |                 |      0 |  90983 |      0 |00:00:00.01 |       0 |
+|* 10 |       TABLE ACCESS FULL                        | T1              |      0 |  90983 |      0 |00:00:00.01 |       0 |
+----------------------------------------------------------------------------------------------------------------------------
+
+Outline Data
+-------------
+
+  /*+
+      BEGIN_OUTLINE_DATA
+      IGNORE_OPTIM_EMBEDDED_HINTS
+      OPTIMIZER_FEATURES_ENABLE('19.1.0')
+      DB_VERSION('19.1.0')
+      ALL_ROWS
+      OUTLINE_LEAF(@"SET$2A13AF86_2")
+      OUTLINE_LEAF(@"SET$2A13AF86_1")
+      OUTLINE_LEAF(@"SET$2A13AF86")
+      OUTLINE_LEAF(@"SEL$9162BF3C")
+      OR_EXPAND(@"SEL$1" (1) (2))
+      OUTLINE(@"SEL$1")
+      NO_ACCESS(@"SEL$9162BF3C" "VW_ORE_BA8ECEFB"@"SEL$BA8ECEFB")
+      INDEX_RS_ASC(@"SET$2A13AF86_1" "T1"@"SET$2A13AF86_1" ("T1"."STATUS"))
+      BATCH_TABLE_ACCESS_BY_ROWID(@"SET$2A13AF86_1" "T1"@"SET$2A13AF86_1")
+      FULL(@"SET$2A13AF86_2" "T1"@"SET$2A13AF86_2")
+      END_OUTLINE_DATA
+  */
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   4 - filter(:PARAM='WAITING')
+   6 - filter("PART_KEY"=:PART_KEY)
+   7 - access("STATUS"='UNPROCESSED')
+   8 - filter(:PARAM='ALL')
+  10 - filter(("STATUS"<>'PENDING' AND "PART_KEY"=:PART_KEY||'' AND (LNNVL("PART_KEY"=:PART_KEY) OR
+              LNNVL(:PARAM='WAITING') OR LNNVL("STATUS"='UNPROCESSED'))))
+
+
+57 rows selected.
+
+SQL>
+SQL> alter session set events 'trace[sql_optimizer.*] off';
+
+Session altered.
+
+SQL>
+SQL> col value for a80
+SQL>
+SQL> select value
+  2    from v$diag_info
+  3   where name='Default Trace File';
+
+VALUE
+--------------------------------------------------------------------------------
+/u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_7253_20200608_180825.trc
