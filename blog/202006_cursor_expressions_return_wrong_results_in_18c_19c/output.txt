@@ -1,0 +1,210 @@
+DOC>################################################################################
+DOC>   Demonstration for Bug 30528947: Nested Query Using CURSOR Expression Returns
+DOC>Wrong Result (Doc ID 30528947.8)
+DOC>################################################################################
+DOC>#
+SQL>
+SQL> drop table t1;
+
+Table dropped.
+
+SQL> drop table t2;
+
+Table dropped.
+
+SQL>
+SQL> create table t1(id int);
+
+Table created.
+
+SQL> create table t2(id int);
+
+Table created.
+
+SQL>
+SQL> insert into t1 values (1);
+
+1 row created.
+
+SQL> insert into t2 values (1);
+
+1 row created.
+
+SQL>
+SQL> alter session set events 'sql_trace bind=true';
+
+Session altered.
+
+SQL>
+SQL> doc
+DOC>##############################
+DOC>   One row, different value
+DOC>##############################
+DOC>#
+SQL> select cursor(
+  2           select query_type
+  3             from (select 'A' query_type
+  4                     from t1 t11
+  5                    where exists (
+  6                            select null
+  7                              from t2 t21
+  8                             where t21.id = t11.id)
+  9                    union all
+ 10                   select 'B' query_type
+ 11                     from t1 t12
+ 12                    where not exists (
+ 13                            select null
+ 14                              from t2 t22
+ 15                             where t22.id = t12.id)
+ 16                  )
+ 17         ) data
+ 18    from dual;
+
+DATA
+--------------------
+CURSOR STATEMENT : 1
+
+CURSOR STATEMENT : 1
+
+Q
+-
+B
+
+
+SQL>
+SQL> doc
+DOC>   The cursor subquery
+DOC>#
+SQL> select query_type
+  2    from (select 'A' query_type
+  3            from t1 t11
+  4           where exists (
+  5                   select null
+  6                     from t2 t21
+  7                    where t21.id = t11.id)
+  8           union all
+  9          select 'B' query_type
+ 10            from t1 t12
+ 11           where not exists (
+ 12                   select null
+ 13                     from t2 t22
+ 14                    where t22.id = t12.id)
+ 15         );
+
+Q
+-
+A
+
+SQL> doc
+DOC>##############################
+DOC>   More rows
+DOC>##############################
+DOC>#
+SQL>
+SQL> select cursor(
+  2           select query_type
+  3             from (select 'A' query_type
+  4                     from t1 t11
+  5                    union all
+  6                   select 'B' query_type
+  7                     from t1 t12
+  8                    where not exists (
+  9                            select null
+ 10                              from t2 t22
+ 11                             where t22.id = t12.id)
+ 12                  )
+ 13         ) data
+ 14    from dual;
+
+DATA
+--------------------
+CURSOR STATEMENT : 1
+
+CURSOR STATEMENT : 1
+
+Q
+-
+A
+B
+
+
+SQL>
+SQL> doc
+DOC>   The cursor subquery
+DOC>#
+SQL> select query_type
+  2    from (select 'A' query_type
+  3            from t1 t11
+  4           union all
+  5          select 'B' query_type
+  6            from t1 t12
+  7           where not exists (
+  8                   select null
+  9                     from t2 t22
+ 10                    where t22.id = t12.id)
+ 11         );
+
+Q
+-
+A
+
+SQL>
+SQL> doc
+DOC>##############################
+DOC>   Less rows
+DOC>##############################
+DOC>#
+SQL>
+SQL> select cursor(
+  2           select query_type
+  3             from (select 'A' query_type
+  4                     from t1 t11
+  5                    where exists (
+  6                            select null
+  7                              from t2 t21
+  8                             where t21.id = t11.id)
+  9                    union all
+ 10                   select 'B' query_type
+ 11                     from t1 t12
+ 12                    where exists (
+ 13                            select null
+ 14                              from t2 t22
+ 15                             where t22.id = t12.id)
+ 16                  )
+ 17         ) data
+ 18    from dual;
+
+DATA
+--------------------
+CURSOR STATEMENT : 1
+
+CURSOR STATEMENT : 1
+
+no rows selected
+
+
+SQL>
+SQL> doc
+DOC>   The cursor subquery
+DOC>#
+SQL> select query_type
+  2    from (select 'A' query_type
+  3            from t1 t11
+  4           where exists (
+  5                   select null
+  6                     from t2 t21
+  7                    where t21.id = t11.id)
+  8           union all
+  9          select 'B' query_type
+ 10            from t1 t12
+ 11           where exists (
+ 12                   select null
+ 13                     from t2 t22
+ 14                    where t22.id = t12.id)
+ 15         )
+ 16  ;
+
+Q
+-
+A
+B
