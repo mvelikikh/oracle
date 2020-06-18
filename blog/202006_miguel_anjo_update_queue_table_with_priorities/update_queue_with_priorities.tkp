@@ -1,0 +1,690 @@
+
+TKPROF: Release 19.0.0.0.0 - Development on Thu Jun 18 09:36:45 2020
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+Trace file: /u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_4747.trc
+Sort options: exeela  
+********************************************************************************
+count    = number of times OCI procedure was executed
+cpu      = cpu time in seconds executing 
+elapsed  = elapsed time in seconds executing
+disk     = number of physical reads of buffers from disk
+query    = number of buffers gotten for consistent read
+current  = number of buffers gotten in current mode (usually for update)
+rows     = number of rows processed by the fetch or execute call
+********************************************************************************
+
+
+        update /*+ Simple fetch first*/t_myqueue q1
+        set id = 'x'
+        where q1.rowid = (
+           select rowid
+           from t_myqueue
+           where queue_tag = '*'
+           and id is null
+           and retrycount < 10
+           order by priority desc, order_of_arrival
+           fetch first 1 row only
+        )
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          2           0
+Execute   1000      3.97       4.05          0      53003      19217        1000
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total     1001      3.97       4.05          0      53003      19219        1000
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 109     (recursive depth: 1)
+Number of plan statistics captured: 1000
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  UPDATE  T_MYQUEUE (cr=53 pr=0 pw=0 time=4026 us starts=1)
+         1          1          1   TABLE ACCESS BY USER ROWID T_MYQUEUE (cr=53 pr=0 pw=0 time=3911 us starts=1 cost=1 size=54 card=1)
+         1          1          1    VIEW  (cr=53 pr=0 pw=0 time=3906 us starts=1 cost=267 size=25 card=1)
+         1          1          1     WINDOW SORT PUSHED RANK (cr=53 pr=0 pw=0 time=3902 us starts=1 cost=267 size=540000 card=10000)
+     10000       9500      10000      INDEX RANGE SCAN IDX_T_MYQUEUE_1 (cr=53 pr=0 pw=0 time=2905 us starts=1 cost=129 size=540000 card=10000)(object id 72600)
+
+********************************************************************************
+
+
+        update /*+ FBI - Fetch First*/t_myqueue q1
+        set id = 'x'
+        where q1.rowid = (
+           select rowid
+           from t_myqueue
+           where queue_tag = '*'
+           and case when id is null then 1 end = 1
+           and case when retrycount < 10 then 1 end = 1
+           order by queue_tag, case when id is null then 1 end, case when retrycount < 10 then 1 end, priority desc, order_of_arrival
+           fetch first 1 row only
+        )
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          1           0
+Execute   1000      3.53       3.57          0      68000      19185        1000
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total     1001      3.54       3.58          0      68000      19186        1000
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 109     (recursive depth: 1)
+Number of plan statistics captured: 1000
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  UPDATE  T_MYQUEUE (cr=68 pr=0 pw=0 time=3547 us starts=1)
+         1          1          1   TABLE ACCESS BY USER ROWID T_MYQUEUE (cr=68 pr=0 pw=0 time=3424 us starts=1 cost=1 size=54 card=1)
+         1          1          1    VIEW  (cr=68 pr=0 pw=0 time=3418 us starts=1 cost=61 size=25 card=1)
+         1          1          1     WINDOW BUFFER PUSHED RANK (cr=68 pr=0 pw=0 time=3414 us starts=1 cost=61 size=270000 card=10000)
+     10000       9500      10000      INDEX RANGE SCAN IDX_T_MYQUEUE_FBI_DSC (cr=68 pr=0 pw=0 time=2608 us starts=1 cost=61 size=270000 card=10000)(object id 72602)
+
+********************************************************************************
+
+
+        update /*+ Simple Stop count*/t_myqueue q1
+        set id = 'x'
+        where q1.rowid = (
+           select * from (
+               select rowid
+               from t_myqueue
+               where queue_tag = '*'
+               and id is null
+               and retrycount < 10
+               order by priority desc, order_of_arrival
+               )
+          where rownum=1
+           )
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute   1000      3.48       3.52          0      53000      19185        1000
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total     1001      3.48       3.52          0      53000      19185        1000
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 109     (recursive depth: 1)
+Number of plan statistics captured: 1000
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  UPDATE  T_MYQUEUE (cr=53 pr=0 pw=0 time=3495 us starts=1)
+         1          1          1   TABLE ACCESS BY USER ROWID T_MYQUEUE (cr=53 pr=0 pw=0 time=3379 us starts=1 cost=1 size=54 card=1)
+         1          1          1    COUNT STOPKEY (cr=53 pr=0 pw=0 time=3374 us starts=1)
+         1          1          1     VIEW  (cr=53 pr=0 pw=0 time=3360 us starts=1 cost=267 size=120000 card=10000)
+         1          1          1      SORT ORDER BY STOPKEY (cr=53 pr=0 pw=0 time=3358 us starts=1 cost=267 size=540000 card=10000)
+     10000       9500      10000       INDEX RANGE SCAN IDX_T_MYQUEUE_1 (cr=53 pr=0 pw=0 time=2891 us starts=1 cost=129 size=540000 card=10000)(object id 72600)
+
+********************************************************************************
+
+
+        update /*+ Simple subqueries*/t_myqueue q1
+        set id = 'x'
+        where q1.order_of_arrival = (
+           select min(q2.order_of_arrival)
+           from t_myqueue q2
+           where q2.queue_tag = '*'
+           and q2.id is null
+           and q2.retrycount < 10
+           and q2.priority = (
+              select max(q3.priority)
+              from t_myqueue q3
+              where q3.queue_tag = '*'
+              and q3.id is null
+              and q3.retrycount < 10
+           )
+        )
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          2           0
+Execute   1000      2.53       2.62          0      65042      19699        1000
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total     1001      2.54       2.62          0      65042      19701        1000
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 109     (recursive depth: 1)
+Number of plan statistics captured: 1000
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  UPDATE  T_MYQUEUE (cr=65 pr=0 pw=0 time=2598 us starts=1)
+         1          1          1   TABLE ACCESS BY INDEX ROWID T_MYQUEUE (cr=65 pr=0 pw=0 time=2496 us starts=1 cost=2 size=42 card=1)
+         1          1          1    INDEX UNIQUE SCAN PK_T_MYQUEUE (cr=64 pr=0 pw=0 time=2491 us starts=1 cost=1 size=0 card=1)(object id 72599)
+         1          1          1     SORT AGGREGATE (cr=62 pr=0 pw=0 time=2484 us starts=1)
+      1970       1470       1970      INDEX RANGE SCAN IDX_T_MYQUEUE_1 (cr=62 pr=0 pw=0 time=2604 us starts=1 cost=28 size=84000 card=2000)(object id 72600)
+         1          1          1       SORT AGGREGATE (cr=53 pr=0 pw=0 time=2090 us starts=1)
+     10000       9500      10000        INDEX RANGE SCAN IDX_T_MYQUEUE_1 (cr=53 pr=0 pw=0 time=2822 us starts=1 cost=129 size=370000 card=10000)(object id 72600)
+
+********************************************************************************
+
+begin time_sql_x('FBI - Subqueries',q'[
+        update t_myqueue q1
+        set id = 'x'
+        where q1.order_of_arrival = (
+           select min(q2.order_of_arrival)
+           from t_myqueue q2
+           where q2.queue_tag = '*'
+           and case when q2.id is null then 1 end = 1
+           and case when q2.retrycount < 10 then 1 end = 1
+           and q2.priority = (
+              select max(q3.priority)
+              from t_myqueue q3
+              where q3.queue_tag = '*'
+              and case when q3.id is null then 1 end = 1
+              and case when q3.retrycount < 10 then 1 end = 1
+           )
+        )
+]'); end;
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.35       0.35          0          0          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.35       0.35          0          0          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 109  
+********************************************************************************
+
+begin time_sql_x('Simple subqueries',q'[
+        update t_myqueue q1
+        set id = 'x'
+        where q1.order_of_arrival = (
+           select min(q2.order_of_arrival)
+           from t_myqueue q2
+           where q2.queue_tag = '*'
+           and q2.id is null
+           and q2.retrycount < 10
+           and q2.priority = (
+              select max(q3.priority)
+              from t_myqueue q3
+              where q3.queue_tag = '*'
+              and q3.id is null
+              and q3.retrycount < 10
+           )
+        )
+]'); end;
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.34       0.35          0          0          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.34       0.35          0          0          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 109  
+********************************************************************************
+
+begin time_sql_x('Simple Stop count',q'[
+        update t_myqueue q1
+        set id = 'x'
+        where q1.rowid = (
+           select * from (
+               select rowid
+               from t_myqueue
+               where queue_tag = '*'
+               and id is null
+               and retrycount < 10
+               order by priority desc, order_of_arrival
+               )
+          where rownum=1
+           )
+]'); end;
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.34       0.34          0          0          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.34       0.34          0          0          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 109  
+********************************************************************************
+
+begin time_sql_x('FBI - Fetch First',q'[
+        update t_myqueue q1
+        set id = 'x'
+        where q1.rowid = (
+           select rowid
+           from t_myqueue
+           where queue_tag = '*'
+           and case when id is null then 1 end = 1
+           and case when retrycount < 10 then 1 end = 1
+           order by queue_tag, case when id is null then 1 end, case when retrycount < 10 then 1 end, priority desc, order_of_arrival
+           fetch first 1 row only
+        )
+]'); end;
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.33       0.33          0          0          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.33       0.33          0          0          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 109  
+********************************************************************************
+
+begin time_sql_x('Simple fetch first',q'[
+        update t_myqueue q1
+        set id = 'x'
+        where q1.rowid = (
+           select rowid
+           from t_myqueue
+           where queue_tag = '*'
+           and id is null
+           and retrycount < 10
+           order by priority desc, order_of_arrival
+           fetch first 1 row only
+        )
+]'); end;
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.31       0.32          0          0          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.31       0.32          0          0          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 109  
+********************************************************************************
+
+SQL ID: 8sst43uk9rk8q Plan Hash: 0
+
+ROLLBACK
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      6      0.25       0.25          0        420      87264           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        7      0.25       0.25          0        420      87264           0
+
+Misses in library cache during parse: 0
+Parsing user id: 109     (recursive depth: 1)
+********************************************************************************
+
+begin time_sql_x('FBI - Stop count',q'[
+        update t_myqueue q1
+        set id = 'x'
+        where q1.rowid = (
+           select * from (
+               select /*+ index(t_myqueue idx_t_myqueue_fbi_dsc)*/rowid
+               from t_myqueue
+               where queue_tag = '*'
+               and case when id is null then 1 end = 1
+               and case when retrycount < 10 then 1 end = 1
+               order by queue_tag, case when id is null then 1 end, case when retrycount < 10 then 1 end, priority desc, order_of_arrival
+               )
+          where rownum=1
+           )
+]'); end;
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.22       0.23          0          0          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.22       0.23          0          0          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 109  
+********************************************************************************
+
+
+        update /*+ FBI - Subqueries*/t_myqueue q1
+        set id = 'x'
+        where q1.order_of_arrival = (
+           select min(q2.order_of_arrival)
+           from t_myqueue q2
+           where q2.queue_tag = '*'
+           and case when q2.id is null then 1 end = 1
+           and case when q2.retrycount < 10 then 1 end = 1
+           and q2.priority = (
+              select max(q3.priority)
+              from t_myqueue q3
+              where q3.queue_tag = '*'
+              and case when q3.id is null then 1 end = 1
+              and case when q3.retrycount < 10 then 1 end = 1
+           )
+        )
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          3           0
+Execute   1000      0.13       0.16          0      12250      19222        1000
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total     1001      0.13       0.17          0      12250      19225        1000
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 109     (recursive depth: 1)
+Number of plan statistics captured: 1000
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  UPDATE  T_MYQUEUE (cr=12 pr=0 pw=0 time=150 us starts=1)
+         1          1          1   TABLE ACCESS BY INDEX ROWID T_MYQUEUE (cr=12 pr=0 pw=0 time=40 us starts=1 cost=2 size=42 card=1)
+         1          1          1    INDEX UNIQUE SCAN PK_T_MYQUEUE (cr=11 pr=0 pw=0 time=36 us starts=1 cost=1 size=0 card=1)(object id 72599)
+         1          1          1     SORT AGGREGATE (cr=9 pr=0 pw=0 time=32 us starts=1)
+         1          1          1      FIRST ROW  (cr=9 pr=0 pw=0 time=28 us starts=1 cost=3 size=15 card=1)
+         1          1          1       INDEX RANGE SCAN (MIN/MAX) IDX_T_MYQUEUE_FBI_ASC (cr=9 pr=0 pw=0 time=27 us starts=1 cost=3 size=15 card=1)(object id 72601)
+         1          1          1        SORT AGGREGATE (cr=3 pr=0 pw=0 time=12 us starts=1)
+         1          1          1         FIRST ROW  (cr=3 pr=0 pw=0 time=9 us starts=1 cost=3 size=10 card=1)
+         1          1          1          INDEX RANGE SCAN (MIN/MAX) IDX_T_MYQUEUE_FBI_ASC (cr=3 pr=0 pw=0 time=8 us starts=1 cost=3 size=10 card=1)(object id 72601)
+
+********************************************************************************
+
+
+        update /*+ FBI - Stop count*/t_myqueue q1
+        set id = 'x'
+        where q1.rowid = (
+           select * from (
+               select /*+ index(t_myqueue idx_t_myqueue_fbi_dsc)*/rowid
+               from t_myqueue
+               where queue_tag = '*'
+               and case when id is null then 1 end = 1
+               and case when retrycount < 10 then 1 end = 1
+               order by queue_tag, case when id is null then 1 end, case when retrycount < 10 then 1 end, priority desc, order_of_arrival
+               )
+          where rownum=1
+           )
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute   1000      0.10       0.10          0       5855      19204        1000
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total     1001      0.10       0.10          0       5855      19204        1000
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 109     (recursive depth: 1)
+Number of plan statistics captured: 1000
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  UPDATE  T_MYQUEUE (cr=6 pr=0 pw=0 time=89 us starts=1)
+         1          1          1   TABLE ACCESS BY USER ROWID T_MYQUEUE (cr=6 pr=0 pw=0 time=21 us starts=1 cost=1 size=54 card=1)
+         1          1          1    COUNT STOPKEY (cr=6 pr=0 pw=0 time=19 us starts=1)
+         1          1          1     VIEW  (cr=6 pr=0 pw=0 time=17 us starts=1 cost=64 size=120000 card=10000)
+         1          1          1      INDEX RANGE SCAN IDX_T_MYQUEUE_FBI_DSC (cr=6 pr=0 pw=0 time=15 us starts=1 cost=61 size=270000 card=10000)(object id 72602)
+
+********************************************************************************
+
+SQL ID: dbvj6jc977hqh Plan Hash: 0
+
+insert /* QOSD */ into exp_head$ (exp_id, objn, sub_id, fixed_cost, text, 
+  col_list, flags, ctime) 
+values
+ (:1, :2, :3, :4, :5, :6, :7, :8)
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      3      0.00       0.00          0          4         52           3
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        4      0.00       0.00          0          4         52           3
+
+Misses in library cache during parse: 0
+Optimizer mode: CHOOSE
+Parsing user id: SYS   (recursive depth: 2)
+Number of plan statistics captured: 3
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  LOAD TABLE CONVENTIONAL  EXP_HEAD$ (cr=2 pr=0 pw=0 time=1940 us starts=1)
+
+********************************************************************************
+
+SQL ID: 86708bvah4akq Plan Hash: 3995376916
+
+select name 
+from
+ undo$ where file#=:1 and block#=:2 and ts#=:3 and       status$ != 1
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        3      0.00       0.00          0          0          0           0
+Execute      3      0.00       0.00          0          0          0           0
+Fetch        3      0.00       0.00          0          6          0           3
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        9      0.00       0.00          0          6          0           3
+
+Misses in library cache during parse: 2
+Misses in library cache during execute: 2
+Optimizer mode: CHOOSE
+Parsing user id: SYS   (recursive depth: 3)
+Number of plan statistics captured: 3
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  TABLE ACCESS FULL UNDO$ (cr=2 pr=0 pw=0 time=32 us starts=1 cost=2 size=33 card=1)
+
+********************************************************************************
+
+SQL ID: 9babjv8yq8ru3 Plan Hash: 0
+
+BEGIN DBMS_OUTPUT.GET_LINES(:LINES, :NUMLINES); END;
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        7      0.00       0.00          0          0          0           0
+Execute      7      0.00       0.00          0          0          0           7
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total       14      0.00       0.00          0          0          0           7
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 109  
+********************************************************************************
+
+SQL ID: 0mqcv3mx5vy0g Plan Hash: 2584145072
+
+merge into sys.col_group_usage$ d using (select :1 obj#, :2 cols from dual) s 
+  on (d.obj# = s.obj# and d.cols = s.cols) when matched then update set 
+  d.timestamp = :3, d.flags = d.flags + :4 - bitand(d.flags, :4) when not 
+  matched then insert (obj#, cols, timestamp, flags) values (:1,:2,:3,:4)
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      5      0.00       0.00          0          7         20           5
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        6      0.00       0.00          0          7         20           5
+
+Misses in library cache during parse: 0
+Optimizer mode: CHOOSE
+Parsing user id: SYS   (recursive depth: 2)
+Number of plan statistics captured: 5
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  MERGE  COL_GROUP_USAGE$ (cr=1 pr=0 pw=0 time=121 us starts=1)
+         1          1          1   VIEW  (cr=1 pr=0 pw=0 time=12 us starts=1)
+         1          1          1    NESTED LOOPS OUTER (cr=1 pr=0 pw=0 time=11 us starts=1 cost=3 size=21 card=1)
+         1          1          1     FAST DUAL  (cr=0 pr=0 pw=0 time=1 us starts=1 cost=2 size=0 card=1)
+         0          0          1     TABLE ACCESS BY INDEX ROWID COL_GROUP_USAGE$ (cr=1 pr=0 pw=0 time=7 us starts=1 cost=1 size=21 card=1)
+         0          0          1      INDEX UNIQUE SCAN PK_COL_GROUP_USAGE$ (cr=1 pr=0 pw=0 time=5 us starts=1 cost=0 size=0 card=1)(object id 672)
+
+********************************************************************************
+
+SQL ID: 47r1y8yn34jmj Plan Hash: 2191121161
+
+select default$ 
+from
+ col$ where rowid=:1
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        0      0.00       0.00          0          0          0           0
+Execute     28      0.00       0.00          0          0          0           0
+Fetch       28      0.00       0.00          0         56          0          28
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total       56      0.00       0.00          0         56          0          28
+
+Misses in library cache during parse: 0
+Optimizer mode: CHOOSE
+Parsing user id: SYS   (recursive depth: 2)
+********************************************************************************
+
+SQL ID: 23s96rf87635s Plan Hash: 1347681019
+
+select count(*) 
+from
+ sys.col_group_usage$  where obj# = :1 and cols = :2 and trunc(sysdate) = 
+  trunc(timestamp) and bitand(flags, :3) = :3
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      8      0.00       0.00          0          0          0           0
+Fetch        8      0.00       0.00          0         12          0           8
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total       17      0.00       0.00          0         12          0           8
+
+Misses in library cache during parse: 0
+Optimizer mode: CHOOSE
+Parsing user id: SYS   (recursive depth: 2)
+Number of plan statistics captured: 8
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  SORT AGGREGATE (cr=2 pr=0 pw=0 time=28 us starts=1)
+         0          0          1   TABLE ACCESS BY INDEX ROWID COL_GROUP_USAGE$ (cr=2 pr=0 pw=0 time=22 us starts=1 cost=1 size=21 card=1)
+         0          0          1    INDEX UNIQUE SCAN PK_COL_GROUP_USAGE$ (cr=1 pr=0 pw=0 time=10 us starts=1 cost=0 size=0 card=1)(object id 672)
+
+********************************************************************************
+
+SQL ID: 7226hs0335m60 Plan Hash: 0
+
+alter session set events 'sql_trace off'
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          0          0           0
+
+Misses in library cache during parse: 0
+Parsing user id: 109  
+********************************************************************************
+
+SQL ID: 10gywwmwk6xfy Plan Hash: 1426583507
+
+select /* QOSD */ /*+ index(eh)*/ objn, sub_id, fixed_cost, text, col_list, 
+  flags, ctime 
+from
+ exp_head$ eh where exp_id = :1
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      3      0.00       0.00          0          0          0           0
+Fetch        3      0.00       0.00          0          6          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        7      0.00       0.00          0          6          0           0
+
+Misses in library cache during parse: 0
+Optimizer mode: CHOOSE
+Parsing user id: SYS   (recursive depth: 2)
+Number of plan statistics captured: 3
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  TABLE ACCESS BY INDEX ROWID EXP_HEAD$ (cr=2 pr=0 pw=0 time=22 us starts=1 cost=2 size=64 card=1)
+         0          0          0   INDEX UNIQUE SCAN I_EXP_HEAD$ (cr=2 pr=0 pw=0 time=19 us starts=1 cost=1 size=0 card=1)(object id 721)
+
+
+
+
+********************************************************************************
+
+OVERALL TOTALS FOR ALL NON-RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse       14      0.00       0.00          0          0          0           0
+Execute     14      1.92       1.95          0          0          0          13
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total       28      1.92       1.95          0          0          0          13
+
+Misses in library cache during parse: 0
+
+
+OVERALL TOTALS FOR ALL RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse       14      0.03       0.03          0          0          8           0
+Execute   6056     14.03      14.31          0     257581     203048        6008
+Fetch       42      0.00       0.00          0         80          0          39
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total     6112     14.06      14.34          0     257661     203056        6047
+
+Misses in library cache during parse: 8
+Misses in library cache during execute: 2
+
+   15  user  SQL statements in session.
+    8  internal SQL statements in session.
+   23  SQL statements in session.
+********************************************************************************
+Trace file: /u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_4747.trc
+Trace file compatibility: 12.2.0.0
+Sort options: exeela  
+       1  session in tracefile.
+      15  user  SQL statements in trace file.
+       8  internal SQL statements in trace file.
+      23  SQL statements in trace file.
+      21  unique SQL statements in trace file.
+   49603  lines in trace file.
+      16  elapsed seconds in trace file.
+
+

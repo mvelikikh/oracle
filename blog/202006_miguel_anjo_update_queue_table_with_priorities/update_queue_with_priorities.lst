@@ -1,0 +1,266 @@
+SQL> 
+SQL> /* Create Queue table */
+SQL> drop table t_myqueue purge;
+
+Table dropped.
+
+SQL> create table t_myqueue (
+  2  	order_of_arrival   number
+  3   , priority	   number not null
+  4   , retrycount	   number default 0 not null
+  5   , queue_tag	   varchar2(1000) default '*' not null
+  6   , id		   varchar2(64)
+  7   , filler1 	   varchar2(1000)
+  8   , filler2 	   varchar2(1000)
+  9   , CONSTRAINT pk_t_myqueue PRIMARY KEY (order_of_arrival)
+ 10  );
+
+Table created.
+
+SQL> 
+SQL> /* Create indexes (choose one) */
+SQL> DROP INDEX idx_t_myqueue_1;
+DROP INDEX idx_t_myqueue_1
+           *
+ERROR at line 1:
+ORA-01418: specified index does not exist 
+
+
+SQL> DROP INDEX idx_t_myqueue_fbi_asc;
+DROP INDEX idx_t_myqueue_fbi_asc
+           *
+ERROR at line 1:
+ORA-01418: specified index does not exist 
+
+
+SQL> DROP INDEX idx_t_myqueue_fbi_dsc;
+DROP INDEX idx_t_myqueue_fbi_dsc
+           *
+ERROR at line 1:
+ORA-01418: specified index does not exist 
+
+
+SQL> CREATE INDEX idx_t_myqueue_1 ON t_myqueue (queue_tag, id, priority, retrycount, order_of_arrival);
+
+Index created.
+
+SQL> CREATE INDEX idx_t_myqueue_fbi_asc ON t_myqueue (
+  2  	queue_tag, CASE WHEN id IS NULL THEN 1 END, CASE WHEN retrycount < 10 THEN 1 END, priority, order_of_arrival
+  3  );
+
+Index created.
+
+SQL> CREATE INDEX idx_t_myqueue_fbi_dsc ON t_myqueue (
+  2  	queue_tag, CASE WHEN id IS NULL THEN 1 END, CASE WHEN retrycount < 10 THEN 1 END, priority DESC, order_of_arrival
+  3  );
+
+Index created.
+
+SQL> 
+SQL> /* Clear, fill table, gather stats - uncomment one line */
+SQL> truncate table t_myqueue;
+
+Table truncated.
+
+SQL> insert into t_myqueue
+  2    select level as order_of_arrival,
+  3  	 floor(dbms_random.value(1, 6)) as priority,
+  4  	 0 as retrycount,
+  5  	 '*' queue_tag,
+  6  --  /* 100% matches */ null as id,
+  7  --  /*  20% matches */ case when mod(rownum, 5)=0 then null else sys_guid() end as id,
+  8  	 /*  10% matches */ case when mod(rownum, 10)=0 then null else sys_guid() end as id,
+  9  	 rpad('xxhx',1000,'xder') as filler1,
+ 10  	 rpad('xdsxx',1000,'xgdder') as filler2
+ 11    from dual
+ 12    connect by level <=100000;
+
+100000 rows created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> exec dbms_stats.gather_table_stats(user,'t_myqueue');
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> /* Create testing procedure */
+SQL> CREATE OR REPLACE PROCEDURE time_sql_x (title varchar2, sqltxt varchar2) AS
+  2  	timestart INTEGER;
+  3  	counter INTEGER;
+  4  BEGIN
+  5  	dbms_output.enable;
+  6  	timestart := dbms_utility.get_time();
+  7  	FOR counter IN 1..1000
+  8  	LOOP
+  9  	  execute immediate(replace(sqltxt, 'update t_myqueue', 'update /*+ '||title||'*/t_myqueue'));
+ 10  	END LOOP;
+ 11  	dbms_output.put_line(title||': ' || to_char((dbms_utility.get_time() - timestart)/100,'0.99') || ' seconds');
+ 12  	rollback;
+ 13  END;
+ 14  /
+
+Procedure created.
+
+SQL> 
+SQL> /* Enable output */
+SQL> set serveroutput on;
+SQL> 
+SQL> /* Check table matches */
+SQL> select total, matches, to_char(matches/total*100 ||'%') PCT from (
+  2  select count(*) total, count(case when id is null and queue_tag='*' and retrycount<10 then 1 end) matches from t_myqueue);
+
+     TOTAL    MATCHES PCT                                                       
+---------- ---------- -----------------------------------------                 
+    100000      10000 10%                                                       
+
+SQL> 
+SQL> alter session set events 'sql_trace plan_stat=all_executions';
+
+Session altered.
+
+SQL> 
+SQL> /* Run tests */
+SQL> begin time_sql_x('Simple subqueries',q'[
+  2  	     update t_myqueue q1
+  3  	     set id = 'x'
+  4  	     where q1.order_of_arrival = (
+  5  		select min(q2.order_of_arrival)
+  6  		from t_myqueue q2
+  7  		where q2.queue_tag = '*'
+  8  		and q2.id is null
+  9  		and q2.retrycount < 10
+ 10  		and q2.priority = (
+ 11  		   select max(q3.priority)
+ 12  		   from t_myqueue q3
+ 13  		   where q3.queue_tag = '*'
+ 14  		   and q3.id is null
+ 15  		   and q3.retrycount < 10
+ 16  		)
+ 17  	     )
+ 18  ]'); end;
+ 19  /
+Simple subqueries:  2.98 seconds                                                
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> begin time_sql_x('Simple fetch first',q'[
+  2  	     update t_myqueue q1
+  3  	     set id = 'x'
+  4  	     where q1.rowid = (
+  5  		select rowid
+  6  		from t_myqueue
+  7  		where queue_tag = '*'
+  8  		and id is null
+  9  		and retrycount < 10
+ 10  		order by priority desc, order_of_arrival
+ 11  		fetch first 1 row only
+ 12  	     )
+ 13  ]'); end;
+ 14  /
+Simple fetch first:  4.39 seconds                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> begin time_sql_x('Simple Stop count',q'[
+  2  	     update t_myqueue q1
+  3  	     set id = 'x'
+  4  	     where q1.rowid = (
+  5  		select * from (
+  6  		    select rowid
+  7  		    from t_myqueue
+  8  		    where queue_tag = '*'
+  9  		    and id is null
+ 10  		    and retrycount < 10
+ 11  		    order by priority desc, order_of_arrival
+ 12  		    )
+ 13  	       where rownum=1
+ 14  		)
+ 15  ]'); end;
+ 16  /
+Simple Stop count:  3.88 seconds                                                
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> begin time_sql_x('FBI - Subqueries',q'[
+  2  	     update t_myqueue q1
+  3  	     set id = 'x'
+  4  	     where q1.order_of_arrival = (
+  5  		select min(q2.order_of_arrival)
+  6  		from t_myqueue q2
+  7  		where q2.queue_tag = '*'
+  8  		and case when q2.id is null then 1 end = 1
+  9  		and case when q2.retrycount < 10 then 1 end = 1
+ 10  		and q2.priority = (
+ 11  		   select max(q3.priority)
+ 12  		   from t_myqueue q3
+ 13  		   where q3.queue_tag = '*'
+ 14  		   and case when q3.id is null then 1 end = 1
+ 15  		   and case when q3.retrycount < 10 then 1 end = 1
+ 16  		)
+ 17  	     )
+ 18  ]'); end;
+ 19  /
+FBI - Subqueries:  0.53 seconds                                                 
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> begin time_sql_x('FBI - Fetch First',q'[
+  2  	     update t_myqueue q1
+  3  	     set id = 'x'
+  4  	     where q1.rowid = (
+  5  		select rowid
+  6  		from t_myqueue
+  7  		where queue_tag = '*'
+  8  		and case when id is null then 1 end = 1
+  9  		and case when retrycount < 10 then 1 end = 1
+ 10  		order by queue_tag, case when id is null then 1 end, case when retrycount < 10 then 1 end, priority desc, order_of_arrival
+ 11  		fetch first 1 row only
+ 12  	     )
+ 13  ]'); end;
+ 14  /
+FBI - Fetch First:  3.93 seconds                                                
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> begin time_sql_x('FBI - Stop count',q'[
+  2  	     update t_myqueue q1
+  3  	     set id = 'x'
+  4  	     where q1.rowid = (
+  5  		select * from (
+  6  		    select /*+ index(t_myqueue idx_t_myqueue_fbi_dsc)*/rowid
+  7  		    from t_myqueue
+  8  		    where queue_tag = '*'
+  9  		    and case when id is null then 1 end = 1
+ 10  		    and case when retrycount < 10 then 1 end = 1
+ 11  		    order by queue_tag, case when id is null then 1 end, case when retrycount < 10 then 1 end, priority desc, order_of_arrival
+ 12  		    )
+ 13  	       where rownum=1
+ 14  		)
+ 15  ]'); end;
+ 16  /
+FBI - Stop count:  0.34 seconds                                                 
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> alter session set events 'sql_trace off';
+
+Session altered.
+
+SQL> 
+SQL> select value from v$diag_info where name='Default Trace File';
+
+VALUE                                                                           
+--------------------------------------------------------------------------------
+/u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_4747.trc                    
+
+SQL> 
+SQL> spo off
