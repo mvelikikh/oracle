@@ -1,0 +1,14 @@
+DGMGRL> show configuration;
+
+Configuration - racdb
+
+  Protection Mode: MaxPerformance
+  Members:
+  racdbb - Primary database
+    racdba - Physical standby database
+
+Fast-Start Failover:  Disabled
+
+Configuration Status:
+SUCCESS   (status updated 52 seconds ago)
+

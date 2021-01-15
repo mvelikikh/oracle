@@ -1,0 +1,44 @@
+Trace file /u01/app/oracle/diag/rdbms/racdba/racdba2/trace/racdba2_ora_20683.trc
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+Build label:    RDBMS_19.9.0.0.0DBRU_LINUX.X64_200930
+ORACLE_HOME:    /u01/app/oracle/product/19.3.0/dbhome_1
+System name:	Linux
+Node name:	raca2.example.com
+Release:	3.10.0-1160.6.1.el7.x86_64
+Version:	#1 SMP Wed Oct 21 13:44:38 EDT 2020
+Machine:	x86_64
+Instance name: racdba2
+Redo thread mounted by this instance: 0 <none>
+Oracle process number: 59
+Unix process pid: 20683, image: oracle@raca2.example.com (TNS V1-V3)
+
+
+*** 2021-01-14T11:06:45.195061+00:00 (CDB$ROOT(1))
+*** SESSION ID:(377.62733) 2021-01-14T11:06:45.195108+00:00
+*** CLIENT ID:() 2021-01-14T11:06:45.195121+00:00
+*** SERVICE NAME:() 2021-01-14T11:06:45.195157+00:00
+*** MODULE NAME:(oraagent.bin@raca2.example.com (TNS V1-V3)) 2021-01-14T11:06:45.195176+00:00
+*** ACTION NAME:() 2021-01-14T11:06:45.195185+00:00
+*** CLIENT DRIVER:() 2021-01-14T11:06:45.195193+00:00
+*** CONTAINER ID:(1) 2021-01-14T11:06:45.195202+00:00
+ 
+kcrrmnt: RT: Role transition work is not done
+*** 2021-01-14 11:06:45.539308 [krsn.c:548]
+krsn_dbrole_change: Database role set to PHYSICAL STANDBY [kcvfdb.c:9212]
+krsd_cb_role_change: role 2
+*** 2021-01-14 11:06:45.661225 [krsh.c:6348]
+Archiving previously deferred ORLs
+*** 2021-01-14 11:06:45.662018 [krsq.c:3772]
+krsq_arch_all_complete: Finished archiving all complete, unarchived ORLs
+
+*** 2021-01-14T11:06:54.338847+00:00 (CDB$ROOT(1))
+kjznppl0: database in migration or not writable
+kjac_dpinfo_open: direct path not initialized, reason: in readable standby mode
+
+*** 2021-01-14T11:06:55.135200+00:00 (CDB$ROOT(1))
+* Set mstr_rdy 1, lmon_pnpchk 1 
+
+*** 2021-01-14T11:06:56.094148+00:00 (CDB$ROOT(1))
+<error barrier> at 0x7ffe4296eeb0 placed kpdb.c@21504
+ORA-65054: Cannot open a pluggable database in the desired mode.

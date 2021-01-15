@@ -1,0 +1,32 @@
+SYS@RACDBA> select database_role from v$database;
+
+DATABASE_ROLE
+----------------
+PHYSICAL STANDBY
+
+SYS@RACDBA>
+SYS@RACDBA> select *
+  2    from dba_pdb_saved_states
+  3   order by con_id, instance_name;
+
+ CON_ID CON_NAME INSTANCE_NAME    CON_UID GUID                             STATE          RESTRICTED
+------- -------- ------------- ---------- -------------------------------- -------------- ----------
+      3 PDB      racdba1       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+      3 PDB      racdba2       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+      3 PDB      racdbb1       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+      3 PDB      racdbb2       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+
+SYS@RACDBA>
+SYS@RACDBA>
+SYS@RACDBA> select inst_id, name, open_mode
+  2    from gv$pdbs
+  3   order by inst_id, name;
+
+ INST_ID NAME       OPEN_MODE
+-------- ---------- ----------
+       1 PDB        READ ONLY
+       1 PDB$SEED   READ ONLY
+       2 PDB        MOUNTED
+       2 PDB$SEED   READ ONLY
+
+SYS@RACDBA>

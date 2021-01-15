@@ -1,0 +1,139 @@
+Trace file /u01/app/oracle/diag/rdbms/racdba/racdba2/trace/racdba2_ora_6677.trc
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+Build label:    RDBMS_19.9.0.0.0DBRU_LINUX.X64_200930
+ORACLE_HOME:    /u01/app/oracle/product/19.3.0/dbhome_1
+System name:	Linux
+Node name:	raca2.example.com
+Release:	3.10.0-1160.6.1.el7.x86_64
+Version:	#1 SMP Wed Oct 21 13:44:38 EDT 2020
+Machine:	x86_64
+Instance name: racdba2
+Redo thread mounted by this instance: 0 <none>
+Oracle process number: 59
+Unix process pid: 6677, image: oracle@raca2.example.com (TNS V1-V3)
+
+
+*** 2021-01-14T11:26:54.579597+00:00 (CDB$ROOT(1))
+*** SESSION ID:(377.27748) 2021-01-14T11:26:54.579634+00:00
+*** CLIENT ID:() 2021-01-14T11:26:54.579643+00:00
+*** SERVICE NAME:() 2021-01-14T11:26:54.579650+00:00
+*** MODULE NAME:(oraagent.bin@raca2.example.com (TNS V1-V3)) 2021-01-14T11:26:54.579658+00:00
+*** ACTION NAME:() 2021-01-14T11:26:54.579667+00:00
+*** CLIENT DRIVER:() 2021-01-14T11:26:54.579677+00:00
+*** CONTAINER ID:(1) 2021-01-14T11:26:54.579688+00:00
+ 
+ksfdrfms:Mirror Read file=+DATA/RACDBA/CONTROLFILE/current.257.1061720771 fob=0x1934f0c0 bufp=0x7f6134132000 blkno=1 nbytes=16384
+ksfdafReadMirror: Read success from mirror side=1 logical extent number=0 disk=RACA1$LUN2 path=/dev/flashgrid/raca1.lun2
+Mirror I/O done from ASM disk /dev/flashgrid/raca1.lun2 
+ksfdrnms:Mirror Read file=+DATA/RACDBA/CONTROLFILE/current.257.1061720771 fob=0x1934f0c0 bufp=0x7f6134132000 nbytes=16384
+ksfdafReadMirror: Read success from mirror side=2 logical extent number=1 disk=RACA2$LUN2 path=/dev/flashgrid/raca2.lun2
+Mirror I/O done from ASM disk /dev/flashgrid/raca2.lun2 
+ksfdrnms:Mirror Read file=+DATA/RACDBA/CONTROLFILE/current.257.1061720771 fob=0x1934f0c0 bufp=0x7f6134132000 nbytes=16384
+WARNING: failed xlate 3 kfiorq=0x7ffdf766afa8 fib=0x8d18a470 isread=1 sync=1 error=15205
+ksfdafReadMirror: Read failed from mirror side=3 logical extent number=2 dskno=65534
+ksfdrfms:Mirror Read file=+FRA/RACDBA/CONTROLFILE/current.256.1061720773 fob=0x1934eea0 bufp=0x7f613466c000 blkno=1 nbytes=16384
+ksfdafReadMirror: Read success from mirror side=1 logical extent number=0 disk=RACA2$LUN3 path=/dev/flashgrid/raca2.lun3
+Mirror I/O done from ASM disk /dev/flashgrid/raca2.lun3 
+ksfdrnms:Mirror Read file=+FRA/RACDBA/CONTROLFILE/current.256.1061720773 fob=0x1934eea0 bufp=0x7f613466c000 nbytes=16384
+ksfdafReadMirror: Read success from mirror side=2 logical extent number=1 disk=RACA1$LUN3 path=/dev/flashgrid/raca1.lun3
+Mirror I/O done from ASM disk /dev/flashgrid/raca1.lun3 
+ksfdrnms:Mirror Read file=+FRA/RACDBA/CONTROLFILE/current.256.1061720773 fob=0x1934eea0 bufp=0x7f613466c000 nbytes=16384
+WARNING: failed xlate 3 kfiorq=0x7ffdf766afa8 fib=0x8d18abd0 isread=1 sync=1 error=15205
+ksfdafReadMirror: Read failed from mirror side=3 logical extent number=2 dskno=65534
+
+*** 2021-01-14T11:26:58.694502+00:00 (CDB$ROOT(1))
+kcrrmnt: RT: Role transition work is not done
+kjummconvert mount mode : 0 -> 3 (psrvbc 0)
+
+*** 2021-01-14T11:26:59.089810+00:00 (CDB$ROOT(1))
+kjummconvert: sending cvt flush messages (mm 3 inc 2 nodes 1)
+
+*** 2021-01-14T11:26:59.189608+00:00 (CDB$ROOT(1))
+kjummconvert: sending mm messages (mm 3 inc 2 nodes 1)
+kjbdom_enable_pdbisolation:  mounting standby, make sure dom0 ddt inc is 0 (0->0) 
+2021-01-14 11:26:59.289 : kjbdom_enable_pdbisolation: 
+ Switching DLM PDB isolation (kjidomena: 0 -> 0, mm: NONE -> STNDB)
+kjdr_enable_DRM: NONE->STNDB switch, setting kjidrm to 0
+*** 2021-01-14 11:26:59.294850 [krsn.c:548]
+krsn_dbrole_change: Database role set to PHYSICAL STANDBY [kcvfdb.c:9212]
+krsd_cb_role_change: role 2
+krsd_dest32_eval: Using STANDBY_ARCHIVE_DEST parameter default value as USE_DB_RECOVERY_FILE_DEST [krsd.c:18157]
+*** 2021-01-14 11:26:59.435585 [krsh.c:6348]
+Archiving previously deferred ORLs
+krsv_proc_add: Request to add process to V$MANAGED_STANDBY [krse.c:2743]
+krse_arc_dest_init: NOSWITCH ARCH archival in progress
+krse_arc_dest_init: FINAL ARCH archival in progress
+
+*** 2021-01-14T11:26:59.510466+00:00 (CDB$ROOT(1))
+*** 2021-01-14 11:26:59.510452 [krse.c:6914]
+*** 2021-01-14 11:26:59.510531 [krse.c:6974]
+krse_arc_spool: Setting End-Of-Redo flag
+krsv_proc_rem: Request to remove process from V$MANAGED_STANDBY [krse.c:2802]
+krsv_proc_add: Request to add process to V$MANAGED_STANDBY [krse.c:2743]
+krse_arc_dest_init: NOSWITCH ARCH archival in progress
+krse_arc_dest_init: FINAL ARCH archival in progress
+*** 2021-01-14 11:26:59.760780 [krse.c:6914]
+*** 2021-01-14 11:26:59.760821 [krse.c:6974]
+krse_arc_spool: Setting End-Of-Redo flag
+krsv_proc_rem: Request to remove process from V$MANAGED_STANDBY [krse.c:2802]
+*** 2021-01-14 11:26:59.909752 [krsq.c:3772]
+krsq_arch_all_complete: Finished archiving all complete, unarchived ORLs
+
+*** 2021-01-14T11:27:07.982845+00:00
+DDE rules only execution for: ORA 1110
+----- START Event Driven Actions Dump ----
+---- END Event Driven Actions Dump ----
+----- START DDE Actions Dump -----
+Executing SYNC actions
+----- START DDE Action: 'DB_STRUCTURE_INTEGRITY_CHECK' (Async) -----
+Successfully dispatched
+----- END DDE Action: 'DB_STRUCTURE_INTEGRITY_CHECK' (SUCCESS, 0 csec) -----
+Executing ASYNC actions
+----- END DDE Actions Dump (total 0 csec) -----
+krsm_post_rec_state_int: Managed Recovery: Real Time Apply enabled
+krsm_post_rec_state_int: Managed Recovery: Startup posted
+krsm_post_rec_state_int: Managed Recovery: Initialization posted
+Successfully allocated 8 recovery slaves
+Parallel Media Recovery started with 8 slaves
+krsm_post_rec_state_int: Managed Recovery: Active posted
+
+*** 2021-01-14T11:27:08.971640+00:00 (CDB$ROOT(1))
+Slave# 9: PR03 exited 
+Slave# 8: PR05 exited 
+Slave# 7: PR07 exited 
+Slave# 6: PR08 exited 
+Slave# 5: PR01 exited 
+Slave# 4: PR02 exited 
+Slave# 3: PR06 exited 
+Slave# 2: PR04 exited 
+Slave# 1: PR00 exited 
+ksvp2penabled: ep->flg = 0, rpr->slv_flg = 0
+ksvp2penabled: ep = 0x7f61352bb618, rpr = 0x97708790
+----- Abridged Call Stack Trace -----
+ksedsts()+426<-krdsod()+251<-kss_del_cb()+218<-kssdel()+216<-krp_free_coordinator()+167<-krd_end_rcv()+166<-krd_implicit_rcv()+3179<-kcvcrv()+20603<-kcfopd()+6220<-adbdrv_options()+33851<-opiexe()+25960<-opiosq0()+4494<-kpooprx()+387<-kpoal8()+830<-opiodr()+1202
+<-ttcpip()+1222<-opitsk()+1900<-opiino()+936<-opiodr()+1202<-opidrv()+1094<-sou2o()+165<-opimai_real()+422<-ssthrdmain()+417<-main()+256<-__libc_start_main()+245 
+----- End of Abridged Call Stack Trace -----
+Partial short call stack signature: 0xd4344b89dbcc3d95
+* kju_rbuddy_topr TRACERB: CR COMPLETE called 
+* Dump rbuddy info before thread operation: 
+* kji_rbuddy_dmpi2t: dump i2t array: 
+* array is empty 
+* kji_rbuddy_dmpall: dump rbuddy array (rcvinst 32767, dom0 valid 0): 
+* kji_rbuddy_graph: (cinc 2, valid 0, rinst 32767) [ ] 
+* End of rbuddy info dump 
+* Dump rbuddy info after thread operation: 
+* kji_rbuddy_dmpi2t: dump i2t array: 
+* array is empty 
+* kji_rbuddy_dmpall: dump rbuddy array (rcvinst 32767, dom0 valid 0): 
+* kji_rbuddy_graph: (cinc 2, valid 0, rinst 32767) [ ] 
+* End of rbuddy info dump 
+
+*** 2021-01-14T11:27:09.794332+00:00 (CDB$ROOT(1))
+kjznppl0: database in migration or not writable
+kjac_dpinfo_open: direct path not initialized, reason: in readable standby mode
+* Set mstr_rdy 1, lmon_pnpchk 1 
+
+*** 2021-01-14T11:27:11.103734+00:00 (CDB$ROOT(1))
+<error barrier> at 0x7ffdf766e730 placed kpdb.c@21504
+ORA-65054: Cannot open a pluggable database in the desired mode.

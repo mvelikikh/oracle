@@ -1,0 +1,1228 @@
+2021-01-14T10:57:01.926470+00:00
+Starting ORACLE instance (normal) (OS id: 29334)
+2021-01-14T10:57:02.158629+00:00
+****************************************************
+ Sys-V shared memory will be used for creating SGA 
+ ****************************************************
+2021-01-14T10:57:02.160041+00:00
+**********************************************************************
+2021-01-14T10:57:02.160185+00:00
+Dump of system resources acquired for SHARED GLOBAL AREA (SGA) 
+
+2021-01-14T10:57:02.160411+00:00
+ Per process system memlock (soft) limit = UNLIMITED
+2021-01-14T10:57:02.160511+00:00
+ Expected per process system memlock (soft) limit to lock
+ instance MAX SHARED GLOBAL AREA (SGA) into memory: 4610M
+2021-01-14T10:57:02.160737+00:00
+ Available system pagesizes:
+  4K, 2048K 
+2021-01-14T10:57:02.160929+00:00
+ Supported system pagesize(s):
+2021-01-14T10:57:02.161048+00:00
+  PAGESIZE  AVAILABLE_PAGES  EXPECTED_PAGES  ALLOCATED_PAGES  ERROR(s)
+2021-01-14T10:57:02.161206+00:00
+        4K       Configured               7               7        NONE
+2021-01-14T10:57:02.161463+00:00
+     2048K             8745            2305            2305        NONE
+2021-01-14T10:57:02.161565+00:00
+**********************************************************************
+LICENSE_MAX_SESSION = 0
+LICENSE_SESSIONS_WARNING = 0
+Initial number of CPU is 8
+Number of processor cores in the system is 4
+Number of processor sockets in the system is 1
+KSXRTEST ISGA: RM Channel count = 1
+KSXRTEST ISGA: rcnt= 70 rmrcnt = 1
+Capability Type : Network 
+capabilities requested : 7 detected : 0 Simulated : 0
+Capability Type : Runtime Environment 
+capabilities requested : 400000FF detected : 40000000 Simulated : 0
+Capability Type : Engineered Systems 
+capabilities requested : F detected : 0 Simulated : 0
+Capability Type : Database Test 
+capabilities requested : 3 detected : 0 Simulated : 0
+Capability Type : Database Editions 
+capabilities requested : C detected : 8 Simulated : 0
+kjidomenacan initialized to 3
+Using LOG_ARCHIVE_DEST_1 parameter default value as USE_DB_RECOVERY_FILE_DEST
+.... (PID:): Fewer destinations available than specifiedby LOG_ARCHIVE_MIN_SUCCEED_DEST init.ora parameter
+Autotune of undo retention is turned on. 
+LICENSE_MAX_USERS = 0
+SYS auditing is enabled
+NOTE: remote asm mode is remote (mode 0x2; from cluster type)
+2021-01-14T10:57:03.108533+00:00
+NOTE: remote asm mode is remote (mode 0x2; from cluster type)
+NOTE: Cluster configuration type = CLUSTER [4]
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0.
+ORACLE_HOME:    /u01/app/oracle/product/19.3.0/dbhome_1
+System name:	Linux
+Node name:	racb1.example.com
+Release:	3.10.0-1160.6.1.el7.x86_64
+Version:	#1 SMP Wed Oct 21 13:44:38 EDT 2020
+Machine:	x86_64
+Using parameter settings in server-side spfile +DATA/RACDBB/PARAMETERFILE/spfile.285.1061742861
+System parameters with non-default values:
+  processes                = 640
+  nls_language             = "AMERICAN"
+  nls_territory            = "AMERICA"
+  sga_target               = 4608M
+  control_files            = "+DATA/RACDBB/CONTROLFILE/current.259.1061742551"
+  control_files            = "+FRA/RACDBB/CONTROLFILE/current.257.1061742551"
+  db_block_size            = 8192
+  compatible               = "19.0.0"
+  log_archive_dest_2       = "service="//myraca-scan/racdba""
+  log_archive_dest_2       = "ASYNC NOAFFIRM delay=0 optional compression=disable max_failure=0 reopen=300 db_unique_name="racdba" net_timeout=30"
+  log_archive_dest_2       = "valid_for=(online_logfile,all_roles)"
+  log_archive_dest_state_2 = "ENABLE"
+  fal_server               = ""
+  log_archive_config       = "dg_config=(racdbb,racdba)"
+  cluster_database         = TRUE
+  db_create_file_dest      = "+DATA"
+  db_recovery_file_dest    = "+FRA"
+  db_recovery_file_dest_size= 22000M
+  thread                   = 1
+  undo_tablespace          = "UNDOTBS1"
+  instance_number          = 1
+  remote_login_passwordfile= "EXCLUSIVE"
+  dispatchers              = "(PROTOCOL=TCP) (SERVICE=racdbaXDB)"
+  local_listener           = "NODEFQDN"
+  audit_file_dest          = "/u01/app/oracle/admin/racdbb/adump"
+  audit_trail              = "DB"
+  db_name                  = "racdb"
+  db_unique_name           = "racdbb"
+  open_cursors             = 300
+  pga_aggregate_target     = 1536M
+  dg_broker_start          = TRUE
+  dg_broker_config_file1   = "+DATA/RACDBB/dr1racdbb"
+  dg_broker_config_file2   = "+DATA/RACDBB/dr2racdbb"
+  diagnostic_dest          = "/u01/app/oracle"
+  enable_pluggable_database= TRUE
+2021-01-14T10:57:03.281283+00:00
+Cluster Communication is configured to use IPs from: GPnP
+IP: 169.254.11.19	 Subnet: 169.254.0.0
+KSIPC Loopback IP addresses(OSD): 
+127.0.0.1	
+KSIPC Available Transports for cluster communication: UDP:TCP
+KSIPC: Client: KCL	 Transport: UDP
+KSIPC: Client: DLM	 Transport: UDP
+KSIPC CAPABILITIES :MGA:IPCLW:GRPAM:TOPO:DLL:STATSFW:CRTRK
+KSXP: ksxpsg_ipclwtrans: 2 UDP
+cluster interconnect IPC version: [IPCLW over UDP(mode 3) ]
+IPC Vendor 1 proto 2
+Oracle instance running with ODM: Oracle Direct NFS ODM Library Version 6.0 
+============================================================
+NOTE: PatchLevel of this instance 0
+============================================================
+Starting background process PMON
+2021-01-14T10:57:03.584668+00:00
+PMON started with pid=2, OS id=29413 
+Starting background process CLMN
+2021-01-14T10:57:03.606956+00:00
+CLMN started with pid=3, OS id=29415 
+Starting background process PSP0
+2021-01-14T10:57:03.627079+00:00
+PSP0 started with pid=4, OS id=29417 
+Starting background process IPC0
+2021-01-14T10:57:04.665086+00:00
+IPC0 started with pid=5, OS id=29429 
+2021-01-14T10:57:04.666744+00:00
+Starting background process VKTM
+2021-01-14T10:57:04.692956+00:00
+VKTM started with pid=6, OS id=29432 at elevated (RT) priority
+Starting background process GEN0
+2021-01-14T10:57:04.695068+00:00
+VKTM running at (1)millisec precision with DBRM quantum (100)ms
+2021-01-14T10:57:04.716678+00:00
+GEN0 started with pid=7, OS id=29436 
+Starting background process MMAN
+2021-01-14T10:57:04.735950+00:00
+MMAN started with pid=8, OS id=29438 
+Starting background process GEN1
+Starting background process DIAG
+2021-01-14T10:57:04.782045+00:00
+GEN1 started with pid=10, OS id=29442_29443 
+2021-01-14T10:57:04.803376+00:00
+DIAG started with pid=12, OS id=29445 
+Starting background process OFSD
+Starting background process DBRM
+2021-01-14T10:57:04.832812+00:00
+OFSD started with pid=13, OS id=29447_29448 
+2021-01-14T10:57:04.833933+00:00
+Oracle running with ofslib:'Oracle File Server Library' version=2 inc=1
+Starting background process VKRM
+2021-01-14T10:57:04.851734+00:00
+DBRM started with pid=15, OS id=29450 
+Starting background process PING
+2021-01-14T10:57:04.870277+00:00
+VKRM started with pid=16, OS id=29452 
+2021-01-14T10:57:04.888698+00:00
+PING started with pid=17, OS id=29454 
+Starting background process SVCB
+2021-01-14T10:57:04.909598+00:00
+SVCB started with pid=18, OS id=29456 
+Starting background process ACMS
+2021-01-14T10:57:04.929107+00:00
+ACMS started with pid=19, OS id=29458 
+Starting background process PMAN
+2021-01-14T10:57:04.947720+00:00
+PMAN started with pid=20, OS id=29460 
+Starting background process DIA0
+2021-01-14T10:57:04.966561+00:00
+DIA0 started with pid=21, OS id=29462 
+Starting background process LMON
+2021-01-14T10:57:04.986469+00:00
+LMON started with pid=22, OS id=29464 
+Starting background process LMD0
+2021-01-14T10:57:05.012340+00:00
+LMD0 started with pid=23, OS id=29466 
+Starting background process LMD1
+2021-01-14T10:57:05.014620+00:00
+* Load Monitor used for high load check 
+* New Low - High Load Threshold Range = [7680 - 10240] 
+2021-01-14T10:57:05.024886+00:00
+LMS0 started with pid=24, OS id=29468_29473 at elevated (RT) priority
+2021-01-14T10:57:05.031417+00:00
+LMS1 started with pid=26, OS id=29470_29476 at elevated (RT) priority
+2021-01-14T10:57:05.031611+00:00
+LMD1 started with pid=28, OS id=29472 
+Starting background process RMS0
+Starting background process LMHB
+2021-01-14T10:57:05.064763+00:00
+RMS0 started with pid=29, OS id=29480 
+2021-01-14T10:57:05.093591+00:00
+LMHB started with pid=30, OS id=29482 
+Starting background process LCK1
+2021-01-14T10:57:05.117492+00:00
+LCK1 started with pid=31, OS id=29484 
+Starting background process DBW0
+2021-01-14T10:57:05.141617+00:00
+DBW0 started with pid=34, OS id=29488 
+Starting background process LGWR
+2021-01-14T10:57:05.163507+00:00
+LGWR started with pid=35, OS id=29490 
+Starting background process CKPT
+2021-01-14T10:57:05.191780+00:00
+CKPT started with pid=36, OS id=29492 
+2021-01-14T10:57:05.211541+00:00
+LGWR slave LG00 created with pid=37, OS pid=29494
+Starting background process SMON
+2021-01-14T10:57:05.229651+00:00
+SMON started with pid=38, OS id=29496 
+LGWR slave LG01 created with pid=39, OS pid=29498
+Starting background process SMCO
+2021-01-14T10:57:05.271802+00:00
+SMCO started with pid=40, OS id=29500 
+Starting background process RECO
+2021-01-14T10:57:05.289401+00:00
+RECO started with pid=41, OS id=29502 
+Starting background process LREG
+2021-01-14T10:57:05.330981+00:00
+LREG started with pid=43, OS id=29506 
+Starting background process PXMN
+2021-01-14T10:57:05.370611+00:00
+PXMN started with pid=45, OS id=29510 
+Starting background process DMON
+2021-01-14T10:57:05.389307+00:00
+DMON started with pid=46, OS id=29512 
+Starting background process RBAL
+2021-01-14T10:57:05.408389+00:00
+RBAL started with pid=47, OS id=29514 
+Starting background process ASMB
+2021-01-14T10:57:05.427033+00:00
+ASMB started with pid=48, OS id=29516 
+Starting background process FENC
+2021-01-14T10:57:05.449792+00:00
+FENC started with pid=49, OS id=29518 
+Starting background process MMON
+2021-01-14T10:57:05.468788+00:00
+MMON started with pid=50, OS id=29520 
+Starting background process MMNL
+2021-01-14T10:57:05.487995+00:00
+MMNL started with pid=51, OS id=29524 
+2021-01-14T10:57:05.488062+00:00
+starting up 1 dispatcher(s) for network address '(ADDRESS=(PARTIAL=YES)(PROTOCOL=TCP))'...
+2021-01-14T10:57:05.497453+00:00
+NOTE: ASMB (index:0) registering with ASM instance as Flex client 0xffffffffffffffff (reg:3809187112) (startid:1061809023) (new connection)
+2021-01-14T10:57:05.505952+00:00
+starting up 1 shared server(s) ...
+2021-01-14T10:57:05.588200+00:00
+My CSS node number is 1 
+My CSS hostname is racb1
+WARNING: vsnnum_full is 319356928
+lmon registered with NM - instance number 1 (internal mem no 0)
+2021-01-14T10:57:05.869841+00:00
+* Load Monitor used for high load check 
+* New Low - High Load Threshold Range = [7680 - 10240] 
+2021-01-14T10:57:05.964792+00:00
+Increasing priority of 2 RS
+* allocate domain 0, valid ? 0 
+* Setting GES domain 0
+Attached to domain 0 (addr: 0x93d95638)
+Reconfiguration started (old inc 0, new inc 2)
+Dynamic remastering is disabled
+List of instances (total 1) :
+ 1
+My inst 1 (I'm a new instance) 
+2021-01-14T10:57:06.071289+00:00
+ Global Resource Directory frozen
+ Communication channels reestablished
+ Master broadcasted resource hash value bitmaps
+ Non-local Process blocks cleaned out
+2021-01-14T10:57:06.086896+00:00
+ LMS 0: 0 GCS shadows cancelled, 0 closed, 0 Xw survived, skipped 0
+2021-01-14T10:57:06.086959+00:00
+ LMS 1: 0 GCS shadows cancelled, 0 closed, 0 Xw survived, skipped 0
+ Set master node info 
+ Dwn-cvts replayed, VALBLKs dubious
+ All grantable enqueues granted
+ Post SMON to start 1st pass IR
+Reconfiguration complete (total time 0.1 secs) 
+Decreasing priority of 2 RS
+2021-01-14T10:57:06.102974+00:00
+Starting background process LCK0
+2021-01-14T10:57:06.121575+00:00
+LCK0 started with pid=55, OS id=29539 
+Starting background process RSMN
+2021-01-14T10:57:06.151388+00:00
+RSMN started with pid=56, OS id=29541 
+Starting background process TMON
+2021-01-14T10:57:06.192936+00:00
+TMON started with pid=57, OS id=29543 
+2021-01-14T10:57:06.217635+00:00
+Setting CPU count to 8
+ORACLE_BASE from environment = /u01/app/oracle
+2021-01-14T10:57:06.480759+00:00
+ALTER SYSTEM SET remote_listener=' myracb-scan.example.com:1521' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T10:57:06.482823+00:00
+ALTER SYSTEM SET listener_networks='' SCOPE=MEMORY SID='racdbb1';
+ALTER DATABASE MOUNT /* db agent *//* {1:44892:823} */
+2021-01-14T10:57:06.518986+00:00
+This instance was first to mount
+2021-01-14T10:57:07.857806+00:00
+Using default pga_aggregate_limit of 3200 MB
+2021-01-14T10:57:09.087250+00:00
+NOTE: ASMB (index:0) (29516) connected to ASM instance +ASM1, osid: 29522 (Flex mode; client id 0x82d662bff1dd725d)
+NOTE: initiating MARK startup 
+Starting background process MARK
+2021-01-14T10:57:09.106110+00:00
+MARK started with pid=61, OS id=29589 
+2021-01-14T10:57:09.108816+00:00
+NOTE: MARK has subscribed
+2021-01-14T10:57:09.271652+00:00
+NOTE: ASMB mounting group 1 (DATA)
+NOTE: Assigned CGID 0x10006 for group 1
+NOTE: ASMB process initiating disk discovery for grp 1 (reqid:0)
+NOTE: Assigning number (1,1) to disk (/dev/flashgrid/racb2.lun2)
+NOTE: Assigning number (1,0) to disk (/dev/flashgrid/racb1.lun2)
+SUCCESS: mounted group 1 (DATA)
+NOTE: grp 1 disk 1: RACB2$LUN2 path:/dev/flashgrid/racb2.lun2
+NOTE: grp 1 disk 0: RACB1$LUN2 path:/dev/flashgrid/racb1.lun2
+2021-01-14T10:57:09.605579+00:00
+NOTE: dependency between database racdbb and diskgroup resource ora.DATA.dg is established
+2021-01-14T10:57:09.641392+00:00
+NOTE: ASMB mounting group 2 (FRA)
+NOTE: Assigned CGID 0x10007 for group 2
+NOTE: ASMB process initiating disk discovery for grp 2 (reqid:0)
+NOTE: Assigning number (2,1) to disk (/dev/flashgrid/racb2.lun3)
+NOTE: Assigning number (2,0) to disk (/dev/flashgrid/racb1.lun3)
+SUCCESS: mounted group 2 (FRA)
+NOTE: grp 2 disk 1: RACB2$LUN3 path:/dev/flashgrid/racb2.lun3
+NOTE: grp 2 disk 0: RACB1$LUN3 path:/dev/flashgrid/racb1.lun3
+2021-01-14T10:57:09.890751+00:00
+KSXPPING: KSXP selected for Ping
+2021-01-14T10:57:09.973827+00:00
+NOTE: dependency between database racdbb and diskgroup resource ora.FRA.dg is established
+2021-01-14T10:57:13.999034+00:00
+.... (PID:29547): RT: Role transition work is not done
+.... (PID:29547): WARNING: STANDBY_FILE_MANAGEMENT initialization parameter is
+not set to the value "AUTO".
+This may cause recovery of the standby database to terminate
+prior to applying all available redo data.
+It may be necessary to use the ALTER DATABASE CREATE DATAFILE
+command to add datafiles created on the primary database.
+.... (PID:29547): Redo network throttle feature is disabled at mount time
+2021-01-14T10:57:14.355010+00:00
+Successful mount of redo thread 1, with mount id 1059377410
+2021-01-14T10:57:14.556470+00:00
+Switching DLM PDB isolation (kjidomena: 0 -> 0, mm: NONE -> STNDB)
+Disabling Dynamic Remastering: NONE->STNDB switch
+KRDNFY: Turn off Preserving Buffer Cache on the first mounting instance.
+.... (PID:29547): Database role set to PHYSICAL STANDBY [kcvfdb.c:9212]
+Physical Standby Database mounted.
+.... (PID:29547): STARTING ARCH PROCESSES
+Starting background process ARC0
+2021-01-14T10:57:14.581293+00:00
+ARC0 started with pid=65, OS id=29641 
+.... (PID:29547): ARC0: Archival started
+.... (PID:29547): STARTING ARCH PROCESSES COMPLETE
+2021-01-14T10:57:14.591683+00:00
+ARC0 (PID:29641): Becoming a 'no FAL' ARCH
+2021-01-14T10:57:14.591948+00:00
+In-memory operation on ADG is currently only supported on Engineered systems and PaaS.
+inmemory_adg_enabled is turned off automatically.
+Please contact our support team for EXADATA solutions
+2021-01-14T10:57:14.600105+00:00
+TT00 (PID:29643): Gap Manager starting
+TT00 (PID:29643): Becoming the Active Gap Manager
+2021-01-14T10:57:14.621364+00:00
+TMON (PID:29543): STARTING ARCH PROCESSES
+Starting background process ARC1
+2021-01-14T10:57:14.629089+00:00
+Lost write protection disabled
+.... (PID:29547): Using STANDBY_ARCHIVE_DEST parameter default value as USE_DB_RECOVERY_FILE_DEST [krsd.c:18157]
+Starting background process ARC2
+2021-01-14T10:57:14.642843+00:00
+ARC1 started with pid=68, OS id=29647 
+Starting background process ARC3
+2021-01-14T10:57:14.660890+00:00
+ARC2 started with pid=69, OS id=29649 
+2021-01-14T10:57:14.678064+00:00
+ARC3 started with pid=70, OS id=29651 
+2021-01-14T10:57:14.678107+00:00
+TMON (PID:29543): ARC1: Archival started
+TMON (PID:29543): ARC2: Archival started
+TMON (PID:29543): ARC3: Archival started
+TMON (PID:29543): STARTING ARCH PROCESSES COMPLETE
+2021-01-14T10:57:14.729582+00:00
+Archiving previously deferred ORLs (racdbb1)
+2021-01-14T10:57:14.745005+00:00
+NET  (PID:29547): End-Of-Redo Branch archival of T-1.S-74
+2021-01-14T10:57:14.904393+00:00
+NET  (PID:29547): Archived Log entry 191 added for T-1.S-74 ID 0x3f250da9 LAD:1
+NET  (PID:29547): End-Of-Redo Branch archival of T-2.S-64
+2021-01-14T10:57:15.051129+00:00
+NET  (PID:29547): Archived Log entry 192 added for T-2.S-64 ID 0x3f250da9 LAD:1
+Completed: ALTER DATABASE MOUNT /* db agent *//* {1:44892:823} */
+ALTER DATABASE OPEN READ ONLY /* db agent *//* {1:44892:823} */
+Data Guard Broker initializing...
+2021-01-14T10:57:17.849305+00:00
+ rfs (PID:29728): Primary database is in MAXIMUM PERFORMANCE mode
+2021-01-14T10:57:17.865836+00:00
+ rfs (PID:29730): Primary database is in MAXIMUM PERFORMANCE mode
+2021-01-14T10:57:18.099233+00:00
+ rfs (PID:29728): Selected LNO:5 for T-1.S-77 dbid 1059337536 branch 1061720768
+2021-01-14T10:57:18.239459+00:00
+ rfs (PID:29730): Selected LNO:8 for T-2.S-67 dbid 1059337536 branch 1061720768
+2021-01-14T10:57:18.396532+00:00
+Starting Data Guard Broker (DMON)
+Starting background process INSV
+2021-01-14T10:57:18.420066+00:00
+INSV started with pid=80, OS id=29755 
+2021-01-14T10:57:18.731263+00:00
+ rfs (PID:29751): Opened log for T-2.S-66 dbid 1059337536 branch 1061720768
+2021-01-14T10:57:18.742971+00:00
+ rfs (PID:29753): Opened log for T-1.S-76 dbid 1059337536 branch 1061720768
+2021-01-14T10:57:18.760106+00:00
+ rfs (PID:29749): Opened log for T-2.S-65 dbid 1059337536 branch 1061720768
+2021-01-14T10:57:18.771479+00:00
+ rfs (PID:29757): Opened log for T-1.S-75 dbid 1059337536 branch 1061720768
+2021-01-14T10:57:18.814612+00:00
+ rfs (PID:29751): Archived Log entry 193 added for B-1061720768.T-2.S-66 ID 0x3f24c3b4 LAD:2
+2021-01-14T10:57:18.834604+00:00
+ rfs (PID:29757): Archived Log entry 194 added for B-1061720768.T-1.S-75 ID 0x3f24c3b4 LAD:2
+2021-01-14T10:57:18.852076+00:00
+ rfs (PID:29749): Archived Log entry 195 added for B-1061720768.T-2.S-65 ID 0x3f24c3b4 LAD:2
+2021-01-14T10:57:18.869841+00:00
+ rfs (PID:29753): Archived Log entry 196 added for B-1061720768.T-1.S-76 ID 0x3f24c3b4 LAD:2
+2021-01-14T10:57:22.872413+00:00
+ALTER SYSTEM SET fal_server='//myraca-scan/racdba' SCOPE=BOTH;
+Starting background process NSV0
+2021-01-14T10:57:22.896625+00:00
+NSV0 started with pid=84, OS id=29793 
+2021-01-14T10:57:23.102988+00:00
+Data Guard Broker initialization complete
+AUDIT_TRAIL initialization parameter is changed to OS, as DB is NOT compatible for database opened with read-only access
+This instance was first to open
+Ping without log force is disabled:
+  instance opened in read-only mode.
+2021-01-14T10:57:23.247254+00:00
+Beginning Standby Crash Recovery.
+ Started logmerger process
+2021-01-14T10:57:23.347866+00:00
+.... (PID:29492): Managed Standby Recovery starting Real Time Apply
+2021-01-14T10:57:23.461489+00:00
+max_pdb is 3
+2021-01-14T10:57:23.669453+00:00
+Parallel Media Recovery started with 8 slaves
+2021-01-14T10:57:23.720666+00:00
+stopping change tracking
+2021-01-14T10:57:23.841280+00:00
+Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_1_seq_73.392.1061808967
+2021-01-14T10:57:24.001367+00:00
+Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_2_seq_62.389.1061808189
+2021-01-14T10:57:24.218952+00:00
+Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_2_seq_63.391.1061808965
+2021-01-14T10:57:25.015016+00:00
+Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_2_seq_64.394.1061809035
+2021-01-14T10:57:25.225255+00:00
+Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_1_seq_74.393.1061809035
+2021-01-14T10:57:25.352920+00:00
+PR00 (PID:29801): Resetting standby activation ID 0 (0x0)
+2021-01-14T10:57:25.353109+00:00
+Incomplete Recovery applied until change 2701179 time 01/14/2021 10:56:29
+stopping change tracking
+2021-01-14T10:57:25.566643+00:00
+Completed Standby Crash Recovery.
+Picked Lamport scheme to generate SCNs
+Endian type of dictionary set to little
+2021-01-14T10:57:25.751846+00:00
+validate pdb 0, flags x10, valid 0, pdb flags x84 
+* validated domain 0, flags = 0x80
+2021-01-14T10:57:26.132805+00:00
+Undo initialization finished serial:0 start:1767513 end:1767513 diff:0 ms (0.0 seconds)
+Dictionary check beginning
+Dictionary check complete
+Database Characterset is AL32UTF8
+2021-01-14T10:57:26.608514+00:00
+No Resource Manager plan active
+2021-01-14T10:57:26.616208+00:00
+Starting background process RSM0
+2021-01-14T10:57:26.636013+00:00
+RSM0 started with pid=85, OS id=29902 
+2021-01-14T10:57:26.894948+00:00
+Set LMHB to elevated priority
+2021-01-14T10:57:27.791198+00:00
+replication_dependency_tracking turned off (no async multimaster replication found)
+2021-01-14T10:57:28.640073+00:00
+Unable to obtain current patch information as the database or pluggable database was opened for read-only access.
+===========================================================
+Dumping current patch information
+===========================================================
+Unable to obtain current patch information due to error: 16000
+===========================================================
+2021-01-14T10:57:28.905536+00:00
+PDB$SEED(2):Autotune of undo retention is turned on. 
+2021-01-14T10:57:28.910519+00:00
+PDB$SEED(2):This instance was first to open pluggable database PDB$SEED (container=2)
+PDB$SEED(2):Endian type of dictionary set to little
+PDB$SEED(2):Undo initialization finished serial:0 start:1770663 end:1770663 diff:0 ms (0.0 seconds)
+PDB$SEED(2):Database Characterset for PDB$SEED is AL32UTF8
+2021-01-14T10:57:30.248353+00:00
+Increasing priority of 2 RS
+Reconfiguration started (old inc 2, new inc 4)
+List of instances (total 2) :
+ 1 2
+New instances (total 1) :
+ 2
+My inst 1   
+ Global Resource Directory frozen
+ Communication channels reestablished
+ Master broadcasted resource hash value bitmaps
+ Non-local Process blocks cleaned out
+2021-01-14T10:57:30.366798+00:00
+ LMS 0: 0 GCS shadows cancelled, 0 closed, 0 Xw survived, skipped 0
+2021-01-14T10:57:30.366891+00:00
+ LMS 1: 0 GCS shadows cancelled, 0 closed, 0 Xw survived, skipped 0
+ Set master node info 
+ Dwn-cvts replayed, VALBLKs dubious
+ All grantable enqueues granted
+Reconfiguration complete (total time 0.2 secs) 
+Decreasing priority of 2 RS
+2021-01-14T10:57:30.722310+00:00
+db_recovery_file_dest_size of 22000 MB is 24.72% used. This is a
+user-specified limit on the amount of space that will be used by this
+database for recovery-related files, and does not reflect the amount of
+space available in the underlying filesystem or ASM diskgroup.
+2021-01-14T10:57:30.954931+00:00
+ALTER SYSTEM SET fal_server='//myraca-scan/racdba' SCOPE=BOTH;
+2021-01-14T10:57:30.998891+00:00
+RSM0 (PID:29902): Using STANDBY_ARCHIVE_DEST parameter default value as USE_DB_RECOVERY_FILE_DEST [krsd.c:18157]
+2021-01-14T10:57:31.027790+00:00
+ALTER SYSTEM SET log_archive_dest_2='' SCOPE=BOTH;
+2021-01-14T10:57:31.148635+00:00
+ALTER SYSTEM SET fal_server='//myraca-scan/racdba' SCOPE=BOTH;
+2021-01-14T10:57:32.086321+00:00
+PDB$SEED(2):Opening pdb with no Resource Manager plan active
+2021-01-14T10:57:37.512703+00:00
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE DISCONNECT  NODELAY
+2021-01-14T10:57:38.398078+00:00
+Attempt to start background Managed Standby Recovery process (racdbb1)
+2021-01-14T10:57:38.403087+00:00
+Unable to restore open state for pluggable databases due to               the following errors.
+2021-01-14T10:57:38.403322+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_ora_29547.trc:
+ORA-65054: Cannot open a pluggable database in the desired mode.
+Starting background process MRP0
+2021-01-14T10:57:38.430574+00:00
+MRP0 started with pid=92, OS id=30175 
+2021-01-14T10:57:38.431944+00:00
+Background Managed Standby Recovery process started (racdbb1)
+Physical standby database opened for read only access.
+Completed: ALTER DATABASE OPEN READ ONLY /* db agent *//* {1:44892:823} */
+2021-01-14T10:57:39.569452+00:00
+ALTER SYSTEM SET remote_listener=' myracb-scan.example.com:1521' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T10:57:39.571199+00:00
+ALTER SYSTEM SET listener_networks='' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T10:57:43.454340+00:00
+Starting single instance redo apply (SIRA) 
+ Started logmerger process
+2021-01-14T10:57:43.505471+00:00
+
+IM on ADG: Start of Empty Journal 
+
+IM on ADG: End of Empty Journal 
+2021-01-14T10:57:43.515919+00:00
+.... (PID:29492): Managed Standby Recovery starting Real Time Apply
+2021-01-14T10:57:43.574431+00:00
+max_pdb is 3
+2021-01-14T10:57:43.950104+00:00
+Increasing priority of 2 RS
+Reconfiguration started (old inc 4, new inc 6)
+List of instances (total 2) :
+ 1 2
+My inst 1   
+ Global Resource Directory frozen
+ Communication channels reestablished
+ Master broadcasted resource hash value bitmaps
+ Non-local Process blocks cleaned out
+2021-01-14T10:57:44.002253+00:00
+ LMS 0: 0 GCS shadows cancelled, 0 closed, 0 Xw survived, skipped 0
+2021-01-14T10:57:44.003114+00:00
+ LMS 1: 0 GCS shadows cancelled, 0 closed, 0 Xw survived, skipped 0
+ Set master node info 
+ Dwn-cvts replayed, VALBLKs dubious
+ All grantable enqueues granted
+Reconfiguration complete (total time 0.1 secs) 
+Decreasing priority of 2 RS
+2021-01-14T10:57:44.250809+00:00
+Parallel Media Recovery started with 8 slaves
+2021-01-14T10:57:44.303067+00:00
+stopping change tracking
+2021-01-14T10:57:44.357910+00:00
+TT02 (PID:30271): Waiting for all non-current ORLs to be archived
+2021-01-14T10:57:44.358228+00:00
+TT02 (PID:30271): All non-current ORLs have been archived
+2021-01-14T10:57:44.413875+00:00
+PR00 (PID:30240): Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_2_seq_65.397.1061809039
+2021-01-14T10:57:44.439534+00:00
+Completed: ALTER DATABASE RECOVER MANAGED STANDBY DATABASE DISCONNECT  NODELAY
+2021-01-14T10:57:44.477231+00:00
+TT02 (PID:30271): Clearing ORL LNO:1 +DATA/RACDBB/ONLINELOG/group_1.273.1061742661
+Clearing online log 1 of thread 1 sequence number 73
+2021-01-14T10:57:44.521483+00:00
+ALTER SYSTEM SET remote_listener=' myracb-scan.example.com:1521' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T10:57:44.523433+00:00
+ALTER SYSTEM SET listener_networks='' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T10:57:44.583263+00:00
+PR00 (PID:30240): Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_1_seq_75.398.1061809039
+2021-01-14T10:57:44.782604+00:00
+PR00 (PID:30240): Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_2_seq_66.395.1061809039
+2021-01-14T10:57:45.322826+00:00
+PR00 (PID:30240): Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_1_seq_76.396.1061809039
+PR00 (PID:30240): Media Recovery Waiting for T-2.S-67 (in transit)
+2021-01-14T10:57:45.562431+00:00
+Recovery of Online Redo Log: Thread 2 Group 8 Seq 67 Reading mem 0
+  Mem# 0: +DATA/RACDBB/ONLINELOG/group_8.280.1061742755
+  Mem# 1: +FRA/RACDBB/ONLINELOG/group_8.265.1061742763
+2021-01-14T10:57:45.642804+00:00
+PR00 (PID:30240): Media Recovery Waiting for T-1.S-77 (in transit)
+2021-01-14T10:57:45.648235+00:00
+Recovery of Online Redo Log: Thread 1 Group 5 Seq 77 Reading mem 0
+  Mem# 0: +DATA/RACDBB/ONLINELOG/group_5.277.1061742715
+  Mem# 1: +FRA/RACDBB/ONLINELOG/group_5.258.1061742721
+2021-01-14T10:57:57.599041+00:00
+TT02 (PID:30271): Clearing ORL LNO:1 complete
+TT02 (PID:30271): Clearing ORL LNO:2 +DATA/RACDBB/ONLINELOG/group_2.274.1061742675
+Clearing online log 2 of thread 1 sequence number 74
+2021-01-14T10:58:10.558552+00:00
+TT02 (PID:30271): Clearing ORL LNO:2 complete
+TT02 (PID:30271): Clearing ORL LNO:3 +DATA/RACDBB/ONLINELOG/group_3.275.1061742687
+Clearing online log 3 of thread 2 sequence number 63
+2021-01-14T10:58:23.705619+00:00
+TT02 (PID:30271): Clearing ORL LNO:3 complete
+TT02 (PID:30271): Clearing ORL LNO:4 +DATA/RACDBB/ONLINELOG/group_4.276.1061742701
+Clearing online log 4 of thread 2 sequence number 64
+2021-01-14T10:58:36.780078+00:00
+TT02 (PID:30271): Clearing ORL LNO:4 complete
+2021-01-14T10:58:41.802798+00:00
+TT02 (PID:30271): Waiting for all non-current ORLs to be archived
+2021-01-14T10:58:41.802975+00:00
+TT02 (PID:30271): All non-current ORLs have been archived
+2021-01-14T11:02:31.293982+00:00
+PDB(3):Autotune of undo retention is turned on. 
+2021-01-14T11:02:31.309765+00:00
+PDB(3):Endian type of dictionary set to little
+PDB(3):Undo initialization finished serial:0 start:2072845 end:2072845 diff:0 ms (0.0 seconds)
+PDB(3):Database Characterset for PDB is AL32UTF8
+2021-01-14T11:02:32.422482+00:00
+PDB(3):Opening pdb with no Resource Manager plan active
+Pluggable database PDB opened read only
+2021-01-14T11:03:10.256343+00:00
+PR00 (PID:30240): Media Recovery Waiting for T-1.S-78 (in transit)
+2021-01-14T11:03:10.259374+00:00
+ARC1 (PID:29647): Archived Log entry 197 added for T-1.S-77 ID 0x3f24c3b4 LAD:1
+2021-01-14T11:03:11.328438+00:00
+Recovery of Online Redo Log: Thread 1 Group 6 Seq 78 Reading mem 0
+  Mem# 0: +DATA/RACDBB/ONLINELOG/group_6.278.1061742729
+  Mem# 1: +FRA/RACDBB/ONLINELOG/group_6.263.1061742735
+2021-01-14T11:03:12.478028+00:00
+ARC1 (PID:29647): Archived Log entry 198 added for T-2.S-67 ID 0x3f24c3b4 LAD:1
+2021-01-14T11:03:13.010405+00:00
+PR00 (PID:30240): Media Recovery Log +FRA/RACDBB/ARCHIVELOG/2021_01_14/thread_2_seq_67.400.1061809393
+PR00 (PID:30240): Media Recovery Waiting for T-2.S-68 (in transit)
+2021-01-14T11:03:13.159498+00:00
+Recovery of Online Redo Log: Thread 2 Group 8 Seq 68 Reading mem 0
+  Mem# 0: +DATA/RACDBB/ONLINELOG/group_8.280.1061742755
+  Mem# 1: +FRA/RACDBB/ONLINELOG/group_8.265.1061742763
+2021-01-14T11:05:24.755452+00:00
+SWITCHOVER VERIFY BEGIN
+SWITCHOVER VERIFY COMPLETE
+2021-01-14T11:05:26.201314+00:00
+ALTER SYSTEM SET fal_server='//myraca-scan/racdba' SCOPE=BOTH;
+2021-01-14T11:05:31.864212+00:00
+PR00 (PID:30240): Resetting standby activation ID 1059374004 (0x3f24c3b4)
+2021-01-14T11:05:31.884433+00:00
+Media Recovery End-Of-Redo indicator encountered
+2021-01-14T11:05:31.884538+00:00
+Media Recovery Continuing
+PR00 (PID:30240): Media Recovery Waiting for T-1.S-79
+2021-01-14T11:05:32.067258+00:00
+ rfs (PID:29749): Possible network disconnect with primary database
+2021-01-14T11:05:32.074535+00:00
+ rfs (PID:29751): Possible network disconnect with primary database
+2021-01-14T11:05:32.077376+00:00
+ rfs (PID:29726): Possible network disconnect with primary database
+2021-01-14T11:05:33.936534+00:00
+.... (PID:29436): The Time Management Interface (TMI) is being enabled for role transition
+.... (PID:29436): information.  This will result in messages beingoutput to the alert log
+.... (PID:29436): file with the prefix 'TMI: '.  This is being enabled to make the timing of
+.... (PID:29436): the various stages of the role transition available for diagnostic purposes.
+.... (PID:29436): This output will end when the role transition is complete.
+2021-01-14T11:05:33.941205+00:00
+PR00 (PID:30240): MRP0: Background Media Recovery cancelled with status 16037
+2021-01-14T11:05:33.941416+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_pr00_30240.trc:
+ORA-16037: user requested cancel of managed recovery operation
+2021-01-14T11:05:33.945751+00:00
+.... (PID:29492): Managed Standby Recovery not using Real Time Apply
+2021-01-14T11:05:34.060381+00:00
+Recovery interrupted!
+2021-01-14T11:05:34.521307+00:00
+Increasing priority of 2 RS
+Reconfiguration started (old inc 6, new inc 8)
+List of instances (total 2) :
+ 1 2
+My inst 1   
+ Global Resource Directory frozen
+ Communication channels reestablished
+ Master broadcasted resource hash value bitmaps
+ Non-local Process blocks cleaned out
+2021-01-14T11:05:34.587594+00:00
+ LMS 0: 0 GCS shadows cancelled, 0 closed, 0 Xw survived, skipped 0
+2021-01-14T11:05:34.587658+00:00
+ LMS 1: 0 GCS shadows cancelled, 0 closed, 0 Xw survived, skipped 0
+ Set master node info 
+ Dwn-cvts replayed, VALBLKs dubious
+ All grantable enqueues granted
+Reconfiguration complete (total time 0.2 secs) 
+Decreasing priority of 2 RS
+2021-01-14T11:05:35.078276+00:00
+stopping change tracking
+2021-01-14T11:05:35.084639+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_pr00_30240.trc:
+ORA-16037: user requested cancel of managed recovery operation
+2021-01-14T11:05:36.208085+00:00
+Background Media Recovery process shutdown (racdbb1)
+2021-01-14T11:05:36.983593+00:00
+.... (PID:29458): Killing 3 processes (PIDS:3642,29753,29757) (all RFS) in order to disallow current and future RFS connections. Requested by OS process 29458 on instance 1
+2021-01-14T11:05:36.984516+00:00
+Process termination requested for pid 3642 [source = rdbms], [info = 2] [request issued by pid: 29458, uid: 3001]
+2021-01-14T11:05:36.984645+00:00
+Process termination requested for pid 29757 [source = rdbms], [info = 2] [request issued by pid: 29458, uid: 3001]
+2021-01-14T11:05:36.984677+00:00
+Process termination requested for pid 29753 [source = rdbms], [info = 2] [request issued by pid: 29458, uid: 3001]
+2021-01-14T11:05:48.664755+00:00
+Stopping background process MMNL
+2021-01-14T11:05:49.664571+00:00
+Stopping background process MMON
+2021-01-14T11:05:50.664441+00:00
+Stopping Emon pool
+2021-01-14T11:05:51.681413+00:00
+alter pluggable database all close immediate
+2021-01-14T11:05:51.714829+00:00
+PDB(3):JIT: pid 29492 requesting stop
+2021-01-14T11:05:51.762759+00:00
+PDB(3):Stopped service pdb
+PDB(3):Buffer Cache flush deferred for PDB 3
+Pluggable database PDB closed
+Completed: alter pluggable database all close immediate
+PDB$SEED(2):JIT: pid 29492 requesting stop
+PDB$SEED(2):Buffer Cache flush deferred for PDB 2
+Dispatchers and shared servers shutdown
+CLOSE: killing server sessions.
+2021-01-14T11:05:51.985938+00:00
+Process termination requested for pid 30286 [source = rdbms], [info = 2] [request issued by pid: 29492, uid: 3001]
+2021-01-14T11:05:51.986428+00:00
+Process termination requested for pid 30200 [source = rdbms], [info = 2] [request issued by pid: 29492, uid: 3001]
+2021-01-14T11:05:51.986613+00:00
+Process termination requested for pid 30513 [source = rdbms], [info = 2] [request issued by pid: 29492, uid: 3001]
+2021-01-14T11:05:51.986652+00:00
+Process termination requested for pid 30267 [source = rdbms], [info = 2] [request issued by pid: 29492, uid: 3001]
+2021-01-14T11:05:52.005512+00:00
+Active process 29533 user 'oracle' program 'oracle@racb1.example.com (SCM0)', waiting for 'SCM slave idle'
+
+Active process 29456 user 'oracle' program 'oracle@racb1.example.com (SVCB)', waiting for 'wait for unread message on broadcast channel'
+
+Active process 30200 user 'oracle' program 'oracle@racb1.example.com (TNS V1-V3)', waiting for 'SQL*Net message from client'
+
+Active process 30267 user 'oracle' program 'oracle@racb1.example.com (TNS V1-V3)', waiting for 'SQL*Net message from client'
+
+Active process 29456 user 'oracle' program 'oracle@racb1.example.com (SVCB)', waiting for 'wait for unread message on broadcast channel'
+
+Active process 30200 user 'oracle' program 'oracle@racb1.example.com (TNS V1-V3)', waiting for 'SQL*Net message from client'
+
+Active process 30267 user 'oracle' program 'oracle@racb1.example.com (TNS V1-V3)', waiting for 'SQL*Net message from client'
+
+2021-01-14T11:05:55.070418+00:00
+CLOSE: all sessions shutdown successfully.
+alter pluggable database all close immediate
+Completed: alter pluggable database all close immediate
+2021-01-14T11:05:56.077849+00:00
+
+IM on ADG: Start of Empty Journal 
+
+IM on ADG: End of Empty Journal 
+Stopping Emon pool
+Entire Buffer Cache invalidation started
+Entire Buffer Cache invalidation completed
+2021-01-14T11:05:56.825876+00:00
+.... (PID:29436): The Time Management Interface (TMI) is being enabled for role transition
+.... (PID:29436): information.  This will result in messages beingoutput to the alert log
+.... (PID:29436): file with the prefix 'TMI: '.  This is being enabled to make the timing of
+.... (PID:29436): the various stages of the role transition available for diagnostic purposes.
+.... (PID:29436): This output will end when the role transition is complete.
+2021-01-14T11:05:56.858034+00:00
+.... (PID:29492): RT: Role transition work is not done
+.... (PID:29492): Redo network throttle feature is disabled at mount time
+AUDIT_TRAIL initialization parameter is changed back to its original value as specified in the parameter file.
+2021-01-14T11:05:56.896713+00:00
+.... (PID:29492): Database role cleared from PHYSICAL STANDBY [kcvs.c:1069]
+Switchover: Complete - Database mounted as primary
+2021-01-14T11:05:57.001442+00:00
+Switching DLM PDB isolation (kjidomena: 0 -> 3, mm: STNDB -> NORM)
+Enabling Dynamic Remastering: STNDB->NORM switch
+2021-01-14T11:05:58.739568+00:00
+ALTER SYSTEM SET fal_server='' SCOPE=BOTH;
+2021-01-14T11:06:01.577714+00:00
+ALTER SYSTEM SET remote_listener=' myracb-scan.example.com:1521' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T11:06:01.580039+00:00
+ALTER SYSTEM SET listener_networks='' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T11:06:03.035610+00:00
+.... (PID:29436): Using STANDBY_ARCHIVE_DEST parameter default value as USE_DB_RECOVERY_FILE_DEST [krsd.c:18157]
+2021-01-14T11:06:03.035968+00:00
+ARC0 (PID:29641): Becoming the 'no SRL' ARCH
+2021-01-14T11:06:03.078700+00:00
+TT00 (PID:29643): Relinquishing Active Gap Manager role
+2021-01-14T11:06:03.102067+00:00
+ALTER DATABASE OPEN
+2021-01-14T11:06:03.102305+00:00
+TMI: adbdrv open database BEGIN 2021-01-14 11:06:03.102095
+Data Guard Broker initializing...
+2021-01-14T11:06:03.103790+00:00
+idle dispatcher 'D000' terminated, pid = (52, 1)
+2021-01-14T11:06:03.367209+00:00
+ALTER SYSTEM SET remote_listener=' myracb-scan.example.com:1521' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T11:06:03.368811+00:00
+ALTER SYSTEM SET listener_networks='' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T11:06:03.479521+00:00
+Ping without log force is disabled:
+  not an Exadata system.
+Buffer Cache Full DB Caching mode changing from FULL CACHING DISABLED to FULL CACHING ENABLED 
+Picked broadcast on commit scheme to generate SCNs
+2021-01-14T11:06:03.617845+00:00
+Thread 1 advanced to log sequence 80 (thread open)
+Redo log for group 2, sequence 80 is not located on DAX storage
+Thread 1 opened at log sequence 80
+  Current log# 2 seq# 80 mem# 0: +DATA/RACDBB/ONLINELOG/group_2.274.1061742675
+  Current log# 2 seq# 80 mem# 1: +FRA/RACDBB/ONLINELOG/group_2.261.1061742681
+Successful open of redo thread 1
+2021-01-14T11:06:03.663095+00:00
+MTTR advisory is disabled because FAST_START_MTTR_TARGET is not set
+stopping change tracking
+Undo initialization recovery: err:0 start: 2285065 end: 2285079 diff: 14 ms (0.0 seconds)
+2021-01-14T11:06:03.732047+00:00
+TT05 (PID:4536): Sleep 5 seconds and then try to clear SRLs in 2 time(s)
+2021-01-14T11:06:03.796374+00:00
+ARC2 (PID:29649): Archived Log entry 202 added for T-1.S-79 ID 0x3f24d102 LAD:1
+2021-01-14T11:06:03.945314+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_tt02_4532.trc:
+ORA-16146: control file enqueue unavailable
+2021-01-14T11:06:03.945444+00:00
+TT02 (PID:4532): Error 16146 for LNO:2 to '//myraca-scan/racdba'
+2021-01-14T11:06:03.966970+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_tt02_4532.trc:
+ORA-16146: control file enqueue unavailable
+2021-01-14T11:06:03.970824+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_tt02_4532.trc:
+ORA-16146: control file enqueue unavailable
+2021-01-14T11:06:04.021383+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_arc1_29647.trc:
+ORA-16146: control file enqueue unavailable
+2021-01-14T11:06:04.038855+00:00
+ARC1 (PID:29647): FAL: Error 16146 creating remote archived redo log file '//myraca-scan/racdba'
+ARC1 (PID:29647): FAL archive failed with error 16146 (see trace for details)
+ARC1 (PID:29647): FAL archive failed, archiver continuing
+2021-01-14T11:06:04.043703+00:00
+ORACLE Instance racdbb1, archival error, archiver continuing
+2021-01-14T11:06:04.043901+00:00
+ORA-16055: FAL request rejected
+2021-01-14T11:06:04.044191+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_arc1_29647.trc:
+ORA-16055: FAL request rejected
+2021-01-14T11:06:04.209957+00:00
+ALTER SYSTEM SET remote_listener=' myracb-scan.example.com:1521' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T11:06:04.212032+00:00
+ALTER SYSTEM SET listener_networks='' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T11:06:04.494133+00:00
+[29902] Successfully onlined Undo Tablespace 2.
+Undo initialization online undo segments: err:0 start: 2285079 end: 2285875 diff: 796 ms (0.8 seconds)
+Undo initialization finished serial:0 start:2285065 end:2285885 diff:820 ms (0.8 seconds)
+Verifying minimum file header compatibility for tablespace encryption for pdb 1..
+Verifying file header compatibility for tablespace encryption completed for pdb 1
+Database Characterset is AL32UTF8
+2021-01-14T11:06:04.533872+00:00
+Starting background process SMCO
+2021-01-14T11:06:04.557127+00:00
+SMCO started with pid=53, OS id=4561 
+No Resource Manager plan active
+Starting background process SVCB
+2021-01-14T11:06:04.806066+00:00
+SVCB started with pid=60, OS id=4569 
+Starting background process GTX0
+2021-01-14T11:06:05.336804+00:00
+GTX0 started with pid=64, OS id=4585 
+joxcsys_required_dirobj_exists: directory object exists with required path /u01/app/oracle/product/19.3.0/dbhome_1/javavm/admin/, pid 29902 cid 1
+2021-01-14T11:06:05.912818+00:00
+Starting background process RCBG
+2021-01-14T11:06:05.931821+00:00
+RCBG started with pid=92, OS id=4619 
+Starting background process AQPC
+2021-01-14T11:06:06.587295+00:00
+AQPC started with pid=93, OS id=4623 
+Starting background process MMNL
+2021-01-14T11:06:06.642548+00:00
+MMNL started with pid=94, OS id=4625 
+Starting background process MMON
+2021-01-14T11:06:06.661488+00:00
+MMON started with pid=95, OS id=4627 
+2021-01-14T11:06:06.842369+00:00
+## jox_ujs_status: database not open read-write or Java not installed, returning FALSE in pid 4636
+2021-01-14T11:06:07.177372+00:00
+PDB$SEED(2):Autotune of undo retention is turned on. 
+2021-01-14T11:06:07.212742+00:00
+ALTER SYSTEM SET remote_listener=' myracb-scan.example.com:1521' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T11:06:07.214546+00:00
+ALTER SYSTEM SET listener_networks='' SCOPE=MEMORY SID='racdbb1';
+2021-01-14T11:06:07.247340+00:00
+* allocate domain 2, valid ? 1 
+2021-01-14T11:06:07.450431+00:00
+PDB$SEED(2):queued attach DA request 0x93e42a18 for pdb 2, ospid 29902 
+2021-01-14T11:06:07.454266+00:00
+Increasing priority of 2 RS
+Domain Action Reconfiguration started (domid 2, new da inc 2, cluster inc 8)
+Instance 1 is attaching to domain 2 
+ Global Resource Directory partially frozen for domain action
+ Non-local Process blocks cleaned out
+ Set master node info 
+ Dwn-cvts replayed, VALBLKs dubious
+ All grantable enqueues granted
+Domain Action Reconfiguration complete (total time 0.1 secs) 
+Decreasing priority of 2 RS
+2021-01-14T11:06:07.702763+00:00
+PDB$SEED(2):Endian type of dictionary set to little
+PDB$SEED(2):Undo initialization finished serial:0 start:2289315 end:2289315 diff:0 ms (0.0 seconds)
+PDB$SEED(2):Database Characterset for PDB$SEED is AL32UTF8
+2021-01-14T11:06:08.193604+00:00
+Buffer Cache Full DB Caching mode changing from FULL CACHING ENABLED to FULL CACHING DISABLED 
+Full DB Caching disabled: DEFAULT_CACHE_SIZE should be at least 46 MBs bigger than current size. 
+2021-01-14T11:06:09.102786+00:00
+db_recovery_file_dest_size of 22000 MB is 24.75% used. This is a
+user-specified limit on the amount of space that will be used by this
+database for recovery-related files, and does not reflect the amount of
+space available in the underlying filesystem or ASM diskgroup.
+2021-01-14T11:06:09.125091+00:00
+PDB$SEED(2):Opening pdb with no Resource Manager plan active
+PDB(3):Autotune of undo retention is turned on. 
+PDB(3):This instance was first to open pluggable database PDB (container=3)
+PDB(3):queued attach DA request 0x93e429b0 for pdb 3, ospid 29902 
+2021-01-14T11:06:09.616935+00:00
+Increasing priority of 2 RS
+Domain Action Reconfiguration started (domid 3, new da inc 1, cluster inc 8)
+Instance 1 is attaching to domain 3 
+* allocate domain 3, valid ? 1 
+ Global Resource Directory partially frozen for domain action
+Domain Action Reconfiguration complete (total time 0.0 secs) 
+Decreasing priority of 2 RS
+2021-01-14T11:06:09.714217+00:00
+PDB(3):Endian type of dictionary set to little
+2021-01-14T11:06:09.829870+00:00
+Increasing priority of 2 RS
+Domain Action Reconfiguration started (domid 3, new da inc 2, cluster inc 8)
+Instance 2 is attaching to domain 3 
+ Global Resource Directory partially frozen for domain action
+ Non-local Process blocks cleaned out
+ Set master node info 
+ Dwn-cvts replayed, VALBLKs dubious
+ All grantable enqueues granted
+Domain Action Reconfiguration complete (total time 0.1 secs) 
+Decreasing priority of 2 RS
+2021-01-14T11:06:10.068086+00:00
+PDB(3):Undo initialization recovery: Parallel FPTR failed: start:2291431 end:2291448 diff:17 ms (0.0 seconds)
+2021-01-14T11:06:10.218523+00:00
+PDB(3):Undo initialization recovery: err:0 start: 2291430 end: 2291599 diff: 169 ms (0.2 seconds)
+PDB(3):[29902] Successfully onlined Undo Tablespace 2.
+PDB(3):Undo initialization online undo segments: err:0 start: 2291599 end: 2292217 diff: 618 ms (0.6 seconds)
+PDB(3):Undo initialization finished serial:0 start:2291430 end:2292237 diff:807 ms (0.8 seconds)
+PDB(3):Pluggable database PDB dictionary check beginning
+2021-01-14T11:06:11.175973+00:00
+PDB(3):Pluggable Database PDB Dictionary check complete
+PDB(3):Database Characterset for PDB is AL32UTF8
+2021-01-14T11:06:12.005684+00:00
+TT05 (PID:4536): Sleep 10 seconds and then try to clear SRLs in 3 time(s)
+2021-01-14T11:06:12.706608+00:00
+PDB(3):Opening pdb with no Resource Manager plan active
+PDB(3):joxcsys_required_dirobj_exists: directory object exists with required path /u01/app/oracle/product/19.3.0/dbhome_1/javavm/admin/, pid 29902 cid 3
+Pluggable database PDB opened read write
+2021-01-14T11:06:13.726385+00:00
+TMI: adbdrv open database END 2021-01-14 11:06:13.726215
+Starting background process CJQ0
+2021-01-14T11:06:13.768887+00:00
+CJQ0 started with pid=107, OS id=4847 
+Completed: ALTER DATABASE OPEN
+ALTER PLUGGABLE DATABASE ALL OPEN
+Completed: ALTER PLUGGABLE DATABASE ALL OPEN
+2021-01-14T11:06:14.326640+00:00
+
+
+***********************************************************************
+
+Fatal NI connect error 12514, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=racdba)(CID=(PROGRAM=oracle)(HOST=racb1.example.com)(USER=oracle)))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.5)(PORT=1521))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.4)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for Linux: Version 19.0.0.0.0 - Production
+	TCP/IP NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+  Version 19.9.0.0.0
+  Time: 14-JAN-2021 11:06:14
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    
+TNS-12564: TNS:connection refused
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+
+Fatal NI connect error 12528, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=racdba)(CID=(PROGRAM=oracle)(HOST=racb1.example.com)(USER=oracle)))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.5)(PORT=1521))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.4)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for Linux: Version 19.0.0.0.0 - Production
+	TCP/IP NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+  Version 19.9.0.0.0
+  Time: 14-JAN-2021 11:06:14
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    
+TNS-12564: TNS:connection refused
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+2021-01-14T11:06:14.338600+00:00
+
+
+***********************************************************************
+
+Fatal NI connect error 12528, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=racdba)(CID=(PROGRAM=oracle)(HOST=racb1.example.com)(USER=oracle)))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.5)(PORT=1521))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.4)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for Linux: Version 19.0.0.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+	TCP/IP NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+  Version 19.9.0.0.0
+  Time: 14-JAN-2021 11:06:14
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    
+TNS-12564: TNS:connection refused
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+
+Fatal NI connect error 12528, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=racdba)(CID=(PROGRAM=oracle)(HOST=racb1.example.com)(USER=oracle)))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.5)(PORT=1521))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.4)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for Linux: Version 19.0.0.0.0 - Production
+	TCP/IP NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+  Version 19.9.0.0.0
+  Time: 14-JAN-2021 11:06:14
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    
+TNS-12564: TNS:connection refused
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+
+Fatal NI connect error 12528, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=racdba)(CID=(PROGRAM=oracle)(HOST=racb1.example.com)(USER=oracle)))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.5)(PORT=1521))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.4)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for Linux: Version 19.0.0.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+	TCP/IP NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+  Version 19.9.0.0.0
+  Time: 14-JAN-2021 11:06:14
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    
+TNS-12564: TNS:connection refused
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+
+Fatal NI connect error 12528, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=racdba)(CID=(PROGRAM=oracle)(HOST=racb1.example.com)(USER=oracle)))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.5)(PORT=1521))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.4)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for Linux: Version 19.0.0.0.0 - Production
+	TCP/IP NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+  Version 19.9.0.0.0
+  Time: 14-JAN-2021 11:06:14
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    
+TNS-12564: TNS:connection refused
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+2021-01-14T11:06:14.350105+00:00
+TT00 (PID:29643): Error 12528 received logging on to the standby
+2021-01-14T11:06:14.350463+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_tt00_29643.trc:
+ORA-12528: TNS:listener: all appropriate instances are blocking new connections
+TT00 (PID:29643): krsg_check_connection: Error 12528 connecting to standby '//myraca-scan/racdba'
+
+
+***********************************************************************
+
+Fatal NI connect error 12528, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=racdba)(CID=(PROGRAM=oracle)(HOST=racb1.example.com)(USER=oracle)))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.5)(PORT=1521))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.4)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for Linux: Version 19.0.0.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+	TCP/IP NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+  Version 19.9.0.0.0
+  Time: 14-JAN-2021 11:06:14
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    
+TNS-12564: TNS:connection refused
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+
+Fatal NI connect error 12528, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=racdba)(CID=(PROGRAM=oracle)(HOST=racb1.example.com)(USER=oracle)))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.5)(PORT=1521))(ADDRESS=(PROTOCOL=tcp)(HOST=10.1.1.4)(PORT=1521)))
+
+  VERSION INFORMATION:
+	TNS for Linux: Version 19.0.0.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+	TCP/IP NT Protocol Adapter for Linux: Version 19.0.0.0.0 - Production
+  Version 19.9.0.0.0
+  Time: 14-JAN-2021 11:06:14
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12564
+    
+TNS-12564: TNS:connection refused
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+2021-01-14T11:06:14.361713+00:00
+TT02 (PID:4532): Error 12528 received logging on to the standby
+2021-01-14T11:06:14.361991+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_tt02_4532.trc:
+ORA-12528: TNS:listener: all appropriate instances are blocking new connections
+TT02 (PID:4532): Error 12528 for LNO:2 to '//myraca-scan/racdba'
+2021-01-14T11:06:14.580830+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_tt02_4532.trc:
+ORA-12528: TNS:listener: all appropriate instances are blocking new connections
+2021-01-14T11:06:14.584501+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdbb/racdbb1/trace/racdbb1_tt02_4532.trc:
+ORA-12528: TNS:listener: all appropriate instances are blocking new connections
+2021-01-14T11:06:14.647376+00:00
+Thread 1 advanced to log sequence 81 (LGWR switch),  current SCN: 2811711
+  Current log# 1 seq# 81 mem# 0: +DATA/RACDBB/ONLINELOG/group_1.273.1061742661
+  Current log# 1 seq# 81 mem# 1: +FRA/RACDBB/ONLINELOG/group_1.262.1061742667
+2021-01-14T11:06:14.788224+00:00
+ARC3 (PID:29651): Archived Log entry 203 added for T-1.S-80 ID 0x3f24d102 LAD:1
+2021-01-14T11:06:18.025489+00:00
+TT05 (PID:4536): Sleep 10 seconds and then try to clear SRLs in 4 time(s)
+2021-01-14T11:06:22.604323+00:00
+Starting background process NSV1
+2021-01-14T11:06:22.623720+00:00
+NSV1 started with pid=115, OS id=4926 
+2021-01-14T11:06:25.371267+00:00
+ALTER SYSTEM SET log_archive_dest_state_2='ENABLE' SCOPE=MEMORY SID='*';
+2021-01-14T11:06:25.719450+00:00
+TT02 (PID:4532): SRL selected for T-1.S-81 for LAD:2
+2021-01-14T11:06:29.129895+00:00
+TT05 (PID:4536): Sleep 10 seconds and then try to clear SRLs in 5 time(s)
+2021-01-14T11:06:33.481579+00:00
+ALTER SYSTEM SET log_archive_dest_state_2='ENABLE' SCOPE=BOTH;
+2021-01-14T11:06:35.149019+00:00
+TT05 (PID:4536): Sleep 10 seconds and then try to clear SRLs in 6 time(s)
+2021-01-14T11:06:39.136254+00:00
+TT05 (PID:4536): Sleep 10 seconds and then try to clear SRLs in 7 time(s)
+2021-01-14T11:06:49.142425+00:00
+TT05 (PID:4536): Role transition work is done
+2021-01-14T11:06:56.331987+00:00
+ALTER SYSTEM SET log_archive_dest_state_2='ENABLE' SCOPE=BOTH;
+2021-01-14T11:08:17.668437+00:00
+Thread 1 cannot allocate new log, sequence 82
+Checkpoint not complete
+  Current log# 1 seq# 81 mem# 0: +DATA/RACDBB/ONLINELOG/group_1.273.1061742661
+  Current log# 1 seq# 81 mem# 1: +FRA/RACDBB/ONLINELOG/group_1.262.1061742667
+2021-01-14T11:08:20.709885+00:00
+Thread 1 advanced to log sequence 82 (LGWR switch),  current SCN: 2812799
+  Current log# 2 seq# 82 mem# 0: +DATA/RACDBB/ONLINELOG/group_2.274.1061742675
+  Current log# 2 seq# 82 mem# 1: +FRA/RACDBB/ONLINELOG/group_2.261.1061742681
+2021-01-14T11:08:21.061989+00:00
+ARC3 (PID:29651): Archived Log entry 212 added for T-1.S-81 ID 0x3f24d102 LAD:1
+2021-01-14T11:08:21.182254+00:00
+TT03 (PID:4530): SRL selected for T-1.S-82 for LAD:2

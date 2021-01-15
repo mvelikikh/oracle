@@ -1,0 +1,2 @@
+https://docs.oracle.com/en/database/oracle/oracle-database/19/multi/administering-pdbs-with-sql-plus.html#GUID-5A2471BC-8501-4E38-BD28-7EE182F3B3A7
+Always use user-defined services for applications. The reason is that you can customize user-defined services to fit the requirements of your applications. Oracle recommends that you not use the default PDB service for applications.

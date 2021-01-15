@@ -1,0 +1,1229 @@
+2021-01-13T16:45:14.502+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+      dg_broker_config_file2 = "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:45:14.502+00:00                      DMON: Attach state object
+2021-01-13T16:45:14.520+00:00                      DMON: Initialization of broker state requires reconciliation
+2021-01-13T16:45:14.520+00:00                      DMON: Broker state reconciled, version = 0, state = 00000000
+2021-01-13T16:45:14.521+00:00                      DMON: Broker State Initialized
+2021-01-13T16:45:14.521+00:00                            Version = 1
+2021-01-13T16:45:14.521+00:00                            State = 00000000
+2021-01-13T16:45:14.521+00:00                      DMON: Creating INSV process
+2021-01-13T16:45:17.571+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat' with blocksize 4096
+2021-01-13T16:45:17.572+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat'
+2021-01-13T16:45:17.572+00:00                      INSV: home block of /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat: zzz=0x0, Seq.MIV=0.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T16:45:17.572+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat' with blocksize 4096
+2021-01-13T16:45:17.572+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat'
+2021-01-13T16:45:17.572+00:00                      INSV: home block of /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: zzz=0x0, Seq.MIV=0.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T16:45:17.572+00:00                      INSV: Set current metadata file ID to 1 (Seq.MIV=0.0)
+2021-01-13T16:45:17.572+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat' with blocksize 4096
+2021-01-13T16:45:17.572+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat'
+2021-01-13T16:45:17.572+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat' with blocksize 4096
+2021-01-13T16:45:17.573+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat'
+2021-01-13T16:45:17.573+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-13T16:45:17.573+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=0
+2021-01-13T16:45:17.573+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T16:45:17.573+00:00                      	pmyshut=0, aft=0, laglim=0, obslim=0
+2021-01-13T16:45:17.573+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-13T16:45:17.574+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-13T16:45:17.574+00:00                      INSV: INSV is ready
+2021-01-13T16:45:17.621+00:00                      INSV: instance 2 requested FSFO state reconciliation
+2021-01-13T16:45:17.621+00:00                      INSV: the new instance already has up-to-date FSFO state
+2021-01-13T16:45:17.621+00:00                      INSV: Sending reconcile FSFO state of this instance #1
+2021-01-13T16:45:17.621+00:00                      INSV: 
+2021-01-13T16:45:17.621+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T16:45:17.621+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T16:45:18.541+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-13T16:45:18.544+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-13T16:45:18.544+00:00                      DMON: Boot configuration (0.0.0), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:45:18.547+00:00                      DMON: Configuration does not exist, Data Guard broker ready
+2021-01-13T16:45:18.547+00:00 7fffffff           0 DMON: rfm_release_chief_lock() called for CTL_BOOTSTRAP, called from rfm_bootstrap_config
+2021-01-13T16:45:22.220+00:00 7fffffff  1077103151 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:45:22.220+00:00 7fffffff  1077103151 DMON: Metadata available (127.2.1077103151), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:45:22.220+00:00 7fffffff  1077103151       Opcode = ADD_DRC, Chief Instance I_ID = 0
+2021-01-13T16:45:22.220+00:00                      DMON: rfc_ckhomblk expected MIV=1, but found MIV=0
+2021-01-13T16:45:22.220+00:00 7fffffff  1077103151 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:45:22.220+00:00 7fffffff  1077103151 Operation ADD_DRC continuing with warning, status = ORA-16577
+2021-01-13T16:45:23.908+00:00                      INSV: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+2021-01-13T16:45:25.904+00:00 01001000  1077103152 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:45:25.904+00:00 01001000  1077103152 DMON: Metadata available (127.2.1077103152), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:45:25.904+00:00 01001000  1077103152       Opcode = ADD_DATABASE, Chief Instance I_ID = 1
+2021-01-13T16:45:25.904+00:00                      DMON: rfc_ckhomblk expected MIV=2, but found MIV=0
+2021-01-13T16:45:25.904+00:00 01001000  1077103152 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat: status ORA-16577.
+2021-01-13T16:45:25.904+00:00 01001000  1077103152 Operation ADD_DATABASE continuing with warning, status = ORA-16577
+2021-01-13T16:51:28.704+00:00 01001000  1077103158 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:51:28.704+00:00 01001000  1077103158 DMON: Metadata available (1.2.1077103158), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:51:28.704+00:00 01001000  1077103158       Opcode = ADD_DATABASE, Chief Instance I_ID = 1
+2021-01-13T16:51:28.705+00:00                      DMON: rfc_ckhomblk expected MIV=3, but found MIV=0
+2021-01-13T16:51:28.705+00:00 01001000  1077103158 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:51:28.705+00:00 01001000  1077103158 Operation ADD_DATABASE continuing with warning, status = ORA-16577
+2021-01-13T16:52:45.730+00:00 00001000  1077103159 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:52:45.730+00:00 00001000  1077103159 DMON: Metadata available (1.2.1077103159), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:52:45.730+00:00 00001000  1077103159       Opcode = CTL_ENABLE, Chief Instance I_ID = 1
+2021-01-13T16:52:45.730+00:00                      DMON: rfc_ckhomblk expected MIV=4, but found MIV=0
+2021-01-13T16:52:45.730+00:00 00001000  1077103159 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat: status ORA-16577.
+2021-01-13T16:52:45.730+00:00 00001000  1077103159 Operation CTL_ENABLE continuing with warning, status = ORA-16577
+2021-01-13T16:53:04.999+00:00 01001000  1408882216 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:53:04.999+00:00 01001000  1408882216 DMON: Metadata available (2.2.1408882216), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:53:04.999+00:00 01001000  1408882216       Opcode = EDIT_RES_PROP, Chief Instance I_ID = 1
+2021-01-13T16:53:04.999+00:00                      DMON: rfc_ckhomblk expected MIV=5, but found MIV=0
+2021-01-13T16:53:04.999+00:00 01001000  1408882216 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:53:04.999+00:00 01001000  1408882216 Operation EDIT_RES_PROP continuing with warning, status = ORA-16577
+2021-01-13T16:53:08.255+00:00 68204074           1 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:53:08.255+00:00 68204074           1 DMON: Metadata available (16608.0.1), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:53:08.255+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:53:08.255+00:00 68204074           1       Opcode = 00016502, Chief Instance I_ID = 0
+2021-01-13T16:53:08.256+00:00                      DMON: rfc_ckhomblk expected MIV=5, but found MIV=0
+2021-01-13T16:53:08.256+00:00 68204074           1 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat: status ORA-16577.
+2021-01-13T16:53:08.256+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:53:08.256+00:00 68204074           1 Operation 00016502 continuing with warning, status = ORA-16577
+2021-01-13T16:53:14.733+00:00 01001000  1077103161 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:53:14.733+00:00 01001000  1077103161 DMON: Metadata available (1.2.1077103161), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:53:14.733+00:00 01001000  1077103161       Opcode = CTL_ENABLE, Chief Instance I_ID = 1
+2021-01-13T16:53:14.734+00:00                      DMON: rfc_ckhomblk expected MIV=6, but found MIV=0
+2021-01-13T16:53:14.734+00:00 01001000  1077103161 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:53:14.734+00:00 01001000  1077103161 Operation CTL_ENABLE continuing with warning, status = ORA-16577
+2021-01-13T16:53:29.768+00:00 68204074          21 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:53:29.768+00:00 68204074          21 DMON: Metadata available (16608.0.21), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:53:29.769+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:53:29.769+00:00 68204074          21       Opcode = 00016502, Chief Instance I_ID = 0
+2021-01-13T16:53:29.769+00:00                      DMON: rfc_ckhomblk expected MIV=6, but found MIV=0
+2021-01-13T16:53:29.769+00:00 68204074          21 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat: status ORA-16577.
+2021-01-13T16:53:29.769+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:53:29.769+00:00 68204074          21 Operation 00016502 continuing with warning, status = ORA-16577
+2021-01-13T16:53:44.731+00:00 01001000  1077103163 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:53:44.731+00:00 01001000  1077103163 DMON: Metadata available (1.2.1077103163), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:53:44.731+00:00 01001000  1077103163       Opcode = CTL_ENABLE, Chief Instance I_ID = 1
+2021-01-13T16:53:44.731+00:00                      DMON: rfc_ckhomblk expected MIV=7, but found MIV=0
+2021-01-13T16:53:44.731+00:00 01001000  1077103163 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:53:44.731+00:00 01001000  1077103163 Operation CTL_ENABLE continuing with warning, status = ORA-16577
+2021-01-13T16:53:59.782+00:00 68204074          51 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:53:59.782+00:00 68204074          51 DMON: Metadata available (16608.0.51), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:53:59.782+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:53:59.782+00:00 68204074          51       Opcode = 00016502, Chief Instance I_ID = 0
+2021-01-13T16:53:59.782+00:00                      DMON: rfc_ckhomblk expected MIV=7, but found MIV=0
+2021-01-13T16:53:59.782+00:00 68204074          51 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat: status ORA-16577.
+2021-01-13T16:53:59.782+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:53:59.782+00:00 68204074          51 Operation 00016502 continuing with warning, status = ORA-16577
+2021-01-13T16:54:14.729+00:00 01001000  1077103165 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:54:14.729+00:00 01001000  1077103165 DMON: Metadata available (1.2.1077103165), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:54:14.729+00:00 01001000  1077103165       Opcode = CTL_ENABLE, Chief Instance I_ID = 1
+2021-01-13T16:54:14.729+00:00                      DMON: rfc_ckhomblk expected MIV=8, but found MIV=0
+2021-01-13T16:54:14.729+00:00 01001000  1077103165 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:54:14.729+00:00 01001000  1077103165 Operation CTL_ENABLE continuing with warning, status = ORA-16577
+2021-01-13T16:54:29.857+00:00 68204074           0 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:54:29.857+00:00 68204074           0 DMON: Metadata available (16608.0.0), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:54:29.857+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:54:29.857+00:00 68204074           0       Opcode = 00016502, Chief Instance I_ID = 0
+2021-01-13T16:54:29.858+00:00                      DMON: rfc_ckhomblk expected MIV=8, but found MIV=0
+2021-01-13T16:54:29.858+00:00 68204074           0 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat: status ORA-16577.
+2021-01-13T16:54:29.858+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:54:29.858+00:00 68204074           0 Operation 00016502 continuing with warning, status = ORA-16577
+2021-01-13T16:54:44.738+00:00 02001000  1077103168 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:54:44.738+00:00 02001000  1077103168 DMON: Metadata available (1.2.1077103168), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:54:44.738+00:00 02001000  1077103168       Opcode = CTL_ENABLE, Chief Instance I_ID = 1
+2021-01-13T16:54:44.738+00:00                      DMON: rfc_ckhomblk expected MIV=9, but found MIV=0
+2021-01-13T16:54:44.738+00:00 02001000  1077103168 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:54:44.738+00:00 02001000  1077103168 Operation CTL_ENABLE continuing with warning, status = ORA-16577
+2021-01-13T16:54:52.925+00:00 01001000  1077103167 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:54:52.925+00:00 01001000  1077103167 DMON: Metadata available (1.2.1077103167), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:54:52.925+00:00 01001000  1077103167       Opcode = CTL_ENABLE, Chief Instance I_ID = 1
+2021-01-13T16:54:52.926+00:00                      DMON: rfc_ckhomblk expected MIV=10, but found MIV=0
+2021-01-13T16:54:52.926+00:00 01001000  1077103167 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat: status ORA-16577.
+2021-01-13T16:54:52.926+00:00 01001000  1077103167 Operation CTL_ENABLE continuing with warning, status = ORA-16577
+2021-01-13T16:54:59.779+00:00 68204074          30 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:54:59.779+00:00 68204074          30 DMON: Metadata available (16608.0.30), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:54:59.779+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:54:59.780+00:00 68204074          30       Opcode = 00016502, Chief Instance I_ID = 0
+2021-01-13T16:54:59.780+00:00                      DMON: rfc_ckhomblk expected MIV=10, but found MIV=0
+2021-01-13T16:54:59.780+00:00 68204074          30 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:54:59.780+00:00                      rfsxm_opcode2str: task opcode (16502) is not supported.
+2021-01-13T16:54:59.780+00:00 68204074          30 Operation 00016502 continuing with warning, status = ORA-16577
+2021-01-13T16:55:14.737+00:00 01001000  1077103170 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:55:14.737+00:00 01001000  1077103170 DMON: Metadata available (1.2.1077103170), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat"
+2021-01-13T16:55:14.737+00:00 01001000  1077103170       Opcode = CTL_ENABLE, Chief Instance I_ID = 1
+2021-01-13T16:55:14.737+00:00                      DMON: rfc_ckhomblk expected MIV=11, but found MIV=0
+2021-01-13T16:55:14.737+00:00 01001000  1077103170 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr1racdba.dat: status ORA-16577.
+2021-01-13T16:55:14.737+00:00 01001000  1077103170 Operation CTL_ENABLE continuing with warning, status = ORA-16577
+2021-01-13T16:55:25.891+00:00 01001000  1077103171 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:55:25.891+00:00 01001000  1077103171 DMON: Metadata available (1.2.1077103171), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:55:25.891+00:00 01001000  1077103171       Opcode = CTL_DISABLE, Chief Instance I_ID = 1
+2021-01-13T16:55:25.892+00:00                      DMON: rfc_ckhomblk expected MIV=12, but found MIV=0
+2021-01-13T16:55:25.892+00:00 01001000  1077103171 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:55:25.892+00:00 01001000  1077103171 Operation CTL_DISABLE continuing with warning, status = ORA-16577
+2021-01-13T16:56:31.885+00:00                      Data Guard Broker shutting down
+2021-01-13T16:56:31.885+00:00                      DMON: Health Check Master lock is neither held nor queued
+2021-01-13T16:56:31.886+00:00                      DMON: Terminating RSM processes
+2021-01-13T16:56:31.886+00:00                      DMON: Terminating NetSlave processes
+2021-01-13T16:56:31.886+00:00                      DMON: Freeing all task elements.
+2021-01-13T16:56:31.886+00:00                      DMON: Terminating Instance Slave process
+2021-01-13T16:56:31.886+00:00                      INSV: Shutting down
+2021-01-13T16:56:32.885+00:00                      DMON: INSV successfully terminated
+2021-01-13T16:56:32.885+00:00                      DMON: Zeroing metadata root pointer
+2021-01-13T16:56:32.887+00:00                      DMON: Disconnect from all subscribed channels
+2021-01-13T16:56:32.887+00:00                      DMON: Freeing Broker SGA heap
+2021-01-13T16:56:32.887+00:00                      DMON: Freeing PGA heap
+2021-01-13T16:56:32.887+00:00                      DMON: Removing DMON's state object
+2021-01-13T16:56:32.887+00:00                      DMON: Resetting DMON context structure
+2021-01-13T16:56:32.887+00:00                      >> DMON Process Shutdown <<
+2021-01-13T16:56:55.518+00:00                      Fore: '+DATA/RACDBA/dr2racdba' does not exist. Trying to create it.
+2021-01-13T16:56:55.610+00:00                      Fore: '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat' does not exist. Trying to create it.
+2021-01-13T16:56:55.614+00:00                      LGWR: Creating Data Guard Broker Monitor Process (DMON)
+2021-01-13T16:56:58.628+00:00                      >> Starting Data Guard Broker bootstrap <<
+2021-01-13T16:56:58.629+00:00                      Broker Configuration File Locations:
+2021-01-13T16:56:58.629+00:00                            dg_broker_config_file1 = "+DATA/RACDBA/dr2racdba"
+2021-01-13T16:56:58.629+00:00                            dg_broker_config_file2 = "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:56:58.629+00:00                      DMON: Attach state object
+2021-01-13T16:56:58.640+00:00                      DMON: Initialization of broker state requires reconciliation
+2021-01-13T16:56:58.642+00:00                      DMON: Broker state reconciled, version = 0, state = 00000000
+2021-01-13T16:56:58.642+00:00                      DMON: Broker State Initialized
+2021-01-13T16:56:58.642+00:00                            Version = 1
+2021-01-13T16:56:58.642+00:00                            State = 00000000
+2021-01-13T16:56:58.642+00:00                      DMON: Creating INSV process
+2021-01-13T16:57:01.662+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T16:57:01.665+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T16:57:01.668+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x0, Seq.MIV=0.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T16:57:01.668+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat' with blocksize 4096
+2021-01-13T16:57:01.668+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat'
+2021-01-13T16:57:01.668+00:00                      INSV: home block of /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: zzz=0x0, Seq.MIV=0.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T16:57:01.668+00:00                      INSV: Set current metadata file ID to 1 (Seq.MIV=0.0)
+2021-01-13T16:57:01.669+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T16:57:01.670+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T16:57:01.672+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat' with blocksize 4096
+2021-01-13T16:57:01.672+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat'
+2021-01-13T16:57:01.672+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-13T16:57:01.672+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=0
+2021-01-13T16:57:01.672+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T16:57:01.672+00:00                      	pmyshut=0, aft=0, laglim=0, obslim=0
+2021-01-13T16:57:01.672+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-13T16:57:01.673+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-13T16:57:01.673+00:00                      INSV: INSV is ready
+2021-01-13T16:57:01.680+00:00                      INSV: instance 2 requested FSFO state reconciliation
+2021-01-13T16:57:01.681+00:00                      INSV: the new instance already has up-to-date FSFO state
+2021-01-13T16:57:01.681+00:00                      INSV: Sending reconcile FSFO state of this instance #1
+2021-01-13T16:57:01.681+00:00                      INSV: 
+2021-01-13T16:57:01.681+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T16:57:01.681+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T16:57:02.656+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-13T16:57:02.658+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-13T16:57:02.658+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T16:57:02.664+00:00                      DMON: Configuration does not exist, Data Guard broker ready
+2021-01-13T16:57:02.664+00:00 7fffffff           0 DMON: rfm_release_chief_lock() called for CTL_BOOTSTRAP, called from rfm_bootstrap_config
+2021-01-13T16:58:34.072+00:00 7fffffff  1077103172 DMON: Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:58:34.072+00:00 7fffffff  1077103172 DMON: Metadata available (127.2.1077103172), loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:58:34.072+00:00 7fffffff  1077103172       Opcode = ADD_DRC, Chief Instance I_ID = 0
+2021-01-13T16:58:34.073+00:00                      DMON: rfc_ckhomblk expected MIV=1, but found MIV=0
+2021-01-13T16:58:34.073+00:00 7fffffff  1077103172 DMON: rfm_metadata_avail: failed to load from metadata file /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: status ORA-16577.
+2021-01-13T16:58:34.073+00:00 7fffffff  1077103172 Operation ADD_DRC continuing with warning, status = ORA-16577
+2021-01-13T16:58:35.143+00:00                      INSV: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+2021-01-13T16:58:37.182+00:00 01001000  1077103173 DMON: Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T16:58:37.182+00:00 01001000  1077103173 DMON: Metadata available (127.2.1077103173), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T16:58:37.182+00:00 01001000  1077103173       Opcode = ADD_DATABASE, Chief Instance I_ID = 1
+2021-01-13T16:58:37.187+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-13T16:58:37.187+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-13T16:58:37.187+00:00                      DMON: Configuration service not registered
+2021-01-13T16:58:37.187+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-13T16:58:37.232+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-13T16:58:37.232+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-13T16:58:37.232+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-13T16:58:37.232+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+2021-01-13T16:58:45.830+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T16:58:48.380+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T16:59:52.410+00:00
+Broker Initiated ENABLE of site racdbb has been scheduled
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16608: one or more members have warnings
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                            Warning  ORA-16532: Oracle Data Guard broker configuration does not exist
+2021-01-13T17:00:02.724+00:00
+ENABLE DATABASE racdbb
+2021-01-13T17:00:10.875+00:00
+ENABLE DATABASE racdbb completed successfully
+2021-01-13T17:00:17.804+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16608: one or more members have warnings
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                            Warning  ORA-16532: Oracle Data Guard broker configuration does not exist
+2021-01-13T17:04:50.322+00:00
+Initiating a healthcheck...
+SWITCHOVER TO racdbb
+Switchover target standby database racdbb does not have an apply instance established
+2021-01-13T17:07:41.826+00:00
+EDIT DATABASE racdbb SET PROPERTY preferredapplyinstance = racdbb2
+Property "preferredapplyinstance" set to "racdbb2" for member "racdbb"
+EDIT DATABASE racdbb SET PROPERTY preferredapplyinstance = racdbb2 completed successfully
+2021-01-13T17:07:57.651+00:00
+Initiating a healthcheck...
+SWITCHOVER TO racdbb
+Switchover target standby database racdbb does not have an apply instance established
+2021-01-13T17:08:10.805+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-OFF
+2021-01-13T17:08:14.951+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-OFF completed successfully
+2021-01-13T17:08:21.641+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-ON
+2021-01-13T17:08:22.713+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-ON completed successfully
+2021-01-13T17:08:32.463+00:00
+Initiating a healthcheck...
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                              Error  ORA-16766: Redo Apply is stopped
+SWITCHOVER TO racdbb
+Switchover not permitted because either the primary or standby database is in a warning or error state
+2021-01-13T17:09:14.899+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-OFF
+2021-01-13T17:09:16.040+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-OFF completed successfully
+2021-01-13T17:09:18.023+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                              Error  ORA-16766: Redo Apply is stopped
+2021-01-13T17:09:24.737+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-ON
+EDIT DATABASE racdbb SET STATE = APPLY-ON completed successfully
+2021-01-13T17:09:33.034+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                              Error  ORA-16810: multiple errors or warnings detected for the member
+2021-01-13T17:10:34.163+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                              Error  ORA-16599: Oracle Data Guard broker detected a stale configuration
+2021-01-13T17:10:48.009+00:00
+Broker configuration file update
+2021-01-13T17:11:33.081+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                              Error  ORA-16525: The Oracle Data Guard broker is not yet available.
+2021-01-13T17:11:44.706+00:00
+EDIT DATABASE racdbb SET PROPERTY preferredapplyinstance = 
+2021-01-13T17:11:45.857+00:00
+Property "preferredapplyinstance" cleared for member "racdbb"
+EDIT DATABASE racdbb SET PROPERTY preferredapplyinstance =  completed successfully
+2021-01-13T17:11:56.959+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-OFF
+2021-01-13T17:12:01.064+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-OFF completed successfully
+2021-01-13T17:12:03.121+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                              Error  ORA-16525: The Oracle Data Guard broker is not yet available.
+2021-01-13T17:12:06.670+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-ON
+2021-01-13T17:12:13.906+00:00
+EDIT DATABASE racdbb SET STATE = APPLY-ON completed successfully
+2021-01-13T17:14:37.153+00:00
+Initiating a healthcheck...
+SWITCHOVER TO racdbb
+Switchover target standby database racdbb does not have an apply instance established
+2021-01-13T17:15:03.724+00:00
+EDIT DATABASE racdbb SET PROPERTY preferredapplyinstance = racdbb1
+2021-01-13T17:15:04.801+00:00
+Property "preferredapplyinstance" set to "racdbb1" for member "racdbb"
+EDIT DATABASE racdbb SET PROPERTY preferredapplyinstance = racdbb1 completed successfully
+2021-01-13T17:15:33.172+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16608: one or more members have warnings
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                            Warning  ORA-16826: apply service state is inconsistent with the DelayMins property
+2021-01-13T17:16:29.333+00:00
+Broker configuration file update
+2021-01-13T17:16:32.285+00:00
+EDIT DATABASE racdbb SET PROPERTY ActualApplyInstance = racdbb2
+2021-01-13T17:16:38.904+00:00
+Apply Instance for database racdbb is racdbb2
+EDIT DATABASE racdbb SET PROPERTY ActualApplyInstance = racdbb2 completed successfully
+2021-01-13T17:16:51.660+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16608: one or more members have warnings
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                            Warning  ORA-16854: apply lag could not be determined
+2021-01-13T17:17:33.423+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16608: one or more members have warnings
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                            Warning  ORA-16854: apply lag could not be determined
+2021-01-13T17:19:05.542+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T17:20:25.696+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr2racdba"
+      dg_broker_config_file2 = "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T17:20:25.697+00:00                      DMON: Attach state object
+2021-01-13T17:20:25.703+00:00                      DMON: Broker State Initialized
+2021-01-13T17:20:25.703+00:00                            Version = 3
+2021-01-13T17:20:25.703+00:00                            State = 00000000
+2021-01-13T17:20:25.704+00:00                      DMON: Creating INSV process
+2021-01-13T17:20:28.725+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T17:20:28.728+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T17:20:28.731+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=1.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T17:20:28.731+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat' with blocksize 4096
+2021-01-13T17:20:28.731+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat'
+2021-01-13T17:20:28.731+00:00                      INSV: home block of /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: zzz=0x40, Seq.MIV=0.15, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T17:20:28.731+00:00                      INSV: Set current metadata file ID to 1 (Seq.MIV=1.0)
+2021-01-13T17:20:28.731+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T17:20:28.733+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T17:20:28.735+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-13T17:20:28.735+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T17:20:28.735+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T17:20:28.735+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-13T17:20:28.735+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-13T17:20:28.736+00:00                      INSV: Received reconcile FSFO state from instance #2
+2021-01-13T17:20:28.736+00:00                      INSV:        flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T17:20:28.736+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T17:20:28.736+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-13T17:20:28.736+00:00                      INSV: INSV is ready
+2021-01-13T17:20:29.715+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-13T17:20:29.716+00:00 7fffffff           0 DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason GENERAL, called from rfm_scan_queues
+2021-01-13T17:20:29.717+00:00 7fffffff           0 DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason GENERAL, called from rfm_te_sched
+2021-01-13T17:20:31.241+00:00                      Fore: Initiating post-open tasks
+2021-01-13T17:20:34.715+00:00                      DMON: Initiating post-open tasks
+2021-01-13T17:20:34.723+00:00                      DMON: Instance operating as a Real-Time Query standby
+2021-01-13T17:20:34.724+00:00                      DMON: broker state changed:
+2021-01-13T17:20:34.724+00:00                            old = 0x00000000
+2021-01-13T17:20:34.724+00:00                            new = 0x00000400
+2021-01-13T17:20:34.724+00:00                            New Version = 4
+2021-01-13T17:20:34.732+00:00 7fffffff           0 DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason GENERAL, called from rfm_scan_queues
+2021-01-13T17:20:34.732+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-13T17:20:34.733+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T17:20:34.740+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-13T17:20:34.741+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-13T17:20:34.741+00:00                      DMON: Configuration service not registered
+2021-01-13T17:20:34.741+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-13T17:20:34.799+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-13T17:20:34.800+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-13T17:20:34.800+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-13T17:20:34.800+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=1.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-13T17:20:41.140+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-13T17:20:59.166+00:00
+Starting redo apply services...
+2021-01-13T17:30:26.042+00:00
+Forwarding MON_VERIFY operation to member racdbb for processing
+2021-01-13T17:30:27.196+00:00
+Initiating a healthcheck...
+Initiating a healthcheck...
+Forwarding CTL_SWITCH operation to member racdbb for processing
+FSFO SetState(st=12 "SET OBID", fl=0x0 "", ob=0x1, tgt=0, v=0)
+2021-01-13T17:30:28.989+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+Switchover processing to this database has started
+Notifying Oracle Clusterware to prepare target standby database for switchover
+2021-01-13T17:30:34.860+00:00
+Switchover in progress...
+2021-01-13T17:30:49.858+00:00
+Switchover in progress...
+2021-01-13T17:30:51.334+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T17:30:55.602+00:00
+New primary database after switchover
+Informing client: OPENING instance 'racdba2' of database 'racdba'
+Informing client: CLUSTERWARE RESTARTING instance 'racdbb1' of database 'racdbb'
+Switchover completed, notifying client
+Proceeding with buildup after switchover...
+Notifying Oracle Clusterware to buildup the primary database after switchover
+Opening database after Switchover
+2021-01-13T17:31:04.892+00:00
+Evaluating archivelog destinations for switchover
+SWITCHOVER TO racdba completed successfully, new primary database is racdba
+2021-01-13T17:31:11.886+00:00
+Redo transport problem detected: redo transport to database racdbb has the following error:
+  ORA-12514: TNS:listener does not currently know of service requested in connect descriptor
+2021-01-13T17:37:15.118+00:00
+Initiating a healthcheck...
+2021-01-13T17:37:16.631+00:00
+SWITCHOVER TO racdbb
+Switchover to physical standby database cannot be initiated from the primary database
+redirecting connection to switchover target database racdbb...
+...using connect identifier: //myracb-scan/racdbb
+SWITCHOVER TO racdbb
+2021-01-13T17:37:18.979+00:00
+Notifying Oracle Clusterware to prepare primary database for switchover
+2021-01-13T17:37:20.042+00:00
+Switchover in progress...
+Executing SQL: [ALTER DATABASE SWITCHOVER TO 'racdbb']
+2021-01-13T17:37:50.737+00:00
+SQL [ALTER DATABASE SWITCHOVER TO 'racdbb'] executed successfully
+2021-01-13T17:37:51.892+00:00
+Switchover successful
+2021-01-13T17:37:57.395+00:00
+Notifying Clusterware to restart this instance for Switchover
+2021-01-13T17:37:59.587+00:00
+Shutting down instance after Switchover
+2021-01-13T17:38:20.459+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr2racdba"
+      dg_broker_config_file2 = "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T17:38:20.460+00:00                      DMON: Attach state object
+2021-01-13T17:38:20.462+00:00                      DMON: Initialization of broker state requires reconciliation
+2021-01-13T17:38:20.462+00:00                      DMON: Broker state reconciled, version = 0, state = 00000000
+2021-01-13T17:38:20.462+00:00                      DMON: Broker State Initialized
+2021-01-13T17:38:20.462+00:00                            Version = 1
+2021-01-13T17:38:20.462+00:00                            State = 00000000
+2021-01-13T17:38:20.462+00:00                      DMON: Creating INSV process
+2021-01-13T17:38:23.479+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T17:38:23.482+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T17:38:23.486+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=3.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T17:38:23.486+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat' with blocksize 4096
+2021-01-13T17:38:23.486+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat'
+2021-01-13T17:38:23.486+00:00                      INSV: home block of /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: zzz=0x40, Seq.MIV=2.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T17:38:23.486+00:00                      INSV: Set current metadata file ID to 1 (Seq.MIV=3.0)
+2021-01-13T17:38:23.486+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T17:38:23.488+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T17:38:23.489+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-13T17:38:23.489+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T17:38:23.490+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T17:38:23.490+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-13T17:38:23.490+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-13T17:38:23.490+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-13T17:38:23.490+00:00                      INSV: INSV is ready
+2021-01-13T17:38:24.476+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-13T17:38:24.477+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-13T17:38:24.477+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T17:38:24.485+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-13T17:38:24.485+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-13T17:38:24.485+00:00                      DMON: Configuration service not registered
+2021-01-13T17:38:24.485+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-13T17:38:24.485+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-13T17:38:24.485+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-13T17:38:24.486+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-13T17:38:24.486+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=3.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-13T17:38:24.513+00:00
+Physical standby restart after broker operation requires Oracle Clusterware buildup
+Notifying Oracle Clusterware to buildup
+2021-01-13T17:38:26.775+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-13T17:38:31.950+00:00
+Starting redo apply services...
+2021-01-13T17:38:46.898+00:00
+instance 2 requested FSFO state reconciliation
+2021-01-13T17:50:37.257+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T17:50:46.684+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T17:51:02.786+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T17:52:37.463+00:00
+Initiating a healthcheck...
+2021-01-13T17:52:38.630+00:00
+FSFO SetState(st=12 "SET OBID", fl=0x0 "", ob=0x1, tgt=0, v=0)
+2021-01-13T17:52:39.710+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T17:53:06.932+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T17:53:11.163+00:00
+Database Resource SetState Error (16661)
+2021-01-13T17:53:17.176+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T17:53:42.105+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                              Error  ORA-16810: multiple errors or warnings detected for the member
+  Physical Standby Database   racdbb                              Error  ORA-16613: initialization in progress for member
+2021-01-13T17:54:09.324+00:00
+Broker configuration file update
+2021-01-13T17:54:28.007+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                              Error  ORA-16782: instance not open for read and write access
+  Physical Standby Database   racdbb                              Error  ORA-16613: initialization in progress for member
+2021-01-13T18:06:19.759+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T18:07:41.312+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr2racdba"
+      dg_broker_config_file2 = "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T18:07:41.312+00:00                      DMON: Attach state object
+2021-01-13T18:07:41.320+00:00                      DMON: Broker State Initialized
+2021-01-13T18:07:41.320+00:00                            Version = 3
+2021-01-13T18:07:41.320+00:00                            State = 00000000
+2021-01-13T18:07:41.321+00:00                      DMON: Creating INSV process
+2021-01-13T18:07:44.340+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:07:44.342+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:07:44.346+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=5.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:07:44.346+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat' with blocksize 4096
+2021-01-13T18:07:44.346+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat'
+2021-01-13T18:07:44.346+00:00                      INSV: home block of /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: zzz=0x40, Seq.MIV=4.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:07:44.346+00:00                      INSV: Set current metadata file ID to 1 (Seq.MIV=5.0)
+2021-01-13T18:07:44.347+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:07:44.348+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:07:44.350+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-13T18:07:44.350+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T18:07:44.350+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T18:07:44.350+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-13T18:07:44.350+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-13T18:07:44.351+00:00                      INSV: Received reconcile FSFO state from instance #2
+2021-01-13T18:07:44.351+00:00                      INSV:        flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T18:07:44.351+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T18:07:44.351+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-13T18:07:44.351+00:00                      INSV: INSV is ready
+2021-01-13T18:07:45.332+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-13T18:07:45.333+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-13T18:07:45.333+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:07:45.341+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-13T18:07:45.341+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-13T18:07:45.341+00:00                      DMON: Configuration service not registered
+2021-01-13T18:07:45.341+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-13T18:07:45.342+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-13T18:07:45.342+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-13T18:07:45.342+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-13T18:07:45.342+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=5.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-13T18:07:48.489+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-13T18:07:52.513+00:00
+Starting redo apply services...
+2021-01-13T18:08:26.489+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T18:08:51.919+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:09:35.432+00:00
+SQL Execution error=604, sql=[ALTER DATABASE RECOVER MANAGED STANDBY DATABASE CANCEL]. See error stack below.
+  ORA-00604: error occurred at recursive SQL level 1
+  ORA-16136: Managed Standby Recovery not active
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T18:09:43.916+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:10:58.017+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T18:11:22.045+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:11:26.465+00:00
+Opening database after Switchover
+2021-01-13T18:15:00.225+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T18:16:16.067+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr2racdba"
+      dg_broker_config_file2 = "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T18:16:16.068+00:00                      DMON: Attach state object
+2021-01-13T18:16:16.075+00:00                      DMON: Broker State Initialized
+2021-01-13T18:16:16.075+00:00                            Version = 3
+2021-01-13T18:16:16.076+00:00                            State = 00000000
+2021-01-13T18:16:16.076+00:00                      DMON: Creating INSV process
+2021-01-13T18:16:19.097+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:16:19.099+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:16:19.103+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=7.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:16:19.103+00:00                      INSV: Opening configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat' with blocksize 4096
+2021-01-13T18:16:19.103+00:00                      INSV: Successfully opened configuration file '/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat'
+2021-01-13T18:16:19.103+00:00                      INSV: home block of /u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat: zzz=0x40, Seq.MIV=4.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:16:19.103+00:00                      INSV: Set current metadata file ID to 1 (Seq.MIV=7.0)
+2021-01-13T18:16:19.103+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:16:19.106+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:16:19.108+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-13T18:16:19.108+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T18:16:19.108+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T18:16:19.108+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-13T18:16:19.108+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-13T18:16:19.109+00:00                      INSV: Received reconcile FSFO state from instance #2
+2021-01-13T18:16:19.109+00:00                      INSV:        flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T18:16:19.109+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T18:16:19.109+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-13T18:16:19.109+00:00                      INSV: INSV is ready
+2021-01-13T18:16:20.088+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-13T18:16:20.090+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-13T18:16:20.090+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:16:20.100+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-13T18:16:20.100+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-13T18:16:20.100+00:00                      DMON: Configuration service not registered
+2021-01-13T18:16:20.100+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-13T18:16:20.101+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-13T18:16:20.101+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-13T18:16:20.101+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-13T18:16:20.102+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=7.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-13T18:16:22.840+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-13T18:16:26.864+00:00
+Starting redo apply services...
+2021-01-13T18:30:11.937+00:00
+Updated broker configuration file available, loading from "/u01/app/oracle/product/19.3.0/dbhome_1/dbs/dr2racdba.dat"
+2021-01-13T18:30:20.257+00:00
+cleaning up failed switchover
+2021-01-13T18:30:38.080+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:35:11.086+00:00
+Data Guard Broker shutting down
+RSM0 successfully terminated
+2021-01-13T18:35:14.088+00:00                      >> DMON Process Shutdown <<
+2021-01-13T18:35:15.092+00:00                      Fore: Deregistering service racdb_CFG with listener(s)
+2021-01-13T18:35:15.092+00:00                      Fore: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-13T18:35:15.092+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-13T18:35:26.259+00:00                      Fore: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:35:26.261+00:00                      Fore: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:35:26.266+00:00                      Fore: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:35:26.268+00:00                      Fore: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:35:32.242+00:00                      Fore: '+DATA/RACDBA/dr1racdba' does not exist. Trying to create it.
+2021-01-13T18:35:32.276+00:00                      Fore: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:35:32.278+00:00                      Fore: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:35:32.280+00:00                      LGWR: Creating Data Guard Broker Monitor Process (DMON)
+2021-01-13T18:35:35.293+00:00                      >> Starting Data Guard Broker bootstrap <<
+2021-01-13T18:35:35.294+00:00                      Broker Configuration File Locations:
+2021-01-13T18:35:35.294+00:00                            dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+2021-01-13T18:35:35.294+00:00                            dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:35:35.294+00:00                      DMON: Attach state object
+2021-01-13T18:35:35.301+00:00                      DMON: Initialization of broker state requires reconciliation
+2021-01-13T18:35:35.302+00:00                      DMON: Broker state reconciled, version = 0, state = 00000000
+2021-01-13T18:35:35.302+00:00                      DMON: Broker State Initialized
+2021-01-13T18:35:35.302+00:00                            Version = 1
+2021-01-13T18:35:35.302+00:00                            State = 00000000
+2021-01-13T18:35:35.303+00:00                      DMON: Creating INSV process
+2021-01-13T18:35:38.322+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-13T18:35:38.325+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-13T18:35:38.328+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x0, Seq.MIV=0.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:35:38.329+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:35:38.330+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:35:38.332+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=8.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:35:38.332+00:00                      INSV: Set current metadata file ID to 2 (Seq.MIV=8.0)
+2021-01-13T18:35:38.332+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:35:38.333+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:35:38.334+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-13T18:35:38.335+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T18:35:38.335+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T18:35:38.335+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-13T18:35:38.335+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-13T18:35:38.336+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-13T18:35:38.336+00:00                      INSV: INSV is ready
+2021-01-13T18:35:38.349+00:00                      INSV: instance 2 requested FSFO state reconciliation
+2021-01-13T18:35:38.349+00:00                      INSV: the new instance already has up-to-date FSFO state
+2021-01-13T18:35:38.349+00:00                      INSV: Sending reconcile FSFO state of this instance #1
+2021-01-13T18:35:38.349+00:00                      INSV: 
+2021-01-13T18:35:38.349+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T18:35:38.349+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T18:35:39.316+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-13T18:35:39.318+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-13T18:35:39.319+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:35:39.328+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-13T18:35:39.328+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-13T18:35:39.328+00:00                      DMON: Configuration service not registered
+2021-01-13T18:35:39.328+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-13T18:35:39.328+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-13T18:35:39.328+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-13T18:35:39.328+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-13T18:35:39.328+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=8.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdba                          Primary Database           0x01010000  YES
+  racdbb                          Physical Standby Database  0x02010000  YES
+2021-01-13T18:35:43.492+00:00
+Configuration Validation Results:
+      Member racdbb: ORA-0: normal, successful completion
+2021-01-13T18:36:44.605+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                              Error  ORA-16782: instance not open for read and write access
+  Physical Standby Database   racdbb                            Warning  ORA-16854: apply lag could not be determined
+2021-01-13T18:38:09.692+00:00
+Data Guard Broker shutting down
+RSM0 successfully terminated
+2021-01-13T18:38:12.692+00:00                      >> DMON Process Shutdown <<
+2021-01-13T18:38:14.778+00:00                      Fore: Shutdown Data Guard broker processes
+2021-01-13T18:38:46.576+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:38:46.576+00:00                      DMON: Attach state object
+2021-01-13T18:38:46.585+00:00                      DMON: Initialization of broker state requires reconciliation
+2021-01-13T18:38:46.586+00:00                      DMON: Broker state reconciled, version = 0, state = 00000000
+2021-01-13T18:38:46.587+00:00                      DMON: Broker State Initialized
+2021-01-13T18:38:46.587+00:00                            Version = 1
+2021-01-13T18:38:46.587+00:00                            State = 00000000
+2021-01-13T18:38:46.587+00:00                      DMON: Creating INSV process
+2021-01-13T18:38:49.603+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-13T18:38:49.605+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-13T18:38:49.609+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=8.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:38:49.609+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:38:49.611+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:38:49.612+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=8.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:38:49.612+00:00                      INSV: Set current metadata file ID to 1 (Seq.MIV=8.0)
+2021-01-13T18:38:49.612+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-13T18:38:49.614+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-13T18:38:49.616+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-13T18:38:49.616+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T18:38:49.616+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T18:38:49.616+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-13T18:38:49.616+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-13T18:38:49.620+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-13T18:38:49.620+00:00                      INSV: INSV is ready
+2021-01-13T18:38:50.599+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-13T18:38:50.603+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-13T18:38:50.603+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr1racdba"
+2021-01-13T18:38:50.613+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-13T18:38:50.613+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-13T18:38:50.613+00:00                      DMON: Configuration service not registered
+2021-01-13T18:38:50.613+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-13T18:38:50.614+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-13T18:38:50.614+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-13T18:38:50.614+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-13T18:38:50.615+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=8.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdba                          Primary Database           0x01010000  YES
+  racdbb                          Physical Standby Database  0x02010000  YES
+2021-01-13T18:38:54.870+00:00
+instance 2 requested FSFO state reconciliation
+2021-01-13T18:38:56.958+00:00
+Configuration Validation Results:
+      Member racdbb: ORA-0: normal, successful completion
+2021-01-13T18:42:40.274+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:44:01.731+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-13T18:44:01.732+00:00                      DMON: Attach state object
+2021-01-13T18:44:01.750+00:00                      DMON: Broker State Initialized
+2021-01-13T18:44:01.750+00:00                            Version = 3
+2021-01-13T18:44:01.750+00:00                            State = 00000000
+2021-01-13T18:44:01.750+00:00                      DMON: Creating INSV process
+2021-01-13T18:44:04.794+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-13T18:44:04.797+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-13T18:44:04.801+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=9.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:44:04.802+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-13T18:44:04.803+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-13T18:44:04.806+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=8.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-13T18:44:04.806+00:00                      INSV: Set current metadata file ID to 1 (Seq.MIV=9.0)
+2021-01-13T18:44:04.806+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-13T18:44:04.809+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-13T18:44:04.811+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-13T18:44:04.811+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T18:44:04.811+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T18:44:04.811+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-13T18:44:04.811+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-13T18:44:04.813+00:00                      INSV: Received reconcile FSFO state from instance #2
+2021-01-13T18:44:04.813+00:00                      INSV:        flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-13T18:44:04.813+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-13T18:44:04.813+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-13T18:44:04.813+00:00                      INSV: INSV is ready
+2021-01-13T18:44:05.588+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-13T18:44:05.591+00:00 7fffffff           0 DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason GENERAL, called from rfm_scan_queues
+2021-01-13T18:44:05.591+00:00 7fffffff           0 DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason GENERAL, called from rfm_te_sched
+2021-01-13T18:44:07.674+00:00                      Fore: Initiating post-open tasks
+2021-01-13T18:44:07.675+00:00                      Fore: Instance operating as a Real-Time Query standby
+2021-01-13T18:44:07.676+00:00                      Fore: broker state changed:
+2021-01-13T18:44:07.676+00:00                            old = 0x00000000
+2021-01-13T18:44:07.676+00:00                            new = 0x00000400
+2021-01-13T18:44:07.676+00:00                            New Version = 4
+2021-01-13T18:44:10.583+00:00                      DMON: Initiating post-open tasks
+2021-01-13T18:44:10.595+00:00 7fffffff           0 DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason GENERAL, called from rfm_scan_queues
+2021-01-13T18:44:10.595+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-13T18:44:10.595+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr1racdba"
+2021-01-13T18:44:10.606+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-13T18:44:10.606+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-13T18:44:10.606+00:00                      DMON: Configuration service not registered
+2021-01-13T18:44:10.606+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-13T18:44:10.616+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-13T18:44:10.616+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-13T18:44:10.616+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-13T18:44:10.616+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=9.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-13T18:44:16.978+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-13T18:44:21.006+00:00
+Starting redo apply services...
+2021-01-14T10:30:13.670+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-14T10:30:13.676+00:00                      DMON: Attach state object
+2021-01-14T10:30:13.705+00:00                      DMON: Broker State Initialized
+2021-01-14T10:30:13.705+00:00                            Version = 1
+2021-01-14T10:30:13.705+00:00                            State = 00000000
+2021-01-14T10:30:13.705+00:00                      DMON: Creating INSV process
+2021-01-14T10:30:16.736+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-14T10:30:16.740+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-14T10:30:16.745+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=9.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T10:30:16.746+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T10:30:16.748+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T10:30:16.750+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=8.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T10:30:16.750+00:00                      INSV: Set current metadata file ID to 1 (Seq.MIV=9.0)
+2021-01-14T10:30:16.750+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-14T10:30:16.755+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-14T10:30:16.759+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-14T10:30:16.759+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T10:30:16.759+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T10:30:16.759+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-14T10:30:16.759+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-14T10:30:16.761+00:00                      INSV: Received reconcile FSFO state from instance #2
+2021-01-14T10:30:16.761+00:00                      INSV:        flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T10:30:16.761+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T10:30:16.761+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-14T10:30:16.761+00:00                      INSV: INSV is ready
+2021-01-14T10:30:17.728+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-14T10:30:17.733+00:00 7fffffff           0 DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason GENERAL, called from rfm_scan_queues
+2021-01-14T10:30:17.734+00:00 7fffffff           0 DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason GENERAL, called from rfm_te_sched
+2021-01-14T10:30:22.735+00:00 7fffffff           0 DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason GENERAL, called from rfm_scan_queues
+2021-01-14T10:30:22.735+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-14T10:30:22.735+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr1racdba"
+2021-01-14T10:30:22.796+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-14T10:30:22.796+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-14T10:30:22.796+00:00                      DMON: Configuration service not registered
+2021-01-14T10:30:22.796+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-14T10:30:22.802+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-14T10:30:22.803+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-14T10:30:22.803+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-14T10:30:22.803+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=9.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-14T10:30:26.947+00:00
+Failed to connect to remote database racdbb. Error is ORA-12514
+Failed to send message to member racdbb. Error code is ORA-12514.
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-12514: TNS:listener does not currently know of service requested in connect descriptor
+database racdba unable to contact primary database for version check; status ORA-12514
+      completing bootstrap of this database
+2021-01-14T10:30:30.996+00:00
+Starting redo apply services...
+2021-01-14T10:33:37.442+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T10:34:01.563+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr1racdba"
+2021-01-14T10:34:05.979+00:00
+Opening database after Switchover
+2021-01-14T10:42:20.389+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr1racdba"
+2021-01-14T10:43:35.130+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-14T10:43:35.130+00:00                      DMON: Attach state object
+2021-01-14T10:43:35.137+00:00                      DMON: Broker State Initialized
+2021-01-14T10:43:35.137+00:00                            Version = 3
+2021-01-14T10:43:35.137+00:00                            State = 00000000
+2021-01-14T10:43:35.137+00:00                      DMON: Creating INSV process
+2021-01-14T10:43:38.158+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-14T10:43:38.160+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-14T10:43:38.164+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=10.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T10:43:38.164+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T10:43:38.166+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T10:43:38.168+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=11.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T10:43:38.168+00:00                      INSV: Set current metadata file ID to 2 (Seq.MIV=11.0)
+2021-01-14T10:43:38.168+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T10:43:38.169+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T10:43:38.171+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-14T10:43:38.171+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T10:43:38.171+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T10:43:38.171+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-14T10:43:38.171+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-14T10:43:38.172+00:00                      INSV: Received reconcile FSFO state from instance #2
+2021-01-14T10:43:38.172+00:00                      INSV:        flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T10:43:38.172+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T10:43:38.172+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-14T10:43:38.172+00:00                      INSV: INSV is ready
+2021-01-14T10:43:39.151+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-14T10:43:39.155+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-14T10:43:39.156+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T10:43:39.164+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-14T10:43:39.167+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-14T10:43:39.167+00:00                      DMON: Configuration service not registered
+2021-01-14T10:43:39.167+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-14T10:43:39.168+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-14T10:43:39.169+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-14T10:43:39.169+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-14T10:43:39.169+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=11.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-14T10:43:42.580+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-14T10:44:00.614+00:00
+Starting redo apply services...
+2021-01-14T10:56:22.196+00:00
+Initiating a healthcheck...
+2021-01-14T10:56:23.460+00:00
+Forwarding CTL_SWITCH operation to member racdbb for processing
+FSFO SetState(st=12 "SET OBID", fl=0x0 "", ob=0x1, tgt=0, v=0)
+2021-01-14T10:56:25.192+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr1racdba"
+2021-01-14T10:56:26.231+00:00
+Switchover processing to this database has started
+Notifying Oracle Clusterware to prepare target standby database for switchover
+2021-01-14T10:56:39.371+00:00
+Switchover in progress...
+2021-01-14T10:56:49.640+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T10:56:53.886+00:00
+New primary database after switchover
+Informing client: OPENING instance 'racdba2' of database 'racdba'
+Informing client: CLUSTERWARE RESTARTING instance 'racdbb1' of database 'racdbb'
+Switchover completed, notifying client
+Proceeding with buildup after switchover...
+Notifying Oracle Clusterware to buildup the primary database after switchover
+Opening database after Switchover
+2021-01-14T10:57:03.607+00:00
+Evaluating archivelog destinations for switchover
+SWITCHOVER TO racdba completed successfully, new primary database is racdba
+2021-01-14T11:05:21.783+00:00
+Initiating a healthcheck...
+2021-01-14T11:05:23.298+00:00
+SWITCHOVER TO racdbb
+Switchover to physical standby database cannot be initiated from the primary database
+redirecting connection to switchover target database racdbb...
+...using connect identifier: //myracb-scan/racdbb
+SWITCHOVER TO racdbb
+2021-01-14T11:05:26.004+00:00
+Notifying Oracle Clusterware to prepare primary database for switchover
+Switchover in progress...
+2021-01-14T11:05:27.263+00:00
+Executing SQL: [ALTER DATABASE SWITCHOVER TO 'racdbb']
+2021-01-14T11:05:57.144+00:00
+SQL [ALTER DATABASE SWITCHOVER TO 'racdbb'] executed successfully
+2021-01-14T11:05:58.295+00:00
+Switchover successful
+2021-01-14T11:06:03.892+00:00
+Notifying Clusterware to restart this instance for Switchover
+2021-01-14T11:06:06.080+00:00
+Shutting down instance after Switchover
+2021-01-14T11:06:26.438+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:06:26.438+00:00                      DMON: Attach state object
+2021-01-14T11:06:26.440+00:00                      DMON: Initialization of broker state requires reconciliation
+2021-01-14T11:06:26.440+00:00                      DMON: Broker state reconciled, version = 0, state = 00000000
+2021-01-14T11:06:26.440+00:00                      DMON: Broker State Initialized
+2021-01-14T11:06:26.440+00:00                            Version = 1
+2021-01-14T11:06:26.440+00:00                            State = 00000000
+2021-01-14T11:06:26.440+00:00                      DMON: Creating INSV process
+2021-01-14T11:06:29.458+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-14T11:06:29.461+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-14T11:06:29.474+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=12.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:06:29.474+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:06:29.476+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:06:29.480+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=13.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:06:29.480+00:00                      INSV: Set current metadata file ID to 2 (Seq.MIV=13.0)
+2021-01-14T11:06:29.480+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:06:29.483+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:06:29.485+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-14T11:06:29.485+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T11:06:29.485+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T11:06:29.485+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-14T11:06:29.485+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-14T11:06:29.486+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-14T11:06:29.486+00:00                      INSV: INSV is ready
+2021-01-14T11:06:30.455+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-14T11:06:30.455+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-14T11:06:30.455+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:06:30.465+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-14T11:06:30.465+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-14T11:06:30.465+00:00                      DMON: Configuration service not registered
+2021-01-14T11:06:30.465+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-14T11:06:30.465+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-14T11:06:30.465+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-14T11:06:30.466+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-14T11:06:30.466+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=13.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-14T11:06:30.495+00:00
+Physical standby restart after broker operation requires Oracle Clusterware buildup
+Notifying Oracle Clusterware to buildup
+2021-01-14T11:06:33.484+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-14T11:06:47.143+00:00
+Starting redo apply services...
+2021-01-14T11:06:52.764+00:00
+instance 2 requested FSFO state reconciliation
+2021-01-14T11:16:42.452+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr1racdba"
+2021-01-14T11:17:07.474+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:17:11.858+00:00
+Opening database after Switchover
+2021-01-14T11:17:36.436+00:00
+Failed to send message to member racdbb. Error code is ORA-16525.
+2021-01-14T11:17:47.267+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                              Error  ORA-16778: redo transport error for one or more members
+  Physical Standby Database   racdbb                              Error  ORA-16525: The Oracle Data Guard broker is not yet available.
+2021-01-14T11:18:32.386+00:00
+Data Guard Broker Status Summary:
+  Type                        Name                             Severity  Status
+  Configuration               racdb                             Warning  ORA-16607: one or more members have failed
+  Primary Database            racdba                            Success  ORA-0: normal, successful completion
+  Physical Standby Database   racdbb                              Error  ORA-16525: The Oracle Data Guard broker is not yet available.
+2021-01-14T11:26:09.766+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr1racdba"
+2021-01-14T11:27:25.254+00:00
+>> Starting Data Guard Broker bootstrap <<
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:27:25.254+00:00                      DMON: Attach state object
+2021-01-14T11:27:25.261+00:00                      DMON: Broker State Initialized
+2021-01-14T11:27:25.261+00:00                            Version = 3
+2021-01-14T11:27:25.261+00:00                            State = 00000000
+2021-01-14T11:27:25.261+00:00                      DMON: Creating INSV process
+2021-01-14T11:27:28.282+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-14T11:27:28.292+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-14T11:27:28.296+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=14.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:27:28.297+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:27:28.300+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:27:28.301+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=15.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:27:28.301+00:00                      INSV: Set current metadata file ID to 2 (Seq.MIV=15.0)
+2021-01-14T11:27:28.301+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:27:28.303+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:27:28.305+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-14T11:27:28.305+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T11:27:28.305+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T11:27:28.305+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-14T11:27:28.305+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-14T11:27:28.306+00:00                      INSV: Received reconcile FSFO state from instance #2
+2021-01-14T11:27:28.306+00:00                      INSV:        flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T11:27:28.306+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T11:27:28.307+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-14T11:27:28.307+00:00                      INSV: INSV is ready
+2021-01-14T11:27:29.278+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-14T11:27:29.284+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-14T11:27:29.284+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:27:29.301+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-14T11:27:29.301+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-14T11:27:29.301+00:00                      DMON: Configuration service not registered
+2021-01-14T11:27:29.301+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-14T11:27:29.303+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-14T11:27:29.303+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-14T11:27:29.303+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-14T11:27:29.303+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=15.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-14T11:27:32.638+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-14T11:27:46.120+00:00
+Starting redo apply services...

@@ -1,0 +1,714 @@
+<h3>Environment</h3>
+<ul>
+  <li>GI and DB version: 19.9</li>
+</ul>
+<br/>
+<h4>Site A</h4>
+<ul>
+  <li>Hostnames: <code>raca1.example.com, raca2.example.com</code></li>
+  <li>db_unique_name: <code>racdba</code></li>
+  <li>Instance Names: <code>racdba1, racdba2</code></li>
+  <li>Configuration Type: <code>RAC</code></li>
+</ul>
+<br/>
+<h4>Site B</h4>
+<ul>
+  <li>Hostnames: <code>racb1.example.com, racb2.example.com</code></li>
+  <li>db_unique_name: <code>racdbb</code></li>
+  <li>Instance Names: <code>racdbb1, racdbb2</code></li>
+  <li>Configuration Type: <code>RAC</code></li>
+</ul>
+<br/>
+<h3>Initial State</h3>
+<h4>Data Guard Configuration</h4>
+<pre class="brush:sql">
+DGMGRL> show configuration;
+
+Configuration - racdb
+
+  Protection Mode: MaxPerformance
+  Members:
+  racdba - Primary database
+    racdbb - Physical standby database
+
+Fast-Start Failover:  Disabled
+
+Configuration Status:
+SUCCESS   (status updated 116 seconds ago)
+</pre>
+<h4>RACDBA: primary</h4>
+<pre class="brush:sql">
+SYS@RACDBA> select database_role from v$database;
+
+DATABASE_ROLE
+----------------
+PRIMARY
+
+SYS@RACDBA>
+SYS@RACDBA> select *
+  2    from dba_pdb_saved_states
+  3   order by con_id, instance_name;
+
+ CON_ID CON_NAME INSTANCE_NAME    CON_UID GUID                             STATE          RESTRICTED
+------- -------- ------------- ---------- -------------------------------- -------------- ----------
+      3 PDB      racdba1       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+      3 PDB      racdba2       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+      3 PDB      racdbb1       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+      3 PDB      racdbb2       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+
+SYS@RACDBA>
+SYS@RACDBA>
+SYS@RACDBA> select inst_id, name, open_mode
+  2    from gv$pdbs
+  3   order by inst_id, name;
+
+ INST_ID NAME       OPEN_MODE
+-------- ---------- ----------
+       1 PDB        READ WRITE
+       1 PDB$SEED   READ ONLY
+       2 PDB        READ WRITE
+       2 PDB$SEED   READ ONLY
+
+SYS@RACDBA>
+</pre>
+<h4>RACDBB: standby</h4>
+<pre class="brush:sql">
+SYS@RACDBB> select database_role from v$database;
+
+DATABASE_ROLE
+----------------
+PHYSICAL STANDBY
+
+SYS@RACDBB>
+SYS@RACDBB> select *
+  2    from dba_pdb_saved_states
+  3   order by con_id, instance_name;
+
+ CON_ID CON_NAME INSTANCE_NAME    CON_UID GUID                             STATE          RESTRICTED
+------- -------- ------------- ---------- -------------------------------- -------------- ----------
+      3 PDB      racdba1       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+      3 PDB      racdba2       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+      3 PDB      racdbb1       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+      3 PDB      racdbb2       1682177871 B8C71D7FC2B07CAAE0530101A8C0CF42 OPEN           NO
+
+SYS@RACDBB>
+SYS@RACDBB>
+SYS@RACDBB> select inst_id, name, open_mode
+  2    from gv$pdbs
+  3   order by inst_id, name;
+
+ INST_ID NAME       OPEN_MODE
+-------- ---------- ----------
+       1 PDB        READ ONLY
+       1 PDB$SEED   READ ONLY
+       2 PDB        READ ONLY
+       2 PDB$SEED   READ ONLY
+
+SYS@RACDBB>
+</pre>
+<h3>Switchover</h3>
+<h4>dgmgrl</h4>
+<pre class="brush:sql">
+DGMGRL> switchover to racdbb;
+Performing switchover NOW, please wait...
+Operation requires a connection to database "racdbb"
+Connecting ...
+Connected to "racdbb"
+Connected as SYSDBA.
+New primary database "racdbb" is opening...
+Oracle Clusterware is restarting database "racdba" ...
+Connected to "racdba"
+Connected to "racdba"
+Switchover succeeded, new primary is "racdbb"
+</pre>
+<h4>RACDBA: new standby, old primary</h4>
+<pre class="brush:sql;highlight:[16]">
+SYS@RACDBA> select database_role from v$database;
+
+DATABASE_ROLE
+----------------
+PHYSICAL STANDBY
+
+SYS@RACDBA>
+SYS@RACDBA> select inst_id, name, open_mode
+  2    from gv$pdbs
+  3   order by inst_id, name;
+
+ INST_ID NAME       OPEN_MODE
+-------- ---------- ----------
+       1 PDB        READ ONLY
+       1 PDB$SEED   READ ONLY
+       2 PDB        MOUNTED
+       2 PDB$SEED   READ ONLY
+
+SYS@RACDBA>
+</pre>
+The upshot of that is that PDB is not opened on all instances.
+<br/><br/>
+<h4>RACDBB: new primary, old standby</h4>
+<pre class="brush:sql">
+SYS@RACDBB> select database_role from v$database;
+
+DATABASE_ROLE
+----------------
+PRIMARY
+
+SYS@RACDBB>
+SYS@RACDBB> select inst_id, name, open_mode
+  2    from gv$pdbs
+  3   order by inst_id, name;
+
+ INST_ID NAME       OPEN_MODE
+-------- ---------- ----------
+       1 PDB        READ WRITE
+       1 PDB$SEED   READ ONLY
+       2 PDB        READ WRITE
+       2 PDB$SEED   READ ONLY
+
+SYS@RACDBB>
+</pre>
+<h4>alert_racdba1.log</h4>
+<pre class="brush:sql">
+2021-01-14T11:06:34.301193+00:00
+PDB$SEED(2):This instance was first to open pluggable database PDB$SEED (container=2)
+PDB$SEED(2):Endian type of dictionary set to little
+PDB$SEED(2):Undo initialization finished serial:0 start:2456242 end:2456242 diff:0 ms (0.0 seconds)
+PDB$SEED(2):Database Characterset for PDB$SEED is AL32UTF8
+PDB$SEED(2):Opening pdb with no Resource Manager plan active
+2021-01-14T11:06:34.854870+00:00
+Unable to restore open state for pluggable databases due to               the following errors.
+2021-01-14T11:06:34.855107+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdba/racdba1/trace/racdba1_ora_15488.trc:
+ORA-65054: Cannot open a pluggable database in the desired mode.
+Physical standby database opened for read only access.
+2021-01-14T11:06:34.999598+00:00
+Completed: ALTER DATABASE OPEN READ ONLY /* db agent *//* {1:39212:957} */
+</pre>
+<h4>racdba1_ora_15488.trc</h4>
+<pre class="brush:sql">
+*** 2021-01-14T11:06:33.488203+00:00 (CDB$ROOT(1))
+kjznppl0: database in migration or not writable
+kjac_dpinfo_open: direct path not initialized, reason: in readable standby mode
+
+*** 2021-01-14T11:06:34.082190+00:00 (CDB$ROOT(1))
+* Set mstr_rdy 1, lmon_pnpchk 1 
+&lt;error barrier> at 0x7fffb4489030 placed kpdb.c@21504
+ORA-65054: Cannot open a pluggable database in the desired mode.
+</pre>
+<h4>drcracdba1.log</h4>
+<pre class="brush:sql">
+2021-01-14T11:05:21.783+00:00
+Initiating a healthcheck...
+2021-01-14T11:05:23.298+00:00
+SWITCHOVER TO racdbb
+Switchover to physical standby database cannot be initiated from the primary database
+redirecting connection to switchover target database racdbb...
+...using connect identifier: //myracb-scan/racdbb
+SWITCHOVER TO racdbb
+2021-01-14T11:05:26.004+00:00
+Notifying Oracle Clusterware to prepare primary database for switchover
+Switchover in progress...
+2021-01-14T11:05:27.263+00:00
+Executing SQL: [ALTER DATABASE SWITCHOVER TO 'racdbb']
+2021-01-14T11:05:57.144+00:00
+SQL [ALTER DATABASE SWITCHOVER TO 'racdbb'] executed successfully
+2021-01-14T11:05:58.295+00:00
+Switchover successful
+2021-01-14T11:06:03.892+00:00
+Notifying Clusterware to restart this instance for Switchover
+2021-01-14T11:06:06.080+00:00
+Shutting down instance after Switchover
+2021-01-14T11:06:26.438+00:00
+>> Starting Data Guard Broker bootstrap &lt;&lt;
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:06:26.438+00:00                      DMON: Attach state object
+2021-01-14T11:06:26.440+00:00                      DMON: Initialization of broker state requires reconciliation
+2021-01-14T11:06:26.440+00:00                      DMON: Broker state reconciled, version = 0, state = 00000000
+2021-01-14T11:06:26.440+00:00                      DMON: Broker State Initialized
+2021-01-14T11:06:26.440+00:00                            Version = 1
+2021-01-14T11:06:26.440+00:00                            State = 00000000
+2021-01-14T11:06:26.440+00:00                      DMON: Creating INSV process
+2021-01-14T11:06:29.458+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-14T11:06:29.461+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-14T11:06:29.474+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=12.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:06:29.474+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:06:29.476+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:06:29.480+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=13.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:06:29.480+00:00                      INSV: Set current metadata file ID to 2 (Seq.MIV=13.0)
+2021-01-14T11:06:29.480+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:06:29.483+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:06:29.485+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-14T11:06:29.485+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T11:06:29.485+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T11:06:29.485+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-14T11:06:29.485+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-14T11:06:29.486+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-14T11:06:29.486+00:00                      INSV: INSV is ready
+2021-01-14T11:06:30.455+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-14T11:06:30.455+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-14T11:06:30.455+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:06:30.465+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-14T11:06:30.465+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-14T11:06:30.465+00:00                      DMON: Configuration service not registered
+2021-01-14T11:06:30.465+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-14T11:06:30.465+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-14T11:06:30.465+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-14T11:06:30.466+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-14T11:06:30.466+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=13.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-14T11:06:30.495+00:00
+Physical standby restart after broker operation requires Oracle Clusterware buildup
+Notifying Oracle Clusterware to buildup
+2021-01-14T11:06:33.484+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-14T11:06:47.143+00:00
+Starting redo apply services...
+2021-01-14T11:06:52.764+00:00
+instance 2 requested FSFO state reconciliation
+</pre>
+<h4>alert_racdba2.log</h4>
+<pre class="brush:sql">
+2021-01-14T11:06:55.357652+00:00
+PDB$SEED(2):Endian type of dictionary set to little
+PDB$SEED(2):Undo initialization finished serial:0 start:2478578 end:2478578 diff:0 ms (0.0 seconds)
+PDB$SEED(2):Database Characterset for PDB$SEED is AL32UTF8
+2021-01-14T11:06:55.996836+00:00
+PDB$SEED(2):Opening pdb with no Resource Manager plan active
+Unable to restore open state for pluggable databases due to               the following errors.
+2021-01-14T11:06:56.094252+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdba/racdba2/trace/racdba2_ora_20683.trc:
+ORA-65054: Cannot open a pluggable database in the desired mode.
+Physical standby database opened for read only access.
+Completed: ALTER DATABASE OPEN READ ONLY /* db agent *//* {1:39212:1040} */
+</pre>
+<h4>racdba2_ora_20683.trc</h4>
+<pre class="brush:sql">
+*** 2021-01-14T11:06:54.338847+00:00 (CDB$ROOT(1))
+kjznppl0: database in migration or not writable
+kjac_dpinfo_open: direct path not initialized, reason: in readable standby mode
+
+*** 2021-01-14T11:06:55.135200+00:00 (CDB$ROOT(1))
+* Set mstr_rdy 1, lmon_pnpchk 1 
+
+*** 2021-01-14T11:06:56.094148+00:00 (CDB$ROOT(1))
+&lt;error barrier> at 0x7ffe4296eeb0 placed kpdb.c@21504
+ORA-65054: Cannot open a pluggable database in the desired mode.
+</pre>
+<h4>drcracdba2.log</h4>
+<pre class="brush:sql">
+2021-01-14T11:05:25.005+00:00
+Updated broker configuration file available, loading from "+DATA/RACDBA/dr1racdba"
+2021-01-14T11:06:49.513+00:00
+>> Starting Data Guard Broker bootstrap &lt;&lt;
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:06:49.513+00:00                      DMON: Attach state object
+2021-01-14T11:06:49.521+00:00                      DMON: Broker State Initialized
+2021-01-14T11:06:49.521+00:00                            Version = 3
+2021-01-14T11:06:49.521+00:00                            State = 00000000
+2021-01-14T11:06:49.521+00:00                      DMON: Creating INSV process
+2021-01-14T11:06:52.746+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-14T11:06:52.749+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-14T11:06:52.752+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=12.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:06:52.753+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:06:52.755+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:06:52.757+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=13.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:06:52.757+00:00                      INSV: Set current metadata file ID to 2 (Seq.MIV=13.0)
+2021-01-14T11:06:52.757+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:06:52.758+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:06:52.763+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-14T11:06:52.763+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T11:06:52.763+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T11:06:52.763+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-14T11:06:52.763+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-14T11:06:52.764+00:00                      INSV: Received reconcile FSFO state from instance #1
+2021-01-14T11:06:52.764+00:00                      INSV:        flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T11:06:52.764+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T11:06:52.764+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-14T11:06:52.765+00:00                      INSV: INSV is ready
+2021-01-14T11:06:53.534+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-14T11:06:53.539+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-14T11:06:53.539+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:06:53.553+00:00                      DMON: My instance_name is racdba2 (SID racdba2), broker profile found at (1.1)
+2021-01-14T11:06:53.553+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-14T11:06:53.553+00:00                      DMON: Configuration service not registered
+2021-01-14T11:06:53.553+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-14T11:06:53.554+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-14T11:06:53.554+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-14T11:06:53.555+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-14T11:06:53.555+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca2.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba2)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=13.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-14T11:06:56.334+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-14T11:07:00.357+00:00
+Starting redo apply services...
+</pre>
+<h3>Thoughts and Fix</h3>
+The problem is that a new standby database does not open a non-seed pluggable database on all instances.<br/>
+The exact cause is still unclear, but there are certain references in the Oracle documentation that explain how Switchover works when RAC is involved:<br/>
+<br/>
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/dgbkr/oracle-data-guard-broker-commands.html#GUID-1B802555-FD50-4926-A2B4-8E15B01DCF0B">SWITCHOVER</a>
+<blockquote cite="https://docs.oracle.com/en/database/oracle/oracle-database/19/dgbkr/oracle-data-guard-broker-commands.html#GUID-1B802555-FD50-4926-A2B4-8E15B01DCF0B">
+<div>
+If an Oracle RAC primary database is becoming a physical standby database, all but one instance of the primary database will be shut down before performing the switchover. See Switchover for details.
+</div>
+</blockquote>
+<br/>
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/dgbkr/oracle-data-guard-broker-commands.html#GUID-1B802555-FD50-4926-A2B4-8E15B01DCF0B">How the Broker Performs a Switchover</a>
+<blockquote cite="https://docs.oracle.com/en/database/oracle/oracle-database/19/dgbkr/oracle-data-guard-broker-commands.html#GUID-1B802555-FD50-4926-A2B4-8E15B01DCF0B">
+<div>
+Restarts the new standby (former primary) database if the switchover occurs to a physical standby database, and Redo Apply begins applying redo data from the new primary database. If this is an Oracle RAC physical standby database managed by Oracle Clusterware, then the broker directs Oracle Clusterware to restart the new standby database.
+<br/>
+The new primary database is opened in read/write mode and redo transport services are started.
+<br/>
+If the former physical standby database was running with real-time query enabled, the new physical standby database will run with real-time query enabled.
+</div>
+</blockquote>
+<br/>
+I tend to think that the current behaviour is not quite consistent. Either all standby instances should open PDB or neither should open it.<br/>
+There are several workarounds possible to achieve the desired effect.<br/>
+Oracle itself recommends using user-defined services:<br/>
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/multi/administering-pdbs-with-sql-plus.html#GUID-5A2471BC-8501-4E38-BD28-7EE182F3B3A7">Default and User-Defined Services</a>
+<blockquote cite="https://docs.oracle.com/en/database/oracle/oracle-database/19/multi/administering-pdbs-with-sql-plus.html#GUID-5A2471BC-8501-4E38-BD28-7EE182F3B3A7">
+<div>Always use user-defined services for applications. The reason is that you can customize user-defined services to fit the requirements of your applications. Oracle recommends that you not use the default PDB service for applications.
+</div>
+</blockquote>
+<br/>
+I am quite fond of that approach, albeit I do not see it is widely used in the field.<br/>
+Let us create one PDB service for both primary and standby roles:
+<pre class="brush:sql">
+# RACDBA
+srvctl add service -db racdba -service pdb_svc -pdb pdb -preferred racdba1,racdba2 -role primary,physical_standby
+srvctl start service -db racdba -service pdb_svc
+
+# RACDBB
+srvctl add service -db racdbb -service pdb_svc -pdb pdb -preferred racdbb1,racdbb2 -role primary,physical_standby
+srvctl start service -db racdbb -service pdb_svc
+</pre>
+<h3>Another Switchover</h3>
+<br/>
+<h4>dgmgrl</h4>
+<pre class="brush:sql">
+DGMGRL> switchover to racdbb;
+Performing switchover NOW, please wait...
+Operation requires a connection to database "racdbb"
+Connecting ...
+Connected to "racdbb"
+Connected as SYSDBA.
+New primary database "racdbb" is opening...
+Oracle Clusterware is restarting database "racdba" ...
+Connected to "racdba"
+Connected to "racdba"
+Switchover succeeded, new primary is "racdbb"
+</pre>
+<h4>RACDBA: new standby, old primary</h4>
+<pre class="brush:sql">
+SYS@RACDBA> select inst_id, name, open_mode
+  2    from gv$pdbs
+  3   order by inst_id, name;
+
+ INST_ID NAME       OPEN_MODE
+-------- ---------- ----------
+       1 PDB        READ ONLY
+       1 PDB$SEED   READ ONLY
+       2 PDB        READ ONLY
+       2 PDB$SEED   READ ONLY
+
+SYS@RACDBA>
+</pre>
+PDB is opened on all instances this time around.
+<br/><br/>
+<h4>RACDBB: new primary, old standby</h4>
+<pre class="brush:sql">
+SYS@RACDBB> select inst_id, name, open_mode
+  2    from gv$pdbs
+  3   order by inst_id, name;
+
+ INST_ID NAME       OPEN_MODE
+-------- ---------- ----------
+       1 PDB        READ WRITE
+       1 PDB$SEED   READ ONLY
+       2 PDB        READ WRITE
+       2 PDB$SEED   READ ONLY
+
+SYS@RACDBB>
+</pre>
+<h4>alert_racdba1.log</h4>
+<pre class="brush:sql;highlight:[16,20,33]">
+2021-01-14T11:27:31.788825+00:00
+PDB$SEED(2):Endian type of dictionary set to little
+PDB$SEED(2):Undo initialization finished serial:0 start:3713780 end:3713780 diff:0 ms (0.0 seconds)
+PDB$SEED(2):Database Characterset for PDB$SEED is AL32UTF8
+2021-01-14T11:27:31.988785+00:00
+Set LMHB to elevated priority
+2021-01-14T11:27:32.638396+00:00
+Starting background process RSM0
+2021-01-14T11:27:32.660794+00:00
+RSM0 started with pid=75, OS id=2007 
+2021-01-14T11:27:32.986896+00:00
+PDB$SEED(2):Opening pdb with no Resource Manager plan active
+Unable to restore open state for pluggable databases due to               the following errors.
+2021-01-14T11:27:33.111145+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdba/racdba1/trace/racdba1_ora_1534.trc:
+ORA-65054: Cannot open a pluggable database in the desired mode.
+Physical standby database opened for read only access.
+Completed: ALTER DATABASE OPEN READ ONLY /* db agent *//* {2:24204:2659} */
+2021-01-14T11:27:33.820334+00:00
+ALTER PLUGGABLE DATABASE pdb OPEN   /* svc agent *//* {2:24204:2659} */
+2021-01-14T11:27:34.048502+00:00
+ALTER SYSTEM SET remote_listener=' myraca-scan.example.com:1521' SCOPE=MEMORY SID='racdba1';
+2021-01-14T11:27:34.050341+00:00
+ALTER SYSTEM SET listener_networks='' SCOPE=MEMORY SID='racdba1';
+PDB(3):Autotune of undo retention is turned on. 
+2021-01-14T11:27:34.073923+00:00
+PDB(3):Endian type of dictionary set to little
+PDB(3):Undo initialization finished serial:0 start:3716088 end:3716088 diff:0 ms (0.0 seconds)
+PDB(3):Database Characterset for PDB is AL32UTF8
+2021-01-14T11:27:35.152791+00:00
+PDB(3):Opening pdb with no Resource Manager plan active
+Pluggable database PDB opened read only
+Completed: ALTER PLUGGABLE DATABASE pdb OPEN   /* svc agent *//* {2:24204:2659} */
+2021-01-14T11:27:35.703268+00:00
+PDB(3):Started service pdb_svc/pdb_svc/pdb_svc
+</pre>
+Although the ORA-65054 error is still there, the pluggable database is opened shortly afterwards by the Clusterware.
+<br/><br/>
+<h4>racdba1_ora_1534.trc</h4>
+<pre class="brush:sql">
+*** 2021-01-14T11:27:20.529675+00:00 (CDB$ROOT(1))
+*** SESSION ID:(377.9495) 2021-01-14T11:27:20.529708+00:00
+*** CLIENT ID:() 2021-01-14T11:27:20.529717+00:00
+*** SERVICE NAME:() 2021-01-14T11:27:20.529724+00:00
+*** MODULE NAME:(oraagent.bin@raca1.example.com (TNS V1-V3)) 2021-01-14T11:27:20.529731+00:00
+*** ACTION NAME:() 2021-01-14T11:27:20.529739+00:00
+*** CLIENT DRIVER:() 2021-01-14T11:27:20.529745+00:00
+*** CONTAINER ID:(1) 2021-01-14T11:27:20.529753+00:00
+ 
+kcrrmnt: RT: Role transition work is not done
+
+*** 2021-01-14T11:27:20.865334+00:00 (CDB$ROOT(1))
+*** 2021-01-14 11:27:20.865323 [krsn.c:548]
+krsn_dbrole_change: Database role set to PHYSICAL STANDBY [kcvfdb.c:9212]
+krsd_cb_role_change: role 2
+*** 2021-01-14 11:27:20.993319 [krsh.c:6348]
+Archiving previously deferred ORLs
+*** 2021-01-14 11:27:20.993982 [krsq.c:3772]
+krsq_arch_all_complete: Finished archiving all complete, unarchived ORLs
+
+*** 2021-01-14T11:27:30.695367+00:00 (CDB$ROOT(1))
+kjznppl0: database in migration or not writable
+
+*** 2021-01-14T11:27:30.999497+00:00 (CDB$ROOT(1))
+kjac_dpinfo_open: direct path not initialized, reason: in readable standby mode
+* Set mstr_rdy 1, lmon_pnpchk 1 
+
+*** 2021-01-14T11:27:32.249955+00:00 (PDB$SEED(2))
+IPCLW:[0.0]{-}[WAIT]:PROTO: [1610623652249736]ipclw_data_chunk_process:1165 Discarding msg with seq # 2043340599, expecting 2043340603
+
+*** 2021-01-14T11:27:33.111040+00:00 (CDB$ROOT(1))
+&lt;error barrier> at 0x7ffc3992e030 placed kpdb.c@21504
+ORA-65054: Cannot open a pluggable database in the desired mode.
+</pre>
+<h4>drcracdba1.log</h4>
+<pre class="brush:sql">
+2021-01-14T11:27:25.254+00:00
+>> Starting Data Guard Broker bootstrap &lt;&lt;
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:27:25.254+00:00                      DMON: Attach state object
+2021-01-14T11:27:25.261+00:00                      DMON: Broker State Initialized
+2021-01-14T11:27:25.261+00:00                            Version = 3
+2021-01-14T11:27:25.261+00:00                            State = 00000000
+2021-01-14T11:27:25.261+00:00                      DMON: Creating INSV process
+2021-01-14T11:27:28.282+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-14T11:27:28.292+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-14T11:27:28.296+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=14.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:27:28.297+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:27:28.300+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:27:28.301+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=15.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:27:28.301+00:00                      INSV: Set current metadata file ID to 2 (Seq.MIV=15.0)
+2021-01-14T11:27:28.301+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:27:28.303+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:27:28.305+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-14T11:27:28.305+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T11:27:28.305+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T11:27:28.305+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-14T11:27:28.305+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-14T11:27:28.306+00:00                      INSV: Received reconcile FSFO state from instance #2
+2021-01-14T11:27:28.306+00:00                      INSV:        flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T11:27:28.306+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T11:27:28.307+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-14T11:27:28.307+00:00                      INSV: INSV is ready
+2021-01-14T11:27:29.278+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-14T11:27:29.284+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-14T11:27:29.284+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:27:29.301+00:00                      DMON: My instance_name is racdba1 (SID racdba1), broker profile found at (1.2)
+2021-01-14T11:27:29.301+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-14T11:27:29.301+00:00                      DMON: Configuration service not registered
+2021-01-14T11:27:29.301+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-14T11:27:29.303+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-14T11:27:29.303+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-14T11:27:29.303+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-14T11:27:29.303+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca1.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba1)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=15.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-14T11:27:32.638+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-14T11:27:46.120+00:00
+Starting redo apply services...
+</pre>
+<h4>alert_racdba2.log</h4>
+<pre class="brush:sql;highlight:[16,21]">
+2021-01-14T11:27:10.590468+00:00
+PDB$SEED(2):This instance was first to open pluggable database PDB$SEED (container=2)
+PDB$SEED(2):Endian type of dictionary set to little
+PDB$SEED(2):Undo initialization finished serial:0 start:3693763 end:3693763 diff:0 ms (0.0 seconds)
+PDB$SEED(2):Database Characterset for PDB$SEED is AL32UTF8
+2021-01-14T11:27:10.879141+00:00
+db_recovery_file_dest_size of 18000 MB is 15.64% used. This is a
+user-specified limit on the amount of space that will be used by this
+database for recovery-related files, and does not reflect the amount of
+space available in the underlying filesystem or ASM diskgroup.
+2021-01-14T11:27:11.038141+00:00
+PDB$SEED(2):Opening pdb with no Resource Manager plan active
+Unable to restore open state for pluggable databases due to               the following errors.
+2021-01-14T11:27:11.103829+00:00
+Errors in file /u01/app/oracle/diag/rdbms/racdba/racdba2/trace/racdba2_ora_6677.trc:
+ORA-65054: Cannot open a pluggable database in the desired mode.
+2021-01-14T11:27:11.217024+00:00
+Physical standby database opened for read only access.
+Completed: ALTER DATABASE OPEN READ ONLY /* db agent *//* {2:24204:2565} */
+2021-01-14T11:27:11.849329+00:00
+ALTER PLUGGABLE DATABASE pdb OPEN READ ONLY  /* svc agent *//* {2:24204:2565} */
+</pre>
+<h4>racdb2_ora_6677.trc</h4>
+<pre class="brush:sql">
+*** 2021-01-14T11:27:09.794332+00:00 (CDB$ROOT(1))
+kjznppl0: database in migration or not writable
+kjac_dpinfo_open: direct path not initialized, reason: in readable standby mode
+* Set mstr_rdy 1, lmon_pnpchk 1 
+
+*** 2021-01-14T11:27:11.103734+00:00 (CDB$ROOT(1))
+&lt;error barrier> at 0x7ffdf766e730 placed kpdb.c@21504
+ORA-65054: Cannot open a pluggable database in the desired mode.
+</pre>
+<h4>drcracdba2.log</h4>
+<pre class="brush:sql">
+2021-01-14T11:26:06.494+00:00
+Initiating a healthcheck...
+2021-01-14T11:26:08.044+00:00
+SWITCHOVER TO racdbb
+Switchover to physical standby database cannot be initiated from the primary database
+redirecting connection to switchover target database racdbb...
+...using connect identifier: //myracb-scan/racdbb
+SWITCHOVER TO racdbb
+2021-01-14T11:26:10.771+00:00
+Notifying Oracle Clusterware to prepare primary database for switchover
+Switchover in progress...
+2021-01-14T11:26:12.048+00:00
+Executing SQL: [ALTER DATABASE SWITCHOVER TO 'racdbb']
+2021-01-14T11:26:33.855+00:00
+SQL [ALTER DATABASE SWITCHOVER TO 'racdbb'] executed successfully
+2021-01-14T11:26:35.031+00:00
+Switchover successful
+2021-01-14T11:26:40.618+00:00
+Notifying Clusterware to restart this instance for Switchover
+2021-01-14T11:26:42.824+00:00
+Shutting down instance after Switchover
+2021-01-14T11:27:02.925+00:00
+>> Starting Data Guard Broker bootstrap &lt;&lt;
+Broker Configuration File Locations:
+      dg_broker_config_file1 = "+DATA/RACDBA/dr1racdba"
+      dg_broker_config_file2 = "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:27:02.925+00:00                      DMON: Attach state object
+2021-01-14T11:27:02.927+00:00                      DMON: Initialization of broker state requires reconciliation
+2021-01-14T11:27:02.927+00:00                      DMON: Broker state reconciled, version = 0, state = 00000000
+2021-01-14T11:27:02.927+00:00                      DMON: Broker State Initialized
+2021-01-14T11:27:02.927+00:00                            Version = 1
+2021-01-14T11:27:02.927+00:00                            State = 00000000
+2021-01-14T11:27:02.927+00:00                      DMON: Creating INSV process
+2021-01-14T11:27:05.944+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr1racdba' with blocksize 4096
+2021-01-14T11:27:05.946+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr1racdba'
+2021-01-14T11:27:05.950+00:00                      INSV: home block of +DATA/RACDBA/dr1racdba: zzz=0x40, Seq.MIV=14.1, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:27:05.951+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:27:05.952+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:27:05.954+00:00                      INSV: home block of +DATA/RACDBA/dr2racdba: zzz=0x40, Seq.MIV=15.0, fsfo flags=0x0, version=0, pstseq=0.0
+2021-01-14T11:27:05.954+00:00                      INSV: Set current metadata file ID to 2 (Seq.MIV=15.0)
+2021-01-14T11:27:05.954+00:00                      INSV: Opening configuration file '+DATA/RACDBA/dr2racdba' with blocksize 4096
+2021-01-14T11:27:05.956+00:00                      INSV: Successfully opened configuration file '+DATA/RACDBA/dr2racdba'
+2021-01-14T11:27:05.958+00:00                      INSV: Uploading persisted FSFO state:
+2021-01-14T11:27:05.958+00:00                             flags=0x00000000, version=0, pstseq=0, target=0, obid=1
+2021-01-14T11:27:05.958+00:00                             envsn=0, ackseq=0, new_target=255, new_obid=0
+2021-01-14T11:27:05.958+00:00                      	pmyshut=1, aft=30, laglim=30, obslim=30
+2021-01-14T11:27:05.958+00:00                      INSV: FSFO state RAC reconcile started
+2021-01-14T11:27:05.959+00:00                      INSV: FSFO state RAC reconcile finished
+2021-01-14T11:27:05.959+00:00                      INSV: INSV is ready
+2021-01-14T11:27:06.940+00:00                      DMON: rfm_get_chief_lock() called for CTL_BOOTSTRAP, reason BOOTSTRAP, called from rfm_dmon_wakeup_fn
+2021-01-14T11:27:06.941+00:00 7fffffff           0 DMON: start task execution: broker initialization
+2021-01-14T11:27:06.941+00:00                      DMON: Boot configuration (0.0.0), loading from "+DATA/RACDBA/dr2racdba"
+2021-01-14T11:27:06.951+00:00                      DMON: My instance_name is racdba2 (SID racdba2), broker profile found at (1.1)
+2021-01-14T11:27:06.951+00:00                      DMON: Verifying configuration service racdb_CFG
+2021-01-14T11:27:06.951+00:00                      DMON: Configuration service not registered
+2021-01-14T11:27:06.951+00:00                      DMON: Adding configuration service... racdb_CFG
+2021-01-14T11:27:06.951+00:00                      DMON: Registering 1 service/s with listener(s)
+2021-01-14T11:27:06.951+00:00                      DMON: Executing SQL [ALTER SYSTEM REGISTER]
+2021-01-14T11:27:06.952+00:00                      SQL [ALTER SYSTEM REGISTER] Executed successfully
+2021-01-14T11:27:06.952+00:00                      DMON: SCI harvested (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=raca2.example.com)(Port=1522))(CONNECT_DATA=(SERVICE_NAME=racdba_DGMGRL)(INSTANCE_NAME=racdba2)(SERVER=DEDICATED)))
+Broker Configuration:             racdb
+  Oracle Release:                 19.0.0.0.0
+  Oracle Version:                 19.9.0.0.0
+  Metadata Version:               4.1 / UID=0x34ca0bad / Seq.MIV=15.0 / blksz.grain=4096.8
+  Protection Mode:                Maximum Performance
+  Fast-Start Failover (FSFO): DISABLED, flags=0x0, version=0
+  Name                            Member Type                Handle      Enabled
+  racdbb                          Primary Database           0x02010000  YES
+  racdba                          Physical Standby Database  0x01010000  YES
+2021-01-14T11:27:06.981+00:00
+Physical standby restart after broker operation requires Oracle Clusterware buildup
+Notifying Oracle Clusterware to buildup
+2021-01-14T11:27:09.788+00:00
+Configuration Validation Results:
+      Primary database racdbb returned: ORA-0: normal, successful completion
+Member racdba successfully completed version check
+Broker configuration file is current, completing initialization
+2021-01-14T11:27:21.950+00:00
+Starting redo apply services...
+</pre>
+<h3>Conclusion</h3>
+User PDB's may not open on all instances following DataGuard Switchover. This behaviour is quite inconsistent since PDB's are opened just on some instances. Thankfully, the workaround is pretty straightforward - we just need to create a dedicated service for these PDB's.
