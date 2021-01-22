@@ -1,0 +1,140 @@
+SQL> conn tc/tc@localhost/pdb2
+Connected.
+SQL> @q
+SQL>
+SQL> drop table t;
+
+Table dropped.
+
+SQL> drop table tex;
+
+Table dropped.
+
+SQL>
+SQL> select banner_full from v$version;
+
+BANNER_FULL
+----------------------------------------------------------------------------------------------------
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.10.0.0.0
+
+
+SQL>
+SQL> create table t (
+  2    created date,
+  3    c1 int,
+  4    c2 int
+  5  )
+  6  partition by range(created) interval(numtoyminterval(1, 'year')) (
+  7    partition values less than(date'2019-01-01')
+  8  );
+
+Table created.
+
+SQL>
+SQL> create index t_c1_i on t(c2) local;
+
+Index created.
+
+SQL> create index t_c1_c2_i on t(c1, c2) local;
+
+Index created.
+
+SQL> create index t_created_c1_i on t(trunc(created), c1) local;
+
+Index created.
+
+SQL> create index t_desc_i on t(c1 desc, c2) local;
+
+Index created.
+
+SQL>
+SQL> insert into t values (date'2018-01-01', 1, 10);
+
+1 row created.
+
+SQL> insert into t values (date'2019-01-01', 2, 20);
+
+1 row created.
+
+SQL> insert into t values (date'2020-01-01', 3, 30);
+
+1 row created.
+
+SQL>
+SQL> alter session set events 'trace[sql_ddl]';
+
+Session altered.
+
+SQL> create table tex for exchange with table t clone indexes;
+
+Table created.
+
+SQL> alter session set events 'trace[sql_ddl] off';
+
+Session altered.
+
+SQL>
+SQL> exec dbms_metadata.set_transform_param( -
+>   dbms_metadata.session_transform, -
+>   'SQLTERMINATOR', true)
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> select dbms_metadata.get_ddl('INDEX', index_name) from ind where table_name='TEX';
+
+DBMS_METADATA.GET_DDL('INDEX',INDEX_NAME)
+----------------------------------------------------------------------------------------------------
+
+  CREATE INDEX "TC"."I_SYS_23689_T_C1_I" ON "TC"."TEX" ("C2")
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  TABLESPACE "USERS" ;
+
+
+  CREATE INDEX "TC"."I_SYS_23689_T_C1_C2_I" ON "TC"."TEX" ("C1", "C2")
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  TABLESPACE "USERS" ;
+
+
+  CREATE INDEX "TC"."I_SYS_23689_T_CREATED_C1_I" ON "TC"."TEX" (TRUNC("CREATED"), "C1")
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  TABLESPACE "USERS" ;
+
+
+  CREATE INDEX "TC"."I_SYS_23689_T_DESC_I" ON "TC"."TEX" ("C1" DESC, "C2")
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  TABLESPACE "USERS" ;
+
+
+SQL>
+SQL> alter table t
+  2    exchange partition for (date'2018-01-01')
+  3    with table tex
+  4    including indexes;
+
+Table altered.
+
+SQL>
+SQL> select * from t;
+
+CREATED           C1         C2
+--------- ---------- ----------
+01-JAN-19          2         20
+01-JAN-20          3         30
+
+SQL> select * from tex;
+
+CREATED           C1         C2
+--------- ---------- ----------
+01-JAN-18          1         10
+
+SQL>
+SQL> select value from v$diag_info where name='Default Trace File';
+
+VALUE
+----------------------------------------------------------------------------------------------------
+/u01/app/oracle/diag/rdbms/orcl2/orcl2/trace/orcl2_ora_5667.trc
+
+SQL>
+SQL> set echo off
