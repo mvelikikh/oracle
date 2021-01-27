@@ -1,0 +1,65 @@
+2021-01-27 20:40:51,664 INFO  [1] com.oracle.glcm.patch.auto.OPatchAuto - OPatchAuto version: 13.9.4.5.0
+2021-01-27 20:40:51,666 INFO  [1] com.oracle.cie.common.util.reporting.CommonReporter - Reporting console output : Message{id='null', message='Session log file is /u01/app/18.3.0/grid/cfgtoollogs/opatchauto/opatchauto2021-01-27_08-40-51PM.log'}
+2021-01-27 20:40:51,733 INFO  [1] oracle.dbsysmodel.driver.sdk.productdriver.ClusterInformationLoader - crsType: SOFTWARE_INSTALLATION_ONLY
+2021-01-27 20:40:51,733 INFO  [1] oracle.dbsysmodel.driver.sdk.productdriver.ClusterInformationLoader - running: false
+2021-01-27 20:40:52,354 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - OPatchAutoOptions configured options:
+2021-01-27 20:40:52,354 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: patch.location:patch-location Value:/u01/swtmp/32226219/
+2021-01-27 20:40:52,354 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: home:-oh Value:/u01/app/18.3.0/grid/
+2021-01-27 20:40:52,354 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: log:-log Value:/u01/app/18.3.0/grid/cfgtoollogs/opatchauto/opatchauto2021-01-27_08-40-51PM.log
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: log_priority:-logLevel Value:INFO
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: customLogDir:-customLogDir Value:/u01/app/18.3.0/grid/cfgtoollogs
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: analyze:-analyze Value:true
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: inventory.pointer.location:-invPtrLoc Value:/u01/app/18.3.0/grid//oraInst.loc
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: host:-host Value:rac1.example.com
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: patch.plan:-plan Value:crs-rolling
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: format:-format Value:xml
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: output:-output Value:console
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: customconfigdir:-customConfigDir Value:/u01/app/18.3.0/grid/opatchautocfg/db
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: nonrolling:-nonrolling Value:false
+2021-01-27 20:40:52,355 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoOptions - Option: session:-session Value:56VW
+2021-01-27 20:40:52,545 INFO  [1] com.oracle.glcm.patch.auto.OPatchAuto - The id for this session is 56VW
+2021-01-27 20:40:52,545 INFO  [1] com.oracle.cie.common.util.reporting.CommonReporter - Reporting console output : Message{id='null', message='The id for this session is 56VW'}
+2021-01-27 20:40:52,549 WARNING [1] com.oracle.glcm.patch.auto.credential.CredentialManager - Unable to locate credential for host rac1
+2021-01-27 20:40:52,584 INFO  [1] com.oracle.glcm.patch.auto.OPatchAutoHelper - Executing command [bash, -c, ORACLE_HOME=/u01/app/18.3.0/grid /u01/app/18.3.0/grid/bin/orabasehome]
+2021-01-27 20:40:52,602 INFO  [1] com.oracle.helper.util.HelperUtility - Orabasehome Output :
+/u01/app/18.3.0/grid
+
+2021-01-27 20:40:52,602 INFO  [1] com.oracle.helper.util.HelperUtility - Oracle Base Home for /u01/app/18.3.0/grid is /u01/app/18.3.0/grid
+2021-01-27 20:40:52,603 WARNING [1] com.oracle.glcm.patch.auto.credential.CredentialManager - Unable to locate credential for host rac1
+2021-01-27 20:40:52,616 INFO  [1] com.oracle.glcm.patch.auto.db.framework.core.patch.impl.PatchPackageFactoryImpl - Entering getPatchPackageFromDir, getting patch object for the given patch location /u01/swtmp/32226219
+2021-01-27 20:40:53,135 INFO  [1] com.oracle.glcm.patch.auto.db.framework.core.patch.OPatchBundlePatchValidatorAndGenerator - Bundle.xml does not exist
+2021-01-27 20:40:53,135 INFO  [1] com.oracle.glcm.patch.auto.db.framework.core.patch.OPatchSingletonPatchValidatorAndGenerator - inventory.xml found at /u01/swtmp/32226219/32216973/etc/config/inventory.xml which implies it is an OPatch Singleton patch
+2021-01-27 20:40:53,137 INFO  [1] com.oracle.glcm.patch.auto.db.framework.core.patch.PatchMetadaReader - Command for patch metadata::/u01/app/18.3.0/grid/perl/bin/perl  /u01/app/18.3.0/grid/OPatch/auto/database/bin/OPatchAutoBinary.pl query patchinfo -patch_location /u01/swtmp/32226219/32216973 -result /u01/app/18.3.0/grid/OPatch/auto/dbtmp/result.ser
+2021-01-27 20:40:53,741 INFO  [1] com.oracle.glcm.patch.auto.db.product.executor.GISystemCall - Is retry required=false
+2021-01-27 20:40:53,742 WARNING [1] com.oracle.glcm.patch.auto.db.integration.model.plan.PatchingProcessInitializer - Patch Collection failed: 
+2021-01-27 20:40:53,743 INFO  [1] com.oracle.glcm.patch.auto.db.integration.model.productsupport.DBBaseProductSupport - Space available after session: 32874 MB
+2021-01-27 20:40:53,766 SEVERE [1] com.oracle.glcm.patch.auto.OPatchAuto - OPatchAuto failed.
+com.oracle.glcm.patch.auto.OPatchAutoException: OPATCHAUTO-72043: Patch collection failed.
+OPATCHAUTO-72043: Failed to create bundle patch object.
+OPATCHAUTO-72043: Please verify the patch supplied.
+	at com.oracle.glcm.patch.auto.db.integration.model.plan.PatchingProcessInitializer.initializePatchPackageBag(PatchingProcessInitializer.java:97)
+	at com.oracle.glcm.patch.auto.db.integration.model.plan.PatchingProcessInitializer.processInit(PatchingProcessInitializer.java:66)
+	at com.oracle.glcm.patch.auto.db.integration.model.productsupport.DBCommonSupport.initializePatchData(DBCommonSupport.java:126)
+	at com.oracle.glcm.patch.auto.db.integration.model.productsupport.DBBaseProductSupport.initializePatchData(DBBaseProductSupport.java:408)
+	at com.oracle.glcm.patch.auto.db.integration.model.productsupport.DBCommonSupport.loadTopology(DBCommonSupport.java:163)
+	at com.oracle.glcm.patch.auto.db.integration.model.productsupport.DBBaseProductSupport.loadTopology(DBBaseProductSupport.java:195)
+	at com.oracle.glcm.patch.auto.db.integration.model.productsupport.DBProductSupport.loadTopology(DBProductSupport.java:69)
+	at com.oracle.glcm.patch.auto.OPatchAuto.loadTopology(OPatchAuto.java:1732)
+	at com.oracle.glcm.patch.auto.OPatchAuto.prepareOrchestration(OPatchAuto.java:730)
+	at com.oracle.glcm.patch.auto.OPatchAuto.orchestrate(OPatchAuto.java:397)
+	at com.oracle.glcm.patch.auto.OPatchAuto.orchestrate(OPatchAuto.java:344)
+	at com.oracle.glcm.patch.auto.OPatchAuto.main(OPatchAuto.java:212)
+Caused by: com.oracle.glcm.patch.auto.db.integration.model.productsupport.patch.PatchCollectionException: 
+	at com.oracle.glcm.patch.auto.db.framework.core.patch.OPatchSingletonPatchValidatorAndGenerator.generate(OPatchSingletonPatchValidatorAndGenerator.java:151)
+	at oracle.dbsysmodel.patchsdk.PatchFactory.getInstance(PatchFactory.java:246)
+	at com.oracle.glcm.patch.auto.db.framework.core.patch.impl.PatchPackageFactoryImpl.getPatchPackageFromDir(PatchPackageFactoryImpl.java:75)
+	at com.oracle.glcm.patch.auto.db.product.patch.BundlePatchObject.prcoessPatch(BundlePatchObject.java:131)
+	at com.oracle.glcm.patch.auto.db.product.patch.BundlePatchObject.createPatchBagForPatchLocation(BundlePatchObject.java:124)
+	at com.oracle.glcm.patch.auto.db.product.patch.BundlePatchObject.<init>(BundlePatchObject.java:77)
+	at com.oracle.glcm.patch.auto.db.integration.model.productsupport.patch.PatchInformationInitializer.createPatch(PatchInformationInitializer.java:43)
+	at com.oracle.glcm.patch.auto.db.integration.model.plan.PatchingProcessInitializer.initializePatchPackageBag(PatchingProcessInitializer.java:80)
+	... 11 more
+2021-01-27 20:40:53,767 INFO  [1] com.oracle.cie.common.util.reporting.CommonReporter - Reporting console output : Message{id='null', message='OPATCHAUTO-72043: Patch collection failed.
+OPATCHAUTO-72043: Failed to create bundle patch object.
+OPATCHAUTO-72043: Please verify the patch supplied.'}
+2021-01-27 20:40:53,767 INFO  [1] com.oracle.cie.common.util.reporting.CommonReporter - Reporting console output : Message{id='null', message='OPatchAuto failed.'}
