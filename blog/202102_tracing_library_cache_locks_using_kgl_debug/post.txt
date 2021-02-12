@@ -1,28 +1,5 @@
-<a href="https://nenadnoveljic.com/blog/library-cache-lock-debugger/">A recent blog post</a> from Nenad Noveljic prompted me to review the library cache functions he mentioned.<br/><br/>
-The following lines from <b><i>kgllkal</i></b> attracted my attention:
-<pre class="brush:sql;highlight:[12]">
-(gdb) disas kgllkal
-Dump of assembler code for function kgllkal:
-..&lt;skip>..
-   0x0000000012af19f8 &lt;+1272>:  lea    0x236189d(%rip),%rdx        # 0x14e5329c
-   0x0000000012af19ff &lt;+1279>:  movzwl 0x40(%rbx),%eax
-   0x0000000012af1a03 &lt;+1283>:  lea    0x235e396(%rip),%rcx        # 0x14e4fda0
-   0x0000000012af1a0a &lt;+1290>:  mov    %r13,%rdi
-   0x0000000012af1a0d &lt;+1293>:  mov    $0x20,%esi
-   0x0000000012af1a12 &lt;+1298>:  mov    %r12,%r8
-   0x0000000012af1a15 &lt;+1301>:  mov    %rbx,%r9
-   0x0000000012af1a18 &lt;+1304>:  mov    %eax,(%rsp)
-   0x0000000012af1a1b &lt;+1307>:  callq  0x112fa170 &lt;kgltrc>
-</pre>
-<b><i>kgltrc</i></b> seems to be related to Library Cache Tracing.<br/>
-<code>rdx</code> and <code>rcx</code> correspond to third and fourth arguments respectively. That is what they are populated with:
-<pre class="brush:sql">
-(gdb) x/s 0x14e4fda0
-0x14e4fda0:     "TRACELOCK"
-(gdb) x/s 0x14e5329c
-0x14e5329c:     "kgllkal"
-</pre>
-Well it looks like there is a tracing function, namely <b><i>kgltrc</i></b>, which is called from <b><i>kgllkal</i></b> and writes about library cache locks? I reviewed assembler code for a while before I figured out that the actual tracing is governed by the <b><i>_kgl_debug</i></b> parameter.<br/><br/>
+<a href="https://nenadnoveljic.com/blog/library-cache-lock-debugger/">A recent blog post</a> from Nenad Noveljic prompted me to review the library cache tracing facilities available in Oracle database.<br/><br/>
+After a bit of tinkering I discovered the actual library cache lock tracing is governed by the <b><i>_kgl_debug</i></b> parameter.<br/><br/>
 Here is a little sample code to demonstrate that - I borrowed part of it from <a href="https://nenadnoveljic.com/blog/library-cache-lock-debugger/">the excellent Nenad's blog post</a>:
 <pre class="brush:sql;highlight:[14]">
 SQL> create table t (n1 integer,n2 integer);
