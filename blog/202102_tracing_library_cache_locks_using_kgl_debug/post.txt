@@ -1,0 +1,245 @@
+<a href="https://nenadnoveljic.com/blog/library-cache-lock-debugger/">A recent blog post</a> from Nenad Noveljic prompted me to review the library cache functions he mentioned.<br/><br/>
+The following lines from <b><i>kgllkal</i></b> attracted my attention:
+<pre class="brush:sql;highlight:[12]">
+(gdb) disas kgllkal
+Dump of assembler code for function kgllkal:
+..&lt;skip>..
+   0x0000000012af19f8 &lt;+1272>:  lea    0x236189d(%rip),%rdx        # 0x14e5329c
+   0x0000000012af19ff &lt;+1279>:  movzwl 0x40(%rbx),%eax
+   0x0000000012af1a03 &lt;+1283>:  lea    0x235e396(%rip),%rcx        # 0x14e4fda0
+   0x0000000012af1a0a &lt;+1290>:  mov    %r13,%rdi
+   0x0000000012af1a0d &lt;+1293>:  mov    $0x20,%esi
+   0x0000000012af1a12 &lt;+1298>:  mov    %r12,%r8
+   0x0000000012af1a15 &lt;+1301>:  mov    %rbx,%r9
+   0x0000000012af1a18 &lt;+1304>:  mov    %eax,(%rsp)
+   0x0000000012af1a1b &lt;+1307>:  callq  0x112fa170 &lt;kgltrc>
+</pre>
+<b><i>kgltrc</i></b> seems to be related to Library Cache Tracing.<br/>
+<code>rdx</code> and <code>rcx</code> correspond to third and fourth arguments respectively. That is what they are populated with:
+<pre class="brush:sql">
+(gdb) x/s 0x14e4fda0
+0x14e4fda0:     "TRACELOCK"
+(gdb) x/s 0x14e5329c
+0x14e5329c:     "kgllkal"
+</pre>
+Well it looks like there is a tracing function, namely <b><i>kgltrc</i></b>, which is called from <b><i>kgllkal</i></b> and writes about library cache locks? I reviewed assembler code for a while before I figured out that the actual tracing is governed by the <b><i>_kgl_debug</i></b> parameter.<br/><br/>
+Here is a little sample code to demonstrate that - I borrowed part of it from <a href="https://nenadnoveljic.com/blog/library-cache-lock-debugger/">the excellent Nenad's blog post</a>:
+<pre class="brush:sql;highlight:[14]">
+SQL> create table t (n1 integer,n2 integer);
+
+Table created.
+
+SQL> create index ix_t on t(n1,n2);
+
+Index created.
+
+SQL> exec dbms_stats.gather_table_stats ('', 'T', cascade => true)
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> alter system set "_kgl_debug"=32 scope=memory;
+
+System altered.
+
+SQL>
+SQL> alter index ix_t invisible ;
+
+Index altered.
+</pre>
+In a nutshell, <b><i>_kgl_debug=32</i></b> appears to result in writing information about library cache locks in the trace file. Here is how it looks:
+<pre class="brush:sql">
+SQL> col trace_file old_v tf for a72
+SQL> col dirname old_v dn for a50
+SQL> col basename old_v bn for a21
+SQL>
+SQL> select value trace_file,
+  2         substr(value, 1, instr(value, '/', -1)-1) dirname,
+  3         substr(value, instr(value, '/', -1)+1) basename
+  4    from v$diag_info
+  5   where name='Default Trace File';
+
+TRACE_FILE                                                               DIRNAME                                            BASENAME
+------------------------------------------------------------------------ -------------------------------------------------- ---------------------
+/u01/app/oracle/diag/rdbms/racdba/racdba1/trace/racdba1_ora_16440.trc    /u01/app/oracle/diag/rdbms/racdba/racdba1/trace    racdba1_ora_16440.trc
+
+SQL>
+SQL> ho tail -64 &tf.
+    &lt;Mode>N&lt;/Mode>
+  &lt;/LibraryObjectLock>
+&lt;/KGLTRACE>
+&lt;KGLTRACE>
+  &lt;Timestamp>2021-02-12 15:41:23.656&lt;/Timestamp>
+  &lt;SID>136&lt;/SID>
+  &lt;Function>kglLock&lt;/Function>
+  &lt;Reason>TRACELOCK&lt;/Reason>
+  &lt;Param1>0x706c20e0&lt;/Param1>
+  &lt;Param2>1&lt;/Param2>
+  &lt;LibraryHandle>
+    &lt;Address>0x67f78888&lt;/Address>
+    &lt;Hash>94e2179b&lt;/Hash>
+    &lt;LockMode>N&lt;/LockMode>
+    &lt;PinMode>0&lt;/PinMode>
+    &lt;LoadLockMode>0&lt;/LoadLockMode>
+    &lt;Status>VALD&lt;/Status>
+    &lt;ObjectName>
+      &lt;Name>select value trace_file,
+       substr(value, 1, instr(value, '/', -1)-1) dirname,
+       substr(value, instr(value, '/', -1)+1) basename
+  from v$diag_info
+ where name='Default Trace File'&lt;/Name>
+      &lt;FullHashValue>8c302f585b9b9a83239f686f94e2179b&lt;/FullHashValue>
+      &lt;Namespace>SQL AREA(00)&lt;/Namespace>
+      &lt;Type>CURSOR(00)&lt;/Type>
+      &lt;ContainerId>1&lt;/ContainerId>
+      &lt;ContainerUid>1&lt;/ContainerUid>
+      &lt;Identifier>2497845147&lt;/Identifier>
+      &lt;OwnerIdn>89&lt;/OwnerIdn>
+    &lt;/ObjectName>
+  &lt;/LibraryHandle>
+  &lt;LibraryObjectLock>
+    &lt;Address>0x706c20e0&lt;/Address>
+    &lt;Handle>0x67f78888&lt;/Handle>
+    &lt;Mode>N&lt;/Mode>
+  &lt;/LibraryObjectLock>
+&lt;/KGLTRACE>
+&lt;KGLTRACE>
+  &lt;Timestamp>2021-02-12 15:41:23.657&lt;/Timestamp>
+  &lt;SID>136&lt;/SID>
+  &lt;Function>kgllkal&lt;/Function>
+  &lt;Reason>TRACELOCK&lt;/Reason>
+  &lt;Param1>0x706c1ff8&lt;/Param1>
+  &lt;Param2>0&lt;/Param2>
+  &lt;LibraryHandle>
+    &lt;Address>0x67f78328&lt;/Address>
+    &lt;Hash>0&lt;/Hash>
+    &lt;LockMode>N&lt;/LockMode>
+    &lt;PinMode>0&lt;/PinMode>
+    &lt;LoadLockMode>0&lt;/LoadLockMode>
+    &lt;Status>VALD&lt;/Status>
+    &lt;Name>
+      &lt;Namespace>SQL AREA(00)&lt;/Namespace>
+      &lt;Type>CURSOR(00)&lt;/Type>
+      &lt;ContainerId>3&lt;/ContainerId>
+    &lt;/Name>
+  &lt;/LibraryHandle>
+  &lt;LibraryObjectLock>
+    &lt;Address>0x706c1ff8&lt;/Address>
+    &lt;Handle>0x67f78328&lt;/Handle>
+    &lt;Mode>N&lt;/Mode>
+  &lt;/LibraryObjectLock>
+&lt;/KGLTRACE>
+</pre>
+It is quite convenient that the trace data is provided in XML - it can be parsed easily:
+<pre class="brush:sql;highlight:[40,43]">
+SQL> create or replace directory trace_dir as '&dn.';
+old   1: create or replace directory trace_dir as '&dn.'
+new   1: create or replace directory trace_dir as '/u01/app/oracle/diag/rdbms/racdba/racdba1/trace'
+
+Directory created.
+
+SQL>
+SQL> create table trace_ext (
+  2    trace_data clob
+  3  )
+  4  organization external (
+  5    type oracle_loader
+  6    default directory trace_dir
+  7    access parameters (
+  8      records
+  9      xmltag ("KGLTRACE")
+ 10      fields ldrtrim
+ 11      missing field values are null (
+ 12        trace_data char(1000000)
+ 13      )
+ 14    )
+ 15    location ('&bn.')
+ 16  )
+ 17  reject limit unlimited;
+old  15:   location ('&bn.')
+new  15:   location ('racdba1_ora_16440.trc')
+
+Table created.
+
+SQL>
+SQL> select count(*) from trace_ext;
+
+  COUNT(*)
+----------
+       275
+
+SQL> ho grep KGLTRACE &tf. | wc -l
+550
+</pre>
+Looks good. 275 rows in the external table for 550 KGLTRACE tags - these are both opening and closing tags, so that the number of rows matches precisely the number of XML elements in the trace file.<br/><br/>
+Finally, we can retrieve the information about <b><i>kgllkal</i></b> calls for interesting objects:
+<pre class="brush:sql">
+SQL> select xt."Timestamp",
+  2         xt."Function",
+  3         xt."Reason",
+  4         xt."Param1",
+  5         lh."LockMode",
+  6         lh."PinMode",
+  7         obj."Name",
+  8         obj."Namespace",
+  9         obj."Type",
+ 10         lol."Address" lol_address,
+ 11         lol."Mode" lol_mode
+ 12    from trace_ext,
+ 13         xmltable('/KGLTRACE' passing xmltype(trace_data)
+ 14           columns "Timestamp" varchar2(24),
+ 15                   sid number,
+ 16                   "Function" varchar2(20),
+ 17                   "Reason" varchar2(10),
+ 18                   "Param1" varchar2(14),
+ 19                   "Param2" number,
+ 20                   "LibraryHandle" xmltype,
+ 21                   "LibraryObjectLock" xmltype
+ 22         )(+) xt,
+ 23         xmltable('/LibraryHandle' passing xt."LibraryHandle"
+ 24           columns "Address" varchar2(10),
+ 25                   "Hash" varchar2(10),
+ 26                   "LockMode" varchar2(8),
+ 27                   "PinMode" varchar2(8),
+ 28                   "LoadLockMode" varchar2(8),
+ 29                   "Status" varchar2(10),
+ 30                   "ObjectName" xmltype
+ 31         )(+) lh,
+ 32         xmltable('/ObjectName' passing lh."ObjectName"
+ 33           columns "Name" varchar2(64),
+ 34                   "FullHashValue" varchar2(32),
+ 35                   "Namespace" varchar2(32),
+ 36                   "Type" varchar2(32),
+ 37                   "ContainerId" number,
+ 38                   "ContainerUid" number,
+ 39                   "Identifier" number,
+ 40                   "OwnerIdn" number
+ 41         )(+) obj,
+ 42         xmltable('/LibraryObjectLock' passing xt."LibraryObjectLock"
+ 43           columns "Address" varchar2(10),
+ 44                   "Handle" varchar2(10),
+ 45                   "Mode"   varchar2(4)
+ 46         )(+) lol
+ 47   where 1=1
+ 48     and obj."Name" like '%PDB.TC.%'
+ 49     and xt."Function"='kgllkal';
+
+Timestamp                Function Reason     Param1         LockMode PinMode  Name            Namespace            Type       LOL_ADDRES LOL_MODE
+------------------------ -------- ---------- -------------- -------- -------- --------------- -------------------- ---------- ---------- --------
+2021-02-12 15:41:23.595  kgllkal  TRACELOCK  0x62da2ef0     S        0        PDB.TC.IX_T     INDEX(04)            INDEX(01)  0x62da2ef0 S
+2021-02-12 15:41:23.598  kgllkal  TRACELOCK  0x62da2ef0     S        0        PDB.TC.T        TABLE/PROCEDURE(01)  TABLE(02)  0x62da2ef0 S
+2021-02-12 15:41:23.599  kgllkal  TRACELOCK  0x62c9f8d0     S        0        PDB.TC.IX_T     INDEX(04)            INDEX(01)  0x62c9f8d0 S
+2021-02-12 15:41:23.601  kgllkal  TRACELOCK  0x62c9f8d0     S        S        PDB.TC.T        TABLE/PROCEDURE(01)  TABLE(02)  0x62c9f8d0 S
+2021-02-12 15:41:23.613  kgllkal  TRACELOCK  0x65db4480     S        0        PDB.TC.IX_T     INDEX(04)            INDEX(01)  0x65db4480 S
+2021-02-12 15:41:23.617  kgllkal  TRACELOCK  0x65db4480     S        0        PDB.TC.T        TABLE/PROCEDURE(01)  TABLE(02)  0x65db4480 S
+2021-02-12 15:41:23.618  kgllkal  TRACELOCK  0x62db5708     S        0        PDB.TC.IX_T     INDEX(04)            INDEX(01)  0x62db5708 S
+2021-02-12 15:41:23.626  kgllkal  TRACELOCK  0x65db4480     S        0        PDB.TC.IX_T     INDEX(04)            INDEX(01)  0x65db4480 S
+2021-02-12 15:41:23.629  kgllkal  TRACELOCK  0x65db4480     X        0        PDB.TC.T        TABLE/PROCEDURE(01)  TABLE(02)  0x65db4480 X
+2021-02-12 15:41:23.632  kgllkal  TRACELOCK  0x62da2ef0     X        0        PDB.TC.IX_T     INDEX(04)            INDEX(01)  0x62da2ef0 X
+
+10 rows selected.
+</pre>
+<h3>Conclusion</h3>
+We can trace library cache locks, or more specifically certain <b><i>kgllkal</i></b> calls. The resulting trace data is written to the trace file in the XML format. It can be loaded into the database for further analysis.
+<h3>Usual disclaimer</h3>
+This blog post is a pure speculation. Although the results might be be reasonable and suggestive, I have no idea whether or not <b><i>_kgl_debug=32</i></b> covers all or most library cache locks. 
