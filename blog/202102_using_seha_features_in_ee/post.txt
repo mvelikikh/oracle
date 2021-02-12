@@ -40,7 +40,7 @@ PRKF-1421 : cannot relocate database "si"; invalid database type
 As expected, <code>srvctl</code> disallows such operations. However, the edition check uses the <code>$ORACLE_HOME/lib/libedtn19.a</code> file which I described in the following post: <a href="<$BlogURL$>/2020/09/determining-oracle-database-edition.html">Determining Oracle Database Edition</a>.<br/>
 It turns out it is enough to copy the standard edition library to make these <code>srvctl</code> commands work:
 <pre class="brush:sql;highlight:[25]">
-[oracle@rac1 lib]$ cp libedtn19_std.a libedtn19.
+[oracle@rac1 lib]$ cp libedtn19_std.a libedtn19.a
 
 [oracle@rac1 ~]$ srvctl modify database -db si -node rac1,rac2
 
