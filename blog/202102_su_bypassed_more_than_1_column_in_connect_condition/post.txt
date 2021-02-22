@@ -1,0 +1,384 @@
+<a href="https://www.freelists.org/post/oracle-l/Optimizer-enhancements-in-199">A recent thread</a> on oracle-l discussed a CBO regression that was encountered following 19.8->19.9 Release Update application.<br/>
+A simplified example that demonstrates the observed behavior:
+<pre class="brush:sql">
+create table departments
+as
+select rownum department_id,
+       10 manager_count,
+       100 employee_count
+  from dual
+  connect by level&lt;=10;
+
+create table employees
+as
+select rownum employee_id,
+       department_id,
+       lpad('x', 100, 'x') name
+  from departments,
+       lateral(
+         select level 
+           from dual
+           connect by level&lt;=employee_count
+       )(+);
+
+alter session set events 'trace[sql_optimizer.*]';
+explain plan for
+select *
+  from departments d
+ where manager_count > employee_count
+                       + (select --+ unnest
+                                 count(*)
+                            from employees e
+                           where e.department_id = d.department_id);
+</pre>
+The last query has the following execution plans in 19.8 and 19.9 correspondingly:
+<pre class="brush:sql;highlight:[13,14,40,58]">
+-- ----------------------------------------------------------------------------------
+-- 19.8
+-- ----------------------------------------------------------------------------------
+
+PLAN_TABLE_OUTPUT
+-------------------------------------------------------------------------------------
+Plan hash value: 1545815388
+
+------------------------------------------------------------------------------------
+| Id  | Operation            | Name        | Rows  | Bytes | Cost (%CPU)| Time     |
+------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT     |             |     1 |    35 |    11  (10)| 00:00:01 |
+|*  1 |  HASH JOIN           |             |     1 |    35 |    11  (10)| 00:00:01 |
+|   2 |   VIEW               | VW_SQ_1     |    10 |   260 |     8  (13)| 00:00:01 |
+|   3 |    HASH GROUP BY     |             |    10 |    30 |     8  (13)| 00:00:01 |
+|   4 |     TABLE ACCESS FULL| EMPLOYEES   |  1000 |  3000 |     7   (0)| 00:00:01 |
+|   5 |   TABLE ACCESS FULL  | DEPARTMENTS |    10 |    90 |     3   (0)| 00:00:01 |
+------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - access("ITEM_0"="D"."DEPARTMENT_ID")
+       filter("MANAGER_COUNT">"EMPLOYEE_COUNT"+"COUNT(*)")
+
+18 rows selected.
+
+-- ----------------------------------------------------------------------------------
+-- 19.9
+-- ----------------------------------------------------------------------------------
+
+PLAN_TABLE_OUTPUT
+-------------------------------------------------------------------------------------
+Plan hash value: 1015098386
+
+-----------------------------------------------------------------------------------
+| Id  | Operation           | Name        | Rows  | Bytes | Cost (%CPU)| Time     |
+-----------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT    |             |     1 |     9 |    38   (0)| 00:00:01 |
+|*  1 |  FILTER             |             |       |       |            |          |
+|   2 |   TABLE ACCESS FULL | DEPARTMENTS |    10 |    90 |     3   (0)| 00:00:01 |
+|   3 |   SORT AGGREGATE    |             |     1 |     3 |            |          |
+|*  4 |    TABLE ACCESS FULL| EMPLOYEES   |   100 |   300 |     7   (0)| 00:00:01 |
+-----------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("MANAGER_COUNT">"EMPLOYEE_COUNT"+ (SELECT /*+ UNNEST */
+              COUNT(*) FROM "EMPLOYEES" "E" WHERE "E"."DEPARTMENT_ID"=:B1))
+   4 - filter("E"."DEPARTMENT_ID"=:B1)
+
+Hint Report (identified by operation id / Query Block Name / Object Alias):
+Total hints for statement: 1 (U - Unused (1))
+---------------------------------------------------------------------------
+
+   3 -  SEL$2
+         U -  unnest / Failed basic validity checks
+
+25 rows selected.
+</pre>
+It can be seen that subquery unnesting does not happen in 19.9 anymore. Even worse than that, the outline/SQL Plan Baseline from 19.8 fails to reproduce in 19.9. That change by itself can have an adverse effect on the existing queries, e.g.:
+<pre class="brush:sql;highlight:[15,28,46,59]">
+SQL> select --+ gather_plan_statistics
+  2         *
+  3    from departments d
+  4   where manager_count > employee_count
+  5                         + (select --+ unnest
+  6                                   count(*)
+  7                              from employees e
+  8                             where e.department_id = d.department_id);
+
+no rows selected
+
+SQL> select * from dbms_xplan.display_cursor(format=> 'allstats last');
+
+-- ----------------------------------------------------------------------------------
+-- 19.8
+-- ----------------------------------------------------------------------------------
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  8gcr6b9xkkqv0, child number 0
+-------------------------------------
+
+Plan hash value: 1545815388
+
+----------------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation            | Name        | Starts | E-Rows | A-Rows |   A-Time   | Buffers | Reads  |  OMem |  1Mem | Used-Mem |
+----------------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT     |             |      1 |        |      0 |00:00:00.01 |      20 |     16 |       |       |          |
+|*  1 |  HASH JOIN           |             |      1 |      1 |      0 |00:00:00.01 |      20 |     16 |  2078K|  2078K|  551K (0)|
+|   2 |   VIEW               | VW_SQ_1     |      1 |     10 |     10 |00:00:00.01 |      18 |     16 |       |       |          |
+|   3 |    HASH GROUP BY     |             |      1 |     10 |     10 |00:00:00.01 |      18 |     16 |  1558K|  1558K|  666K (0)|
+|   4 |     TABLE ACCESS FULL| EMPLOYEES   |      1 |   1000 |   1000 |00:00:00.01 |      18 |     16 |       |       |          |
+|   5 |   TABLE ACCESS FULL  | DEPARTMENTS |      1 |     10 |     10 |00:00:00.01 |       2 |      0 |       |       |          |
+----------------------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - access("ITEM_0"="D"."DEPARTMENT_ID")
+       filter("MANAGER_COUNT">"EMPLOYEE_COUNT"+"COUNT(*)")
+
+
+27 rows selected.
+
+-- ----------------------------------------------------------------------------------
+-- 19.9
+-- ----------------------------------------------------------------------------------
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  8gcr6b9xkkqv0, child number 0
+-------------------------------------
+
+Plan hash value: 1015098386
+
+------------------------------------------------------------------------------------------------------
+| Id  | Operation           | Name        | Starts | E-Rows | A-Rows |   A-Time   | Buffers | Reads  |
+------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT    |             |      1 |        |      0 |00:00:00.01 |     182 |     16 |
+|*  1 |  FILTER             |             |      1 |        |      0 |00:00:00.01 |     182 |     16 |
+|   2 |   TABLE ACCESS FULL | DEPARTMENTS |      1 |     10 |     10 |00:00:00.01 |       2 |      0 |
+|   3 |   SORT AGGREGATE    |             |     10 |      1 |     10 |00:00:00.01 |     180 |     16 |
+|*  4 |    TABLE ACCESS FULL| EMPLOYEES   |     10 |    100 |   1000 |00:00:00.01 |     180 |     16 |
+------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("MANAGER_COUNT">"EMPLOYEE_COUNT"+)
+   4 - filter("E"."DEPARTMENT_ID"=:B1)
+
+
+26 rows selected.
+</pre>
+The buffer gets goes from 20 in 19.8 to 182 in 19.9 for this simple query.<br/>
+The 10053 trace file provides more details regarding that SU bypass:
+<pre class="brush:sql;highlight:[16]">
+SQE: Query after SQ elimination:******* UNPARSED QUERY IS *******
+SELECT "D"."DEPARTMENT_ID" "DEPARTMENT_ID",
+       "D"."MANAGER_COUNT" "MANAGER_COUNT",
+       "D"."EMPLOYEE_COUNT" "EMPLOYEE_COUNT"
+  FROM "TC"."DEPARTMENTS" "D"
+ WHERE "D"."MANAGER_COUNT">"D"."EMPLOYEE_COUNT"
+                          + (SELECT /*+ UNNEST */ 
+                                    COUNT(*) "COUNT(*)"
+                               FROM "TC"."EMPLOYEES" "E"
+                              WHERE "E"."DEPARTMENT_ID"="D"."DEPARTMENT_ID")
+SU: Considering subquery unnesting in query block SEL$1 (#0)
+********************
+Subquery Unnest (SU)
+********************
+SU:   Checking validity of unnesting subquery SEL$2 (#0)
+SU:     SU bypassed: More than 1 column in connect condition.
+SU:     SU bypassed: Failed basic validity checks.
+SU:   Validity checks failed.
+</pre>
+I believe the SU bypass was introduced by the fix for <a href="https://support.oracle.com/rs?type=doc&id=30593046.8">bug 30593046 - A query having a scalar subquery returned a wrong result (Doc ID 30593046.8)</a>.<br/>
+To demonstrate that, let us add a new department to the DEPARTMENTS table that has no corresponding row in EMPLOYEES:
+<pre class="brush:sql;highlight:[16,19,34,52,57,72]">
+SQL> insert into departments values (100, 1, 0);
+
+1 row created.
+
+SQL>
+SQL> select --+ gather_plan_statistics
+  2         *
+  3    from departments d
+  4   where manager_count > employee_count
+  5                         + (select --+ unnest
+  6                                   count(*)
+  7                              from employees e
+  8                             where e.department_id = d.department_id);
+  
+-- ----------------------------------------------------------------------------------
+-- 19.8 - PRODUCES WRONG RESULTS! no rows selected 
+-- ----------------------------------------------------------------------------------
+
+no rows selected
+
+SQL> select * from dbms_xplan.display_cursor(format=> 'allstats last');
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  8gcr6b9xkkqv0, child number 0
+-------------------------------------
+
+Plan hash value: 1545815388
+
+-------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation            | Name        | Starts | E-Rows | A-Rows |   A-Time   | Buffers |  OMem |  1Mem | Used-Mem |
+-------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT     |             |      1 |        |      0 |00:00:00.01 |      24 |       |       |          |
+|*  1 |  HASH JOIN           |             |      1 |      1 |      0 |00:00:00.01 |      24 |  2078K|  2078K|  545K (0)|
+|   2 |   VIEW               | VW_SQ_1     |      1 |     10 |     10 |00:00:00.01 |      18 |       |       |          |
+|   3 |    HASH GROUP BY     |             |      1 |     10 |     10 |00:00:00.01 |      18 |  1558K|  1558K|  659K (0)|
+|   4 |     TABLE ACCESS FULL| EMPLOYEES   |      1 |   1000 |   1000 |00:00:00.01 |      18 |       |       |          |
+|   5 |   TABLE ACCESS FULL  | DEPARTMENTS |      1 |     10 |     11 |00:00:00.01 |       6 |       |       |          |
+-------------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - access("ITEM_0"="D"."DEPARTMENT_ID")
+       filter("MANAGER_COUNT">"EMPLOYEE_COUNT"+"COUNT(*)")
+
+
+27 rows selected.
+
+
+-- ----------------------------------------------------------------------------------
+-- 19.9 - CORRECTLY RETURNS ONE ROW
+-- ----------------------------------------------------------------------------------
+
+DEPARTMENT_ID MANAGER_COUNT EMPLOYEE_COUNT
+------------- ------------- --------------
+          100             1              0
+
+SQL> select * from dbms_xplan.display_cursor(format=> 'allstats last');
+
+PLAN_TABLE_OUTPUT
+----------------------------------------------------------------------------------------------------------------------------------
+SQL_ID  8gcr6b9xkkqv0, child number 0
+-------------------------------------
+
+Plan hash value: 1015098386
+
+---------------------------------------------------------------------------------------------
+| Id  | Operation           | Name        | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+---------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT    |             |      1 |        |      1 |00:00:00.01 |     204 |
+|*  1 |  FILTER             |             |      1 |        |      1 |00:00:00.01 |     204 |
+|   2 |   TABLE ACCESS FULL | DEPARTMENTS |      1 |     10 |     11 |00:00:00.01 |       6 |
+|   3 |   SORT AGGREGATE    |             |     11 |      1 |     11 |00:00:00.01 |     198 |
+|*  4 |    TABLE ACCESS FULL| EMPLOYEES   |     11 |    100 |   1000 |00:00:00.01 |     198 |
+---------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("MANAGER_COUNT">"EMPLOYEE_COUNT"+)
+   4 - filter("E"."DEPARTMENT_ID"=:B1)
+
+
+26 rows selected.
+</pre>
+It is worth noting that a similar query that uses one column from DEPARTMENTS has a proper outer join in both 19.8 and 19.9:
+<pre class="brush:sql">
+SQL> explain plan for
+  2  select *
+  3    from departments d
+  4   where employee_count > (select --+ unnest
+  5                                  count(*)
+  6                             from employees e
+  7                            where e.department_id = d.department_id);
+
+Explained.
+
+SQL> select * from dbms_xplan.display();
+
+PLAN_TABLE_OUTPUT
+-------------------------------------------------------------------------------------
+Plan hash value: 4272783132
+
+-------------------------------------------------------------------------------------
+| Id  | Operation             | Name        | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT      |             |    10 |   350 |    11  (10)| 00:00:01 |
+|*  1 |  FILTER               |             |       |       |            |          |
+|*  2 |   HASH JOIN OUTER     |             |    10 |   350 |    11  (10)| 00:00:01 |
+|   3 |    TABLE ACCESS FULL  | DEPARTMENTS |    10 |    90 |     3   (0)| 00:00:01 |
+|   4 |    VIEW               | VW_SQ_1     |    10 |   260 |     8  (13)| 00:00:01 |
+|   5 |     HASH GROUP BY     |             |    10 |    30 |     8  (13)| 00:00:01 |
+|   6 |      TABLE ACCESS FULL| EMPLOYEES   |  1000 |  3000 |     7   (0)| 00:00:01 |
+-------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("COUNT(*)" IS NULL AND "EMPLOYEE_COUNT">0 OR
+              "EMPLOYEE_COUNT">"COUNT(*)")
+   2 - access("ITEM_1"(+)="D"."DEPARTMENT_ID")
+
+20 rows selected.
+</pre>
+It made me think that it should be possible to obtain the desired transformation in 19.9 by rewriting the query. Sure enough, I verified that both non-mergeable view or temp table transformation can be used for that:
+<pre class="brush:sql">
+SQL> explain plan for
+  2  with d as (
+  3    select --+ no_merge
+  4           d.*, manager_count - employee_count employee_diff
+  5      from departments d)
+  6  select *
+  7    from d
+  8   where employee_diff > (select --+ unnest
+  9                                 count(*)
+ 10                            from employees e
+ 11                           where e.department_id = d.department_id);
+
+Explained.
+
+SQL> select * from dbms_xplan.display();
+
+PLAN_TABLE_OUTPUT
+-------------------------------------------------------------------------------------
+Plan hash value: 1773562247
+
+-------------------------------------------------------------------------------------
+| Id  | Operation             | Name        | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT      |             |    10 |   780 |    11  (10)| 00:00:01 |
+|*  1 |  FILTER               |             |       |       |            |          |
+|*  2 |   HASH JOIN OUTER     |             |    10 |   780 |    11  (10)| 00:00:01 |
+|   3 |    VIEW               |             |    10 |   520 |     3   (0)| 00:00:01 |
+|   4 |     TABLE ACCESS FULL | DEPARTMENTS |    10 |    90 |     3   (0)| 00:00:01 |
+|   5 |    VIEW               | VW_SQ_1     |    10 |   260 |     8  (13)| 00:00:01 |
+|   6 |     HASH GROUP BY     |             |    10 |    30 |     8  (13)| 00:00:01 |
+|   7 |      TABLE ACCESS FULL| EMPLOYEES   |  1000 |  3000 |     7   (0)| 00:00:01 |
+-------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("COUNT(*)" IS NULL AND "EMPLOYEE_DIFF">0 OR
+              "EMPLOYEE_DIFF">"COUNT(*)")
+   2 - access("ITEM_1"(+)="D"."DEPARTMENT_ID")
+
+21 rows selected.
+</pre>
+<h3>Conclusion</h3>
+<a href="https://www.freelists.org/post/oracle-l/Optimizer-enhancements-in-199,3">As Jonathan Lewis remarked</a> there are usually certain reasons for such changes of the existing optimizer behavior:
+<blockquote cite="https://www.freelists.org/post/oracle-l/Optimizer-enhancements-in-199,3">
+Various possibilties.<br/>
+a) Oracle Corp. has realised that there's a boundary condition with this
+pattern that could produce wrong results and blocks the transformation
+(e.g. are either of lastmoddate and lastmodtime declared not null - if not
+the unnest ought to be invalid)
+<br/>
+b) Oracle Corp. has modified the optimizer code to produced more efficient
+plans in almost all cases, but the change introduces certain restrictiions
+that your SQL now meets (e.g. even if both lastmoddate and lastmodetime the
+code may now assume that to_char() or to_date() could produce a null from a
+non-null.
+<br/>
+c) Some relatively simple code change has introduced a bug
+</blockquote>
+Although it is quite unfortunate there is no fix control or any other backout switching bringing back the old behavior (as far as I am aware), Oracle actually introduced a fix for the wrong results issue. It might be the lesser of two evils.
