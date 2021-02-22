@@ -381,4 +381,5 @@ non-null.
 <br/>
 c) Some relatively simple code change has introduced a bug
 </blockquote>
-Although it is quite unfortunate there is no fix control or any other backout switching bringing back the old behavior (as far as I am aware), Oracle actually introduced a fix for the wrong results issue. It might be the lesser of two evils.
+Although it is quite unfortunate there is no fix control or any other backout switching bringing back the old behavior (as far as I am aware), Oracle actually introduced a fix for the wrong results issue. It might be the lesser of two evils.<br/>
+The script to this post is available in <a href="https://github.com/mvelikikh/oracle/blob/master/blog/202102_su_bypassed_more_than_1_column_in_connect_condition/su.sql">my GitHub repo</a>.
