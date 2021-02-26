@@ -8,7 +8,7 @@ This blog post describes how the desired can be accomplished.
 <h2>Idea</h2>
 <ul>
   <li>Skip the tablespaces of the pluggable databases that should not be protected by Data Guard: <code>SKIP [FOREVER] TABLESPACE</code> clause of the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/rcmrf/RESTORE.html#d82198e2317">RESTORE</a> command can be used</li>
-  <li>Drop the skipped data files on the standby</li>
+  <li>Drop the excluded data files on the standby</li>
   <li>Set <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/refrn/ENABLED_PDBS_ON_STANDBY.html#GUID-A2EC2381-D9C0-4612-87C9-A225C7BCE8C4">ENABLED_PDBS_ON_STANDBY</a> to apply redo only to certain PDBs</li>
 </ul>
 <h2>Setup</h2>
