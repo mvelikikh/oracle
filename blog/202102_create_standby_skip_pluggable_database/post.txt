@@ -1,0 +1,669 @@
+<h2>Goal</h2>
+Let us assume there is a need to create a standby database that excludes some pluggable databases of the primary, e.g. the PDBs must not be restored during standby database creation, and the standby will ignore any redo related to them.<br/>
+It is known that the DUPLICATE command does not allow that: <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/rcmrf/DUPLICATE.html#d43747e1626">Backup and Recovery Reference</a>
+<blockquote cite="https://docs.oracle.com/en/database/oracle/oracle-database/19/rcmrf/DUPLICATE.html#d43747e1626">
+  <b>Note:</b> RMAN does not support partial PDB duplication. Therefore, you cannot use the <code>SKIP TABLESPACE</code>, <code>TABLESPACE</code>, <code>SKIP PLUGGABLE DATABASE</code>, and <code>PLUGGABLE DATABASE</code> options when creating a standby database. 
+</blockquote>
+This blog post describes how the desired can be accomplished.
+<h2>Idea</h2>
+<ul>
+  <li>Skip the tablespaces of the pluggable databases that should not be protected by Data Guard: <code>SKIP [FOREVER] TABLESPACE</code> clause of the <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/rcmrf/RESTORE.html#d82198e2317">RESTORE</a> command can be used</li>
+  <li>Drop the skipped data files on the standby</li>
+  <li>Set <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/refrn/ENABLED_PDBS_ON_STANDBY.html#GUID-A2EC2381-D9C0-4612-87C9-A225C7BCE8C4">ENABLED_PDBS_ON_STANDBY</a> to apply redo only to certain PDBs</li>
+</ul>
+<h2>Setup</h2>
+<h3>Primary and Standby</h3>
+<ul>
+  <li>db_name: <code>orcl</code></li>
+  <li>Oracle version: <code>19.10</code></li>
+</ul>
+<h3>Primary</h3>
+<ul>
+  <li>Hostname: <code>servera</code></li>
+  <li>db_unique_name: <code>orcla</code></li>
+  <li>instance_name: <code>orcla1</code></li>
+  <li>Pluggable Databases: <code>PDB1-3</code></li>
+</ul>
+<h3>Standby</h3>
+<ul>
+  <li>Hostname: <code>serverb</code></li>
+  <li>db_unique_name: <code>orclb</code></li>
+  <li>instance_name: <code>orclb1</code></li>
+  <li>Pluggable Database: <code>PDB1</code></li>
+</ul>
+<h3>Creating Primary</h3>
+The primary database was created by the following DBCA command:
+<pre class="brush:sql">
+dbca -silent -createDatabase \
+  -responseFile NO_VALUE \
+  -gdbName orcl \
+  -sid orcla1 \
+  -templateName New_Database.dbt \
+  -createAsContainerDatabase true \
+    -numberOfPDBs 3 \
+    -pdbName pdb \
+    -pdbAdminPassword Oracle123 \
+  -sysPassword Oracle123 \
+  -systemPassword Oracle123 \
+  -recoveryAreaDestination +FRA \
+    -recoveryAreaSize 10000 \
+  -storageType ASM \
+    -datafileDestination +DATA \
+  -enableArchive true \
+  -memoryMgmtType AUTO_SGA \
+  -dbOptions "APEX:false,DV:false,CWMLITE:false,IMEDIA:false,JSERVER:false,OMS:false,ORACLE_TEXT:false,SAMPLE_SCHEMA:false,SPATIAL:false" \
+  -initParams "db_unique_name=orcla,dg_broker_start=true"
+</pre>
+The actual output from the terminal:
+<pre class="brush:sql">
+[oracle@servera ~]$ dbca -silent -createDatabase \
+>   -responseFile NO_VALUE \
+>   -gdbName orcl \
+>   -sid orcla1 \
+>   -templateName New_Database.dbt \
+>   -createAsContainerDatabase true \
+>     -numberOfPDBs 3 \
+>     -pdbName pdb \
+>     -pdbAdminPassword Oracle123 \
+>   -sysPassword Oracle123 \
+>   -systemPassword Oracle123 \
+>   -recoveryAreaDestination +FRA \
+>     -recoveryAreaSize 10000 \
+>   -storageType ASM \
+>     -datafileDestination +DATA \
+>   -enableArchive true \
+>   -memoryMgmtType AUTO_SGA \
+>   -dbOptions "APEX:false,DV:false,CWMLITE:false,IMEDIA:false,JSERVER:false,OMS:false,ORACLE_TEXT:false,SAMPLE_SCHEM
+A:false,SPATIAL:false" \
+>   -initParams "db_unique_name=orcla,dg_broker_start=true"
+[WARNING] [DBT-06801] Specified Fast Recovery Area size (10,000 MB) is less than the recommended value.
+   CAUSE: Fast Recovery Area size should at least be three times the database size (8,897 MB).
+   ACTION: Specify Fast Recovery Area Size to be at least three times the database size.
+[WARNING] [DBT-06801] Specified Fast Recovery Area size (10,000 MB) is less than the recommended value.
+   CAUSE: Fast Recovery Area size should at least be three times the database size (4,502 MB).
+   ACTION: Specify Fast Recovery Area Size to be at least three times the database size.
+Prepare for db operation
+6% complete
+Registering database with Oracle Restart
+10% complete
+Creating and starting Oracle instance
+12% complete
+16% complete
+Creating database files
+17% complete
+23% complete
+Creating data dictionary views
+25% complete
+29% complete
+32% complete
+34% complete
+36% complete
+38% complete
+42% complete
+Creating cluster database views
+43% complete
+55% complete
+Completing Database Creation
+59% complete
+61% complete
+Creating Pluggable Databases
+65% complete
+69% complete
+73% complete
+81% complete
+Executing Post Configuration Actions
+100% complete
+Database creation complete. For details check the logfiles at:
+ /u01/app/oracle/cfgtoollogs/dbca/orcla.
+Database Information:
+Global Database Name:orcla
+System Identifier(SID):orcla1
+Look at the log file "/u01/app/oracle/cfgtoollogs/dbca/orcla/orcla.log" for further details.
+[oracle@servera ~]$
+</pre>
+There are three pluggable databases created: <code>PDB1-3</code>. <code>PDB1</code> should be replicated as usual. Both <code>PDB2</code> and <code>PDB3</code> should not be available on standby.
+<h2>Creating Standby</h2>
+<h3>Adding Static Service to Listener</h3>
+I edited <code>/u01/app/19.3.0/grid/network/admin/listener.ora</code> and added a static registration for my standby instance:
+<pre class="brush:sql">
+SID_LIST_LISTENER=
+  (SID_LIST=
+      (SID_DESC=
+         (GLOBAL_DBNAME=orclb)
+         (SID_NAME=orclb1)
+         (ORACLE_HOME=/u01/app/oracle/product/19.3.0/dbhome_1)
+       )
+   )
+</pre>
+<h3>Copying password file</h3>
+<pre class="brush:sql">
+[oracle@serverb ~]$ scp servera:$ORACLE_HOME/dbs/orapworcla1 $ORACLE_HOME/dbs/orapworclb1
+Warning: Permanently added 'servera' (ECDSA) to the list of known hosts.
+orapworcla1                                                                        100% 2048   860.9KB/s   00:00
+</pre>
+<h3>Bootstrap init.ora</h3>
+<pre class="brush:sql;highlight:[8]">
+db_name=orcl
+db_unique_name=orclb
+instance_name=orclb1
+enable_pluggable_database=true
+db_recovery_file_dest=+FRA
+db_recovery_file_dest_size=10G
+dg_broker_start=true
+enabled_pdbs_on_standby=pdb1
+</pre>
+Only <code>PDB1</code> will be enabled on the standby database.
+<h3>Starting Standby Instance</h3>
+<pre class="brush:sql">
+[oracle@serverb ~]$ sqlplus / as sysdba
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Fri Feb 26 15:00:55 2021
+Version 19.10.0.0.0
+
+Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> startup nomount pfile=/tmp/init.ora
+ORACLE instance started.
+
+Total System Global Area  457176832 bytes
+Fixed Size                  9135872 bytes
+Variable Size             306184192 bytes
+Database Buffers          134217728 bytes
+Redo Buffers                7639040 bytes
+SQL> Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.10.0.0.0
+</pre>
+<h3>Restoring Standby Control File and Mounting Standby Database</h3>
+<pre class="brush:sql">
+[oracle@serverb ~]$ rman
+
+Recovery Manager: Release 19.0.0.0.0 - Production on Fri Feb 26 15:01:04 2021
+Version 19.10.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+RMAN> connect target sys/Oracle123@servera/orcla
+
+connected to target database: ORCL (DBID=1593309578)
+
+RMAN> connect auxiliary sys/Oracle123@serverb/orclb
+
+connected to auxiliary database: ORCL (not mounted)
+
+RMAN> run
+{
+   sql clone 'create spfile from memory';
+   shutdown clone immediate;
+   startup clone nomount;
+   restore clone from service  'servera/orcla' standby controlfile;
+}
+
+2> 3> 4> 5> 6> 7>
+using target database control file instead of recovery catalog
+sql statement: create spfile from memory
+
+Oracle instance shut down
+
+connected to auxiliary database (not started)
+Oracle instance started
+
+Total System Global Area     457176832 bytes
+
+Fixed Size                     9135872 bytes
+Variable Size                306184192 bytes
+Database Buffers             134217728 bytes
+Redo Buffers                   7639040 bytes
+
+Starting restore at 26.02.2021 15:02:27
+allocated channel: ORA_AUX_DISK_1
+channel ORA_AUX_DISK_1: SID=76 device type=DISK
+
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: restoring control file
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:02
+output file name=+FRA/ORCLB/CONTROLFILE/current.256.1065538951
+Finished restore at 26.02.2021 15:02:31
+
+RMAN>
+RMAN> run
+{
+   sql clone 'alter database mount standby database';
+}
+
+2> 3> 4>
+sql statement: alter database mount standby database
+
+RMAN>
+</pre>
+<h3>Restoring Standby Database</h3>
+Here are the primary data files:
+<pre class="brush:sql;highlight:[22,23,24,25,26,27,28,29]">
+alter session set "_exclude_seed_cdb_view"=false;
+
+select p.pdb_name pdb_name, f.file_id, f.file_name
+  from cdb_data_files f, dba_pdbs p
+ where p.pdb_id(+) = f.con_id
+ order by f.file_id, p.pdb_id;
+
+
+PDB_NAME      FILE_ID FILE_NAME
+---------- ---------- --------------------------------------------------------------------------------
+                    1 +DATA/ORCLA/DATAFILE/system.260.1065528853
+PDB$SEED            2 +DATA/ORCLA/BC3D34CE047E62F0E0530600000AF770/DATAFILE/system.261.1065528859
+                    3 +DATA/ORCLA/DATAFILE/sysaux.262.1065528863
+PDB$SEED            4 +DATA/ORCLA/BC3D34CE047E62F0E0530600000AF770/DATAFILE/sysaux.263.1065528865
+                    5 +DATA/ORCLA/DATAFILE/undotbs1.264.1065528867
+PDB$SEED            6 +DATA/ORCLA/BC3D34CE047E62F0E0530600000AF770/DATAFILE/undotbs1.265.1065528869
+                    7 +DATA/ORCLA/DATAFILE/users.268.1065528883
+PDB1                8 +DATA/ORCLA/BC3DBECD0A3C07D3E0530600000A8D82/DATAFILE/system.272.1065531169
+PDB1                9 +DATA/ORCLA/BC3DBECD0A3C07D3E0530600000A8D82/DATAFILE/sysaux.270.1065531169
+PDB1               10 +DATA/ORCLA/BC3DBECD0A3C07D3E0530600000A8D82/DATAFILE/undotbs1.271.1065531169
+PDB1               11 +DATA/ORCLA/BC3DBECD0A3C07D3E0530600000A8D82/DATAFILE/users.274.1065531177
+PDB2               12 +DATA/ORCLA/BC3DBF5BB0310A08E0530600000A91B8/DATAFILE/system.277.1065531179
+PDB2               13 +DATA/ORCLA/BC3DBF5BB0310A08E0530600000A91B8/DATAFILE/sysaux.275.1065531179
+PDB2               14 +DATA/ORCLA/BC3DBF5BB0310A08E0530600000A91B8/DATAFILE/undotbs1.276.1065531179
+PDB2               15 +DATA/ORCLA/BC3DBF5BB0310A08E0530600000A91B8/DATAFILE/users.279.1065531185
+PDB3               16 +DATA/ORCLA/BC3DBFD5112A0AB0E0530600000AE27E/DATAFILE/system.282.1065531187
+PDB3               17 +DATA/ORCLA/BC3DBFD5112A0AB0E0530600000AE27E/DATAFILE/sysaux.280.1065531187
+PDB3               18 +DATA/ORCLA/BC3DBFD5112A0AB0E0530600000AE27E/DATAFILE/undotbs1.281.1065531187
+PDB3               19 +DATA/ORCLA/BC3DBFD5112A0AB0E0530600000AE27E/DATAFILE/users.284.1065531193
+</pre>
+All data files of pluggable databases <code>PDB2</code> and <code>PDB3</code> should not be restored on the standby site, so that I would like to skip data files 12-19.<br/>
+The command to restore the standby database and its output are as follows:
+<pre class="brush:sql">
+run
+{
+   set newname for tempfile 1 to '+DATA';
+   set newname for tempfile 2 to '+DATA';
+   set newname for tempfile 3 to '+DATA';
+   set newname for tempfile 4 to '+DATA';
+   set newname for tempfile 5 to '+DATA';
+   switch clone tempfile all;
+   set newname for database to '+DATA';
+   restore
+   from service 'servera/orcla' clone database
+   skip forever tablespace
+     pdb2:sysaux, pdb2:system, pdb2:undotbs1, pdb2:users,
+     pdb3:sysaux, pdb3:system, pdb3:undotbs1, pdb3:users
+   ;
+}
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+renamed tempfile 1 to +DATA in control file
+renamed tempfile 2 to +DATA in control file
+renamed tempfile 3 to +DATA in control file
+renamed tempfile 4 to +DATA in control file
+renamed tempfile 5 to +DATA in control file
+
+executing command: SET NEWNAME
+
+Starting restore at 26.02.2021 15:03:50
+using channel ORA_AUX_DISK_1
+
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00001 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:07
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00002 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:07
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00003 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:07
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00004 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:03
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00005 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:03
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00006 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:04
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00007 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:01
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00008 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:03
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00009 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:03
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00010 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:03
+channel ORA_AUX_DISK_1: starting datafile backup set restore
+channel ORA_AUX_DISK_1: using network backup set from service servera/orcla
+channel ORA_AUX_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_AUX_DISK_1: restoring datafile 00011 to +DATA
+channel ORA_AUX_DISK_1: restore complete, elapsed time: 00:00:01
+Finished restore at 26.02.2021 15:04:33
+
+RMAN>
+</pre>
+It can be seen that data files 12-19 were not restored.
+<h3>Updating Standby Control File</h3>
+I reconnect to the standby database and run <code>SWITCH TO COPY</code> commands:
+<pre class="brush:sql">
+RMAN>
+
+Recovery Manager complete.
+[oracle@serverb ~]$ rman target sys/Oracle123@serverb/orclb
+
+Recovery Manager: Release 19.0.0.0.0 - Production on Fri Feb 26 15:06:55 2021
+Version 19.10.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: ORCL (DBID=1593309578, not open)
+
+RMAN> switch database root to copy;
+
+Starting implicit crosscheck backup at 26.02.2021 15:06:59
+using target database control file instead of recovery catalog
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=76 device type=DISK
+Crosschecked 1 objects
+Finished implicit crosscheck backup at 26.02.2021 15:06:59
+
+Starting implicit crosscheck copy at 26.02.2021 15:06:59
+using channel ORA_DISK_1
+Crosschecked 11 objects
+Finished implicit crosscheck copy at 26.02.2021 15:07:00
+
+searching for all files in the recovery area
+cataloging files...
+no files cataloged
+
+datafile 1 switched to datafile copy "+DATA/ORCLB/DATAFILE/system.257.1065539031"
+datafile 3 switched to datafile copy "+DATA/ORCLB/DATAFILE/sysaux.258.1065539045"
+datafile 5 switched to datafile copy "+DATA/ORCLB/DATAFILE/undotbs1.259.1065539055"
+datafile 7 switched to datafile copy "+DATA/ORCLB/DATAFILE/users.260.1065539063"
+
+RMAN> switch pluggable database "PDB$SEED", pdb1 to copy;
+
+datafile 2 switched to datafile copy "+DATA/ORCLB/BC3D34CE047E62F0E0530600000AF770/DATAFILE/system.261.1065539039"
+datafile 4 switched to datafile copy "+DATA/ORCLB/BC3D34CE047E62F0E0530600000AF770/DATAFILE/sysaux.262.1065539053"
+datafile 6 switched to datafile copy "+DATA/ORCLB/BC3D34CE047E62F0E0530600000AF770/DATAFILE/undotbs1.256.1065539059"
+datafile 8 switched to datafile copy "+DATA/ORCLB/BC3DBECD0A3C07D3E0530600000A8D82/DATAFILE/system.263.1065539063"
+datafile 9 switched to datafile copy "+DATA/ORCLB/BC3DBECD0A3C07D3E0530600000A8D82/DATAFILE/sysaux.264.1065539067"
+datafile 10 switched to datafile copy "+DATA/ORCLB/BC3DBECD0A3C07D3E0530600000A8D82/DATAFILE/undotbs1.265.1065539069"
+datafile 11 switched to datafile copy "+DATA/ORCLB/BC3DBECD0A3C07D3E0530600000A8D82/DATAFILE/users.266.1065539073"
+</pre>
+<h3>Dropping Excluded Data Files</h3>
+I can drop all data files of pluggable databases <code>PDB2</code> and <code>PDB3</code> on standby:
+<pre class="brush:sql">
+SQL> alter session set container=pdb2;
+
+Session altered.
+
+SQL> alter database datafile 12,13,14,15 offline drop;
+
+Database altered.
+
+SQL> alter session set container=pdb3;
+
+Session altered.
+
+SQL> alter database datafile 16,17,18,19 offline drop;
+</pre>
+<h3>Creating Data Guard Configuration</h3>
+<pre class="brush:sql">
+[oracle@serverb ~]$ dgmgrl
+DGMGRL for Linux: Release 19.0.0.0.0 - Production on Fri Feb 26 15:13:12 2021
+Version 19.10.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+Welcome to DGMGRL, type "help" for information.
+DGMGRL> connect sys/Oracle123@servera/orcla
+Connected to "orcla"
+Connected as SYSDBA.
+DGMGRL>
+DGMGRL> create configuration orcl as primary database is orcla connect identifier is '//servera/orcla';
+Configuration "orcl" created with primary database "orcla"
+DGMGRL> add database orclb as connect identifier is '//serverb/orclb';
+Database "orclb" added
+DGMGRL> enable configuration;
+Enabled.
+DGMGRL> show configuration;
+
+Configuration - orcl
+
+  Protection Mode: MaxPerformance
+  Members:
+  orcla - Primary database
+    Warning: ORA-16789: standby redo logs configured incorrectly
+
+    orclb - Physical standby database
+      Warning: ORA-16809: multiple warnings detected for the member
+
+Fast-Start Failover:  Disabled
+
+Configuration Status:
+WARNING   (status updated 50 seconds ago)
+
+DGMGRL> show database verbose orclb;
+
+Database - orclb
+
+  Role:               PHYSICAL STANDBY
+  Intended State:     APPLY-ON
+  Transport Lag:      14 seconds (computed 5 seconds ago)
+  Apply Lag:          14 seconds (computed 5 seconds ago)
+  Average Apply Rate: 3.65 MByte/s
+  Active Apply Rate:  0 Byte/s
+  Maximum Apply Rate: 0 Byte/s
+  Real Time Query:    OFF
+  Instance(s):
+    orclb1
+
+  Database Warning(s):
+    ORA-16789: standby redo logs configured incorrectly
+
+  Properties:
+    DGConnectIdentifier             = '//serverb/orclb'
+    ObserverConnectIdentifier       = ''
+    FastStartFailoverTarget         = ''
+    PreferredObserverHosts          = ''
+    LogShipping                     = 'ON'
+    RedoRoutes                      = ''
+    LogXptMode                      = 'ASYNC'
+    DelayMins                       = '0'
+    Binding                         = 'optional'
+    MaxFailure                      = '0'
+    ReopenSecs                      = '300'
+    NetTimeout                      = '30'
+    RedoCompression                 = 'DISABLE'
+    PreferredApplyInstance          = ''
+    ApplyInstanceTimeout            = '0'
+    ApplyLagThreshold               = '30'
+    TransportLagThreshold           = '30'
+    TransportDisconnectedThreshold  = '30'
+    ApplyParallel                   = 'AUTO'
+    ApplyInstances                  = '0'
+    StandbyFileManagement           = ''
+    ArchiveLagTarget                = '0'
+    LogArchiveMaxProcesses          = '0'
+    LogArchiveMinSucceedDest        = '0'
+    DataGuardSyncLatency            = '0'
+    LogArchiveTrace                 = '0'
+    LogArchiveFormat                = ''
+    DbFileNameConvert               = ''
+    LogFileNameConvert              = ''
+    ArchiveLocation                 = ''
+    AlternateLocation               = ''
+    StandbyArchiveLocation          = ''
+    StandbyAlternateLocation        = ''
+    InconsistentProperties          = '(monitor)'
+    InconsistentLogXptProps         = '(monitor)'
+    LogXptStatus                    = '(monitor)'
+    SendQEntries                    = '(monitor)'
+    RecvQEntries                    = '(monitor)'
+    HostName                        = 'serverb.example.com'
+    StaticConnectIdentifier         = '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=serverb.example.com)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orclb_DGMGRL)(INSTANCE_NAME=orclb1)(SERVER=DEDICATED)))'
+    TopWaitEvents                   = '(monitor)'
+    SidName                         = '(monitor)'
+
+  Log file locations:
+    Alert log               : /u01/app/oracle/diag/rdbms/orclb/orclb1/trace/alert_orclb1.log
+    Data Guard Broker log   : /u01/app/oracle/diag/rdbms/orclb/orclb1/trace/drcorclb1.log
+
+Database Status:
+WARNING
+</pre>
+I can ignore standby log file warnings. They are not important for this exercise.
+<h2>Running Tests</h2>
+<h3>Opening Standby Database Read-Only</h3>
+Let us open the standby database:
+<pre class="brush:sql;highlight:[34]">
+DGMGRL> edit database orclb set state='apply-off';
+Succeeded.
+
+SQL> alter database open read only;
+
+Database altered.
+
+SQL> select name from v$tempfile;
+
+NAME
+--------------------------------------------------------------------------------
++DATA/ORCLB/TEMPFILE/temp.267.1065539757
++DATA/ORCLB/BC3D34CE047E62F0E0530600000AF770/TEMPFILE/temp.268.1065539759
++DATA
++DATA
++DATA
+
+SQL> sho pdbs
+
+    CON_ID CON_NAME                       OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+         2 PDB$SEED                       READ ONLY  NO
+         3 PDB1                           MOUNTED
+         4 PDB2                           MOUNTED
+         5 PDB3                           MOUNTED
+SQL> alter pluggable database pdb1 open read only;
+
+Pluggable database altered.
+
+SQL> alter pluggable database pdb2 open read only;
+alter pluggable database pdb2 open read only
+*
+ERROR at line 1:
+ORA-01147: SYSTEM tablespace file 12 is offline
+</pre>
+While <code>PDB1</code> can be opened just fine, the pluggable database <code>PDB2</code> cannot be opened as expected. Neither can <code>PDB3</code>.<br/><br/>
+Enabling standby recovery:
+<pre class="brush:sql">
+DGMGRL> edit database orclb set state='apply-on';
+Succeeded.
+</pre>
+<h3>Testing Data Guard Replication</h3>
+Finally, I can check that the data guard replication works as expected:
+<pre class="brush:sql;highlight:[5,9,29,31]">
+STANDBY> alter session set container=pdb1;
+
+Session altered.
+
+STANDBY> select count(*) from new_table;
+select count(*) from new_table
+                     *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+PRIMARY> alter session set container=pdb1;
+
+Session altered.
+
+PRIMARY> create table new_table as select * from dba_objects;
+
+Table created.
+
+PRIMARY> alter session set container=cdb$root;
+
+Session altered.
+
+PRIMARY> alter system archive log current;
+
+System altered.
+
+STANDBY> select count(*) from new_table;
+
+  COUNT(*)
+----------
+     23043
+</pre>
+<h3>Adding new Pluggable Database</h3>
+A newly added pluggable database will not be replicated due to the current <code>ENABLED_PDBS_ON_STANDBY</code> setting. Depending on the parameter, some PDBs can be excluded and others can be replicated by default.
+<pre class="brush:sql">
+SQL> create pluggable database pdb4 admin user pdb_admin identified by pdb_admin;
+
+Pluggable database created.
+
+SQL> alter pluggable database pdb4 open;
+
+Pluggable database altered.
+
+SQL> alter system archive log current;
+
+System altered.
+</pre>
+The standby alert log shows that the PDB data files were not created:
+<pre class="brush:sql">
+2021-02-26T15:19:29.147366+00:00
+PR00 (PID:4163): Media Recovery Log +FRA/ORCLB/ARCHIVELOG/2021_02_26/thread_1_seq_16.263.1065539909
+Recovery created pluggable database PDB4
+PDB4(6):File copy for ts-SYSTEM skipped for excluded/offline tablespace
+PDB4(6):File #20 added to control file as 'UNNAMED00020'. Originally created as:
+PDB4(6):'+DATA/ORCLA/BC3FCA17DFEB23DEE0530600000AF95F/DATAFILE/system.287.1065539949'
+PDB4(6):because the pluggable database was created with nostandby
+PDB4(6):or the tablespace belonging to the pluggable database is
+PDB4(6):offline.
+PDB4(6):File copy for ts-SYSAUX skipped for excluded/offline tablespace
+PDB4(6):File #21 added to control file as 'UNNAMED00021'. Originally created as:
+PDB4(6):'+DATA/ORCLA/BC3FCA17DFEB23DEE0530600000AF95F/DATAFILE/sysaux.285.1065539949'
+PDB4(6):because the pluggable database was created with nostandby
+PDB4(6):or the tablespace belonging to the pluggable database is
+PDB4(6):offline.
+PDB4(6):File copy for ts-UNDOTBS1 skipped for excluded/offline tablespace
+PDB4(6):File #22 added to control file as 'UNNAMED00022'. Originally created as:
+PDB4(6):'+DATA/ORCLA/BC3FCA17DFEB23DEE0530600000AF95F/DATAFILE/undotbs1.286.1065539949'
+PDB4(6):because the pluggable database was created with nostandby
+PDB4(6):or the tablespace belonging to the pluggable database is
+PDB4(6):offline.
+PDB4(6):File copy for ts-TEMP skipped for excluded/offline tablespace
+PR00 (PID:4163): Media Recovery Waiting for T-1.S-17 (in transit)
+</pre>
+<h2>Conclusion</h2>
+Oracle already has enough features to create a standby database that includes subset PDBs of the primary. Although it is possible to create a clone (non-standby) that excludes certain PDBs using the <code>DUPLICATE</code> command, the <code>SKIP PLUGGABLE DATABASE</code> clause cannot be used while duplicating for standby. Instead, this blog post provides an alternative solution. Another option is to use <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/multi/introduction-to-the-multitenant-architecture.html#GUID-D5AE0EBD-76CA-4E7C-8637-1D6B56597021">Refreshable Clone PDBs</a> - they can be considered as a standby replacement with certain restrictions.<br/><br/>
+The situation itself reminds me the Snapshot Standby Feature. I used it even before Oracle introduced the feature with a much of fuss. Depending on the customers' demand, Oracle can extend <code>DUPLICATE DATABASE FOR STANDBY</code> to start supporting the <code>SKIP PLUGGABLE DATABASE</code> clause.
