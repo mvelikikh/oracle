@@ -590,7 +590,7 @@ Succeeded.
 </pre>
 <h3>Testing Data Guard Replication</h3>
 Finally, I can check that the data guard replication works as expected:
-<pre class="brush:sql;highlight:[5,9,29,31]">
+<pre class="brush:sql;highlight:[5,9,27,31]">
 STANDBY> alter session set container=pdb1;
 
 Session altered.
