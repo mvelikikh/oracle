@@ -1,0 +1,187 @@
+<p>It is known that <code>DBMS_SCHEDULER.CREATE_JOB</code> is non-transactional as opposed to the old <code>DBMS_JOB</code>. There is even an Oracle idea to provide a transactional interface: <a href="https://community.oracle.com/tech/apps-infra/discussion/4390942/dbms-scheduler-create-job-remove-implicit-commit">link</a>. In Oracle 19c <code>DBMS_JOB</code> jobs are actually <code>DBMS_SCHEDULER</code> jobs, and they can be part of a bigger transaction. I was curious how it is done and if I can make it work for <code>DBMS_SCHEDULER</code> jobs.</p>
+<p>Here is a test script that I used for this blogpost on 19.9:</p>
+<pre class="brush:sql">
+SQL> conn / as sysdba
+Connected.
+SQL>
+SQL> alter session set container=pdb;
+
+Session altered.
+
+SQL>
+SQL> exec dbms_scheduler.purge_log()
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> drop user tc cascade;
+
+User dropped.
+
+SQL>
+SQL> grant create job, create session to tc identified by tc;
+
+Grant succeeded.
+
+SQL>
+SQL> grant execute on sys.dbms_isched to tc;
+
+Grant succeeded.
+</pre>
+<p>Firstly, let us create a traditional <code>DBMS_SCHEDULER</code> job so as to demonstrate that <code>CREATE_JOB</code> is non-transactional. By "non-transactional" here I mean that it does not leave the session in a transaction.</p>
+<pre class="brush:sql">
+SQL> conn tc/tc@localhost/pdb
+Connected.
+SQL>
+SQL> doc
+DOC>################################################################################
+DOC>#  Traditional Job
+DOC>################################################################################
+DOC>#
+SQL>
+SQL> select dbms_transaction.local_transaction_id from dual;
+
+LOCAL_TRANSACTION_ID
+--------------------------------------------------------------------------------
+
+
+SQL>
+SQL> exec dbms_scheduler.create_job( -
+>   job_name => 'JOB_NON_TX', -
+>   job_type => 'PLSQL_BLOCK', -
+>   job_action => 'null;', -
+>   enabled    => true)
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> select dbms_transaction.local_transaction_id from dual;
+
+LOCAL_TRANSACTION_ID
+--------------------------------------------------------------------------------
+
+
+SQL>
+SQL> exec dbms_session.sleep(5)
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> col job_name for a10
+SQL>
+SQL> select job_name, state
+  2    from user_scheduler_jobs;
+
+no rows selected
+
+SQL>
+SQL> col log_date for a35
+SQL> select log_date, job_name, status
+  2    from user_scheduler_job_run_details
+  3   order by log_date;
+
+LOG_DATE                            JOB_NAME   STATUS
+----------------------------------- ---------- ----------
+30-JUN-21 12.02.26.780546 PM +01:00 JOB_NON_TX SUCCEEDED
+</pre>
+<p>Now, I try the same but I call <code>DBMS_ISCHED.SET_NO_COMMIT_FLAG</code> before calling the <code>CREATE_JOB</code> procedure.</p>
+<pre class="brush:sql">
+SQL> doc
+DOC>################################################################################
+DOC>#  Transactional Job
+DOC>################################################################################
+DOC>#
+SQL>
+SQL> exec sys.dbms_isched.set_no_commit_flag
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> select dbms_transaction.local_transaction_id from dual;
+
+LOCAL_TRANSACTION_ID
+--------------------------------------------------------------------------------
+
+
+SQL>
+SQL> exec dbms_scheduler.create_job( -
+>   job_name => 'JOB_TX', -
+>   job_type => 'PLSQL_BLOCK', -
+>   job_action => 'null;', -
+>   enabled    => true)
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> select dbms_transaction.local_transaction_id from dual;
+
+LOCAL_TRANSACTION_ID
+--------------------------------------------------------------------------------
+9.23.604
+
+SQL>
+SQL> exec dbms_session.sleep(5)
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> col job_name for a10
+SQL>
+SQL> select job_name, state
+  2    from user_scheduler_jobs;
+
+JOB_NAME   STATE
+---------- ----------
+JOB_TX     SCHEDULED
+
+SQL>
+SQL> col log_date for a35
+SQL> select log_date, job_name, status
+  2    from user_scheduler_job_run_details
+  3   order by log_date;
+
+LOG_DATE                            JOB_NAME   STATUS
+----------------------------------- ---------- ----------
+30-JUN-21 12.02.26.780546 PM +01:00 JOB_NON_TX SUCCEEDED
+</pre>
+<p>The things are a bit different this time around:</p>
+<ul>
+  <li><code>DBMS_SCHEDULER.CREATE_JOB</code> left the session in a transaction.</li>
+  <li>The job is not started.</li>
+  <li>It is not demonstrated here, but it is possible to issue rollback and it will remove the job definition.</li>
+</ul>
+<p>Such a job gets started as soon as commit is done:</p>
+<pre class="brush:sql">
+SQL> commit;
+
+Commit complete.
+
+SQL>
+SQL> exec dbms_session.sleep(5)
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> col job_name for a10
+SQL> col state for a10
+SQL>
+SQL> select job_name, state
+  2    from user_scheduler_jobs;
+
+no rows selected
+
+SQL>
+SQL> col status for a10
+SQL>
+SQL> col log_date for a35
+SQL> select log_date, job_name, status
+  2    from user_scheduler_job_run_details
+  3   order by log_date;
+
+LOG_DATE                            JOB_NAME   STATUS
+----------------------------------- ---------- ----------
+30-JUN-21 12.02.26.780546 PM +01:00 JOB_NON_TX SUCCEEDED
+30-JUN-21 12.02.36.835878 PM +01:00 JOB_TX     SUCCEEDED
+</pre>
+<h3>Conclusion</h3>
+<p>The post demonstrates that one can utilize undocumented <code>DBMS_ISCHED.SET_NO_COMMIT_FLAG</code> to make <code>DBMS_SCHEDULER.CREATE_JOB</code> transactional. Since the package is undocumented, there is no guarantee that it will keep working in future versions. Hopefully, Oracle will make a transactional interface available someday.</p>
