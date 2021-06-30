@@ -1,0 +1,301 @@
+<p>It's a test 21c cluster that wasn't shutdown properly yesterday. While mounting a DATA disk group, the following errors are encountered:</p>
+<pre class='brush:sql'>
+SQL> alter diskgroup data mount;
+alter diskgroup data mount
+*
+ERROR at line 1:
+ORA-15032: not all alterations performed
+ORA-15017: diskgroup "DATA" cannot be mounted
+ORA-15066: offlining disk "RACQ$LUN3" in group "DATA" may result in a data loss
+</pre>
+Mounting the disk group with the FORCE option is not possible either and fails with the same errors:
+<pre class='brush:sql'>
+ASMCMD> mount data -f
+ORA-15032: not all alterations performed
+ORA-15017: diskgroup "DATA" cannot be mounted
+ORA-15066: offlining disk "RACQ$LUN3" in group "DATA" may result in a data loss (DBD ERROR: OCIStmtExecute)
+</pre>
+With the next entries in the alert log:
+<pre class='brush:sql;highlight:[22]'>
+2021-08-31T10:31:52.117810+00:00
+SQL> alter diskgroup data mount
+2021-08-31T10:31:52.124846+00:00
+NOTE: cache registered group DATA 2/0x05D14A8C
+NOTE: cache began mount (first) of group DATA 2/0x05D14A8C
+NOTE: Assigning number (2,5) to disk (/dev/flashgrid/rac2.lun5)
+WARNING: preferred read failure group RAC1 does not exist in diskgroup DATA
+NOTE: Assigning number (2,1) to disk (/dev/flashgrid/rac2.lun6)
+WARNING: preferred read failure group RAC1 does not exist in diskgroup DATA
+NOTE: Assigning number (2,4) to disk (/dev/flashgrid/rac2.lun3)
+WARNING: preferred read failure group RAC1 does not exist in diskgroup DATA
+NOTE: Assigning number (2,2) to disk (/dev/flashgrid/racq.lun3)
+WARNING: preferred read failure group RAC1 does not exist in diskgroup DATA
+NOTE: Assigning number (2,6) to disk (/dev/flashgrid/rac1.lun5)
+WARNING: DATA has too many failure groups for a stretch cluster.
+NOTE: Assigning number (2,0) to disk (/dev/flashgrid/rac1.lun6)
+WARNING: DATA has too many failure groups for a stretch cluster.
+NOTE: Assigning number (2,3) to disk (/dev/flashgrid/rac1.lun3)
+WARNING: DATA has too many failure groups for a stretch cluster.
+2021-08-31T10:31:52.294934+00:00
+cluster guid (5f307c7210446f13bfcd86fa9d15c5f1) generated for PST Hbeat for instance 1
+NOTE: initial disk modes for disk 2 (RACQ$LUN3) in group 2 (DATA) is not completely online: modes 0x1 lflags 0x4
+2021-08-31T10:31:52.297979+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:31:58.301169+00:00
+ERROR: disk 2 (RACQ$LUN3) in group 2 cannot be offlined because all disks [2(RACQ$LUN3)] with mirror data would be offline.
+2021-08-31T10:31:58.301239+00:00
+ERROR: too many offline disks in PST (grp 2)
+2021-08-31T10:31:58.301932+00:00
+NOTE: cache dismounting (clean) group 2/0x05D14A8C (DATA)
+NOTE: messaging CKPT to quiesce pins Unix process pid: 7067, NID: 4026531836, image: oracle@rac1.example.com (TNS V1-V3)
+NOTE: dbwr not being msg'd to dismount
+NOTE: LGWR not being messaged to dismount
+NOTE: cache dismounted group 2/0x05D14A8C (DATA)
+NOTE: cache ending mount (fail) of group DATA number=2 incarn=0x05d14a8c
+NOTE: cache deleting context for group DATA 2/0x05d14a8c
+2021-08-31T10:31:58.303103+00:00
+GMON dismounting group 2 at 90 for pid 57, osid 7067
+2021-08-31T10:31:58.303346+00:00
+NOTE: Disk RAC1$LUN6 in mode 0x7f marked for de-assignment
+NOTE: Disk RAC2$LUN6 in mode 0x7f marked for de-assignment
+NOTE: Disk RACQ$LUN3 in mode 0x1 marked for de-assignment
+NOTE: Disk RAC1$LUN3 in mode 0x7f marked for de-assignment
+NOTE: Disk RAC2$LUN3 in mode 0x7f marked for de-assignment
+NOTE: Disk RAC2$LUN5 in mode 0x7f marked for de-assignment
+NOTE: Disk RAC1$LUN5 in mode 0x7f marked for de-assignment
+ERROR: diskgroup DATA was not mounted
+ORA-15032: not all alterations performed
+ORA-15017: diskgroup "DATA" cannot be mounted
+ORA-15066: offlining disk "RACQ$LUN3" in group "DATA" may result in a data loss
+
+2021-08-31T10:31:58.314373+00:00
+ERROR: alter diskgroup data mount
+</pre>
+<p>DATA is a NORMAL redundancy disk group with two regular and one quorum failure group.
+It's one of the cases when there might be a need to do some undocumented stuff:
+</p>
+<pre class='brush:sql;highlight:[25]'>
+SQL> select name,
+       path,
+       mount_status,
+       header_status,
+       mode_status,
+       state,
+       failgroup
+  from v$asm_disk
+ where group_number=(select group_number from v$asm_diskgroup where name='DATA')
+ order by path;
+  2    3    4    5    6    7    8    9   10
+NAME                           PATH                           MOUNT_S HEADER_STATU MODE_ST STATE    FAILGROUP
+------------------------------ ------------------------------ ------- ------------ ------- -------- ------------------------------
+                               /dev/flashgrid/rac1.lun3       CLOSED  MEMBER       ONLINE  NORMAL
+                               /dev/flashgrid/rac1.lun5       CLOSED  MEMBER       ONLINE  NORMAL
+                               /dev/flashgrid/rac1.lun6       CLOSED  MEMBER       ONLINE  NORMAL
+                               /dev/flashgrid/rac2.lun3       CLOSED  MEMBER       ONLINE  NORMAL
+                               /dev/flashgrid/rac2.lun5       CLOSED  MEMBER       ONLINE  NORMAL
+                               /dev/flashgrid/rac2.lun6       CLOSED  MEMBER       ONLINE  NORMAL
+                               /dev/flashgrid/racq.lun2       CLOSED  FORMER       ONLINE  NORMAL
+                               /dev/flashgrid/racq.lun3       CLOSED  MEMBER       ONLINE  NORMAL
+
+8 rows selected.
+
+SQL> alter diskgroup data mount restricted for recovery;
+
+Diskgroup altered.
+
+SQL> select name,
+       path,
+       mount_status,
+       header_status,
+       mode_status,
+       state,
+       failgroup
+  from v$asm_disk
+ where group_number=(select group_number from v$asm_diskgroup where name='DATA')
+ order by path;
+  2    3    4    5    6    7    8    9   10
+NAME                           PATH                           MOUNT_S HEADER_STATU MODE_ST STATE    FAILGROUP
+------------------------------ ------------------------------ ------- ------------ ------- -------- ------------------------------
+RAC1$LUN3                      /dev/flashgrid/rac1.lun3       CACHED  MEMBER       ONLINE  NORMAL   RAC1
+RAC1$LUN5                      /dev/flashgrid/rac1.lun5       CACHED  MEMBER       ONLINE  NORMAL   RAC1
+RAC1$LUN6                      /dev/flashgrid/rac1.lun6       CACHED  MEMBER       ONLINE  NORMAL   RAC1
+RAC2$LUN3                      /dev/flashgrid/rac2.lun3       CACHED  MEMBER       ONLINE  NORMAL   RAC2
+RAC2$LUN5                      /dev/flashgrid/rac2.lun5       CACHED  MEMBER       ONLINE  NORMAL   RAC2
+RAC2$LUN6                      /dev/flashgrid/rac2.lun6       CACHED  MEMBER       ONLINE  NORMAL   RAC2
+RACQ$LUN3                      /dev/flashgrid/racq.lun3       CACHED  MEMBER       ONLINE  NORMAL   RACQ
+
+7 rows selected.
+</pre>
+The alert log:
+<pre class='brush:sql'>
+2021-08-31T10:37:56.317024+00:00
+SQL> alter diskgroup data mount restricted for recovery
+2021-08-31T10:37:56.323711+00:00
+NOTE: cache registered group DATA 2/0xEA114A90
+NOTE: cache began mount (first) of group DATA 2/0xEA114A90
+NOTE: Assigning number (2,5) to disk (/dev/flashgrid/rac2.lun5)
+WARNING: preferred read failure group RAC1 does not exist in diskgroup DATA
+NOTE: Assigning number (2,1) to disk (/dev/flashgrid/rac2.lun6)
+WARNING: preferred read failure group RAC1 does not exist in diskgroup DATA
+NOTE: Assigning number (2,4) to disk (/dev/flashgrid/rac2.lun3)
+WARNING: preferred read failure group RAC1 does not exist in diskgroup DATA
+NOTE: Assigning number (2,2) to disk (/dev/flashgrid/racq.lun3)
+WARNING: preferred read failure group RAC1 does not exist in diskgroup DATA
+NOTE: Assigning number (2,6) to disk (/dev/flashgrid/rac1.lun5)
+WARNING: DATA has too many failure groups for a stretch cluster.
+NOTE: Assigning number (2,0) to disk (/dev/flashgrid/rac1.lun6)
+WARNING: DATA has too many failure groups for a stretch cluster.
+NOTE: Assigning number (2,3) to disk (/dev/flashgrid/rac1.lun3)
+WARNING: DATA has too many failure groups for a stretch cluster.
+2021-08-31T10:37:56.529659+00:00
+cluster guid (5f307c7210446f13bfcd86fa9d15c5f1) generated for PST Hbeat for instance 1
+NOTE: initial disk modes for disk 2 (RACQ$LUN3) in group 2 (DATA) is not completely online: modes 0x1 lflags 0x4
+2021-08-31T10:37:56.532517+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:02.539918+00:00
+NOTE: GMON heartbeating for grp 2 (DATA)
+2021-08-31T10:38:02.540568+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+GMON querying group 2 at 125 for pid 57, osid 7067
+2021-08-31T10:38:02.540905+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:02.541129+00:00
+NOTE: cache is mounting group DATA created on 2021/07/30 12:37:34
+NOTE: cache opening disk 0 of grp 2: RAC1$LUN6 path:/dev/flashgrid/rac1.lun6
+NOTE: group 2 (DATA) high disk header ckpt advanced to fcn 0.42883
+NOTE: 08/31/21 10:38:02 DATA.F1X0 found on disk 0 au 10 fcn 0.42883 datfmt 2
+NOTE: cache opening disk 1 of grp 2: RAC2$LUN6 path:/dev/flashgrid/rac2.lun6
+NOTE: cache opening disk 3 of grp 2: RAC1$LUN3 path:/dev/flashgrid/rac1.lun3
+NOTE: cache opening disk 4 of grp 2: RAC2$LUN3 path:/dev/flashgrid/rac2.lun3
+NOTE: cache opening disk 5 of grp 2: RAC2$LUN5 path:/dev/flashgrid/rac2.lun5
+NOTE: 08/31/21 10:38:02 DATA.F1X0 found on disk 5 au 10 fcn 0.42883 datfmt 2
+NOTE: cache opening disk 6 of grp 2: RAC1$LUN5 path:/dev/flashgrid/rac1.lun5
+2021-08-31T10:38:02.541726+00:00
+NOTE: cache mounting (first) normal redundancy group 2/0xEA114A90 (DATA)
+2021-08-31T10:38:02.963014+00:00
+NOTE: attached to recovery domain 2
+2021-08-31T10:38:03.009050+00:00
+validate pdb 2, flags x4, valid 0, pdb flags x204
+* validated domain 2, flags = 0x200
+NOTE: cache recovered group 2 to fcn 0.43425
+NOTE: redo buffer size is 512 blocks (2105344 bytes)
+2021-08-31T10:38:03.011498+00:00
+NOTE: LGWR attempting to mount thread 1 for diskgroup 2 (DATA)
+NOTE: LGWR found thread 1 closed at ABA 30.7188 lock domain=0 inc#=0 instnum=1
+NOTE: LGWR mounted thread 1 for diskgroup 2 (DATA)
+2021-08-31T10:38:03.022814+00:00
+NOTE: LGWR opened thread 1 (DATA) at fcn 0.43425 ABA 31.7189 lock domain=2 inc#=2 instnum=1 gx.incarn=3927001744 mntstmp=2021/08/31 10:38:03.012000
+2021-08-31T10:38:03.023034+00:00
+NOTE: cache mounting group 2/0xEA114A90 (DATA) succeeded
+NOTE: cache ending mount (success) of group DATA number=2 incarn=0xea114a90
+WARNING: DATA has too many failure groups for a stretch cluster.
+2021-08-31T10:38:03.103835+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:03.104063+00:00
+NOTE: Instance updated compatible.asm to 19.0.0.0.0 for grp 2 (DATA).
+2021-08-31T10:38:03.104307+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:03.104463+00:00
+NOTE: Instance updated compatible.asm to 19.0.0.0.0 for grp 2 (DATA).
+2021-08-31T10:38:03.105130+00:00
+NOTE: Instance updated compatible.rdbms to 19.0.0.0.0 for grp 2 (DATA).
+2021-08-31T10:38:03.105436+00:00
+NOTE: Instance updated compatible.rdbms to 19.0.0.0.0 for grp 2 (DATA).
+WARNING: DATA has too many failure groups for a stretch cluster.
+WARNING: DATA has too many failure groups for a stretch cluster.
+2021-08-31T10:38:03.148108+00:00
+SUCCESS: diskgroup DATA was mounted
+2021-08-31T10:38:03.157095+00:00
+SUCCESS: alter diskgroup data mount restricted for recovery
+2021-08-31T10:38:03.167013+00:00
+NOTE: diskgroup resource ora.DATA.dg is online
+2021-08-31T10:38:19.113318+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:19.114528+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:19.475013+00:00
+SQL> ALTER DISKGROUP "DATA" ONLINE QUORUM DISK "RACQ$LUN3"
+2021-08-31T10:38:19.478374+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:19.486520+00:00
+NOTE: GroupBlock outside rolling migration privileged region
+NOTE: initiating resync of disk group 2 disks
+RACQ$LUN3 (2)
+
+NOTE: process _user21083_+asm1 (21083) initiating offline of disk 2.4042374244 (RACQ$LUN3) with mask 0x7e in group 2 (DATA) without client assisting
+2021-08-31T10:38:19.521378+00:00
+NOTE: sending set offline flag message (2320259704) to 1 disk(s) in group 2
+2021-08-31T10:38:19.521792+00:00
+WARNING: Disk 2 (RACQ$LUN3) in group 2 mode 0x1 is now being offlined
+2021-08-31T10:38:19.522023+00:00
+NOTE: initiating PST update: grp 2 (DATA), dsk = 2/0xf0f1bc64, mask = 0x6a, op = clear mandatory
+2021-08-31T10:38:19.522202+00:00
+GMON updating disk modes for group 2 at 135 for pid 52, osid 21083
+2021-08-31T10:38:19.522431+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:19.523238+00:00
+NOTE: PST update grp = 2 completed successfully
+NOTE: initiating PST update: grp 2 (DATA), dsk = 2/0xf0f1bc64, mask = 0x7e, op = clear mandatory
+2021-08-31T10:38:19.523484+00:00
+GMON updating disk modes for group 2 at 136 for pid 52, osid 21083
+2021-08-31T10:38:19.523608+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:19.524311+00:00
+NOTE: PST update grp = 2 completed successfully
+NOTE: requesting all-instance membership refresh for group=2
+NOTE: initiating PST update: grp 2 (DATA), dsk = 2/0x0, mask = 0x11, op = assign mandatory
+2021-08-31T10:38:19.532576+00:00
+GMON updating disk modes for group 2 at 137 for pid 52, osid 21083
+2021-08-31T10:38:19.532724+00:00
+NOTE: cache closing disk 2 of grp 2: (not open) RACQ$LUN3
+2021-08-31T10:38:19.540473+00:00
+NOTE: PST update grp = 2 completed successfully
+NOTE: requesting all-instance disk validation for group=2
+2021-08-31T10:38:19.540830+00:00
+NOTE: disk validation pending for 1 disk in group 2/0xea114a90 (DATA)
+NOTE: Found /dev/flashgrid/racq.lun3 for disk RACQ$LUN3
+WARNING: DATA has too many failure groups for a stretch cluster.
+NOTE: completed disk validation for 2/0xea114a90 (DATA)
+2021-08-31T10:38:19.677322+00:00
+NOTE: running client discovery for group 2 (reqid:16866344061815119730)
+NOTE: discarding redo for group 2 disk 2
+NOTE: initiating PST update: grp 2 (DATA), dsk = 2/0x0, mask = 0x19, op = assign mandatory
+2021-08-31T10:38:20.176650+00:00
+GMON updating disk modes for group 2 at 138 for pid 52, osid 21083
+NOTE: group DATA: updated PST location: disks 0005 0000 0002
+2021-08-31T10:38:20.225248+00:00
+NOTE: PST update grp = 2 completed successfully
+WARNING: DATA has too many failure groups for a stretch cluster.
+2021-08-31T10:38:20.225980+00:00
+NOTE: membership refresh pending for group 2/0xea114a90 (DATA)
+2021-08-31T10:38:20.227553+00:00
+GMON querying group 2 at 139 for pid 31, osid 22344
+2021-08-31T10:38:20.237960+00:00
+WARNING: DATA has too many failure groups for a stretch cluster.
+NOTE: cache opening disk 2 of grp 2: RACQ$LUN3 path:/dev/flashgrid/racq.lun3
+SUCCESS: refreshed membership for 2/0xea114a90 (DATA)
+2021-08-31T10:38:20.238448+00:00
+NOTE: initiating PST update: grp 2 (DATA), dsk = 2/0x0, mask = 0x7f, op = assign mandatory
+2021-08-31T10:38:20.239039+00:00
+GMON updating disk modes for group 2 at 140 for pid 52, osid 21083
+2021-08-31T10:38:20.284132+00:00
+NOTE: PST update grp = 2 completed successfully
+2021-08-31T10:38:20.284349+00:00
+SUCCESS: ALTER DISKGROUP "DATA" ONLINE QUORUM DISK "RACQ$LUN3"
+2021-08-31T10:38:21.596382+00:00
+NOTE: Attempting voting file refresh on diskgroup DATA
+NOTE: Refresh completed on diskgroup DATA. No voting file found.
+</pre>
+<p>The alert log shows that the RACQ$LUN3 disk is brought offline first and then put online. It can also be seen that ASM corrected the issue itself. The 'for recovery' mount option used to be documented somewhere on MOS, but I cannot find where it is now. Looks like Oracle Support made the document non-public.</p>
+<p>
+I can now remount the disk group cleanly:
+</p>
+<pre class='brush:sql'>
+SQL> alter diskgroup data dismount;
+
+Diskgroup altered.
+
+SQL> alter diskgroup data mount;
+
+Diskgroup altered.
+</pre>
