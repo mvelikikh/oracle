@@ -1,0 +1,138 @@
+<p>Creating a pluggable database (PDB) by plugging an unplugged PDB in 19.12 can fail with the <b>ORA-7445 kpdbfSourceFileSearch</b> error. Somehow there is no information about this error on MOS, so that I am putting it here.</p>
+<pre class='brush:sql'>
+SQL> create pluggable database pdb_test as clone using '/mnt/racdba/pdb_test.xml' copy source_file_directory='/mnt/racdba/datafile';
+create pluggable database pdb_test as clone using '/mnt/racdba/pdb_test.xml' copy source_file_directory='/mnt/racdba/datafile'
+*
+ERROR at line 1:
+ORA-03113: end-of-file on communication channel
+Process ID: 302875
+Session ID: 140 Serial number: 36632
+</pre>
+<p>Producing the following lines in the alert log:</p>
+<pre class='brush:sql'>
+2021-11-11T16:11:59.436812+00:00
+create pluggable database pdb_test as clone using '/mnt/racdba/pdb_test.xml' copy source_file_directory='/mnt/racdba/datafile'
+2021-11-11T16:11:59.662614+00:00
+WARNING:NFS file system /mnt/racdba mounted with incorrect options(rw,relatime,vers=3,rsize=1048576,wsize=1048576,namlen=255,hard,nolock,proto=tcp,port=2048,timeo=600,retrans=2,sec=sys,mountaddr=20.38.122.68,mountvers=3,mountport=2048,mo
+untproto=tcp,local_lock=all,addr=20.38.122.68)
+WARNING:Expected NFS mount options: rsize>=32768,wsize>=32768,hard,noac/actimeo=0
+WARNING:NFS file system /mnt/racdba mounted with incorrect options(rw,relatime,vers=3,rsize=1048576,wsize=1048576,namlen=255,hard,nolock,proto=tcp,port=2048,timeo=600,retrans=2,sec=sys,mountaddr=20.38.122.68,mountvers=3,mountport=2048
+,mountproto=tcp,local_lock=all,addr=20.38.122.68)
+WARNING:Expected NFS mount options: rsize>=32768,wsize>=32768,hard,noac/actimeo=0
+WARNING:NFS file system /mnt/racdba mounted with incorrect options(rw,relatime,vers=3,rsize=1048576,wsize=1048576,namlen=255,hard,nolock,proto=tcp,port=2048,timeo=600,retrans=2,sec=sys,mountaddr=20.38.122.68,mountvers=3,mountport=2048,mountproto=tcp,local_lock=all,addr=20.38.122.68)
+WARNING:Expected NFS mount options: rsize>=32768,wsize>=32768,hard,noac/actimeo=0
+WARNING:NFS file system /mnt/racdba mounted with incorrect options(rw,relatime,vers=3,rsize=1048576,wsize=1048576,namlen=255,hard,nolock,proto=tcp,port=2048,timeo=600,retrans=2,sec=sys,mountaddr=20.38.122.68,mountvers=3,mountport=2048,mountproto=tcp,local_lock=all,addr=20.38.122.68)
+WARNING:Expected NFS mount options: rsize>=32768,wsize>=32768,hard,noac/actimeo=0
+Scanning plugin datafile directory - /mnt/racdba/datafile for file originally          created  as +DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/DATAFILE/system.281.1088344145 with afn -14
+Exception [type: SIGSEGV, Address not mapped to object] [ADDR:0x1C8] [PC:0x99556E2, kpdbfSourceFileSearch()+674] [flags: 0x0, count: 1]
+Errors in file /u01/app/oracle/diag/rdbms/racdba/racdba1/trace/racdba1_ora_302875.trc  (incident=16137) (PDBNAME=CDB$ROOT):
+ORA-07445: exception encountered: core dump [kpdbfSourceFileSearch()+674] [SIGSEGV] [ADDR:0x1C8] [PC:0x99556E2] [Address not mapped to object] []
+Incident details in: /u01/app/oracle/diag/rdbms/racdba/racdba1/incident/incdir_16137/racdba1_ora_302875_i16137.trc
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+2021-11-11T16:12:01.412859+00:00
+Dumping diagnostic data in directory=[cdmp_20211111161201], requested by (instance=1, osid=302875), summary=[incident=16137].
+2021-11-11T16:12:47.954425+00:00
+**************************************************************
+Undo Create of Pluggable Database PDB_TEST with pdb id - 4.
+**************************************************************
+</pre>
+<p>The partial call stack trace from the incident file is this:</p>
+<pre class='brush:sql'>
+__sighandler()       call     sslsshandler()       000000019 7F66A4F8EBF0
+                                                   7F66A4F8EAC0 7F66A4F8EAC0 ?
+                                                   7F66A4F8EA30 ? 000000083 ?
+kpdbfSourceFileSear  signal   __sighandler()       7F66AA3C09C0 000000000
+ch()+674                                           7F66A39B09E0 000000008 ?
+                                                   000000701 ? 7F66AA27C450 ?
+kpdbcPlugVerifyFile  call     kpdbfSourceFileSear  000000014 7F6600000000
+s()+1853                      ch()                 7F66A35CC594 7F66A35CC58C
+                                                   7F66AA411140 7F66AA27C450 ?
+kpdbcPlugVerifyAndC  call     kpdbcPlugVerifyFile  7FFE906117B0 7F6600000000 ?
+opyFiles()+1722               s()                  068618378 7F66A35CC58C ?
+                                                   7F66AA411140 ? 7F66AA27C450 ?
+kpdbcParseAndVerify  call     kpdbcPlugVerifyAndC  7FFE906117B0 063F4FBA8
+XML()+558                     opyFiles()           068618378 ? 7F66A35CC58C ?
+                                                   7F66AA411140 ? 7F66AA27C450 ?
+kpdbcCreatePdbCbk()  call     kpdbcParseAndVerify  7FFE906117B0 063F4FBA8
++2832                         XML()                068618378 ? 7F66A35CC58C ?
+                                                   7F66AA411140 ? 7F66AA27C450 ?
+kpdbcCreatePdb()+20  call     kpdbcCreatePdbCbk()  7F66A464F5D0 063F4FBA8 ?
+73                                                 7F66A464F5A8 7F66A35CC58C ?
+                                                   7F66AA411140 ? 7F66AA27C450 ?
+</pre>
+<p>Direct NFS (DNFS) is disabled for the database, and the actual mount options are as follows:</p>
+<pre class='brush:sql'>
+[root@raca1 ~]# mount | grep /mnt/racdba
+mikhailstorageaccount.blob.core.windows.net:/mikhailstorageaccount/mikhailstoragecontainer on /mnt/racdba type nfs (rw,relatime,vers=3,rsize=1048576,wsize=1048576,namlen=255,hard,nolock,proto=tcp,port=2048,timeo=600,retrans=2,sec=sys,mountaddr=20.38.122.68,mountvers=3,mountport=2048,mountproto=tcp,local_lock=all,addr=20.38.122.68)
+</pre>
+<p>In this case remounting the filesystem with the <b>"noac"</b> option helps (no cache file attributes):</p>
+<pre class='brush:sql'>
+SQL> create pluggable database pdb_test as clone using '/mnt/racdba/pdb_test.xml' copy source_file_directory='/mnt/racdba/datafile';
+
+Pluggable database created.
+</pre>
+<p>Producing the following lines in the alert log:</p>
+<pre class='brush:sql'>
+2021-11-11T16:37:07.331022+00:00
+create pluggable database pdb_test as clone using '/mnt/racdba/pdb_test.xml' copy source_file_directory='/mnt/racdba/datafile'
+2021-11-11T16:37:08.442188+00:00
+Scanning plugin datafile directory - /mnt/racdba/datafile for file originally          created  as +DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/DATAFILE/system.281.1088344145 with afn -14
+Using file-/mnt/racdba/datafile/data_D-RACDB_I-1085957449_TS-SYSTEM_FNO-14_020dtklc for original file-+DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/DATAFILE/system.281.1088344145 with afn-14
+Scanning plugin datafile directory - /mnt/racdba/datafile for file originally          created  as +DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/DATAFILE/sysaux.279.1088344145 with afn -15
+Using file-/mnt/racdba/datafile/data_D-RACDB_I-1085957449_TS-SYSAUX_FNO-15_050dtn16 for original file-+DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/DATAFILE/sysaux.279.1088344145 with afn-15
+Scanning plugin datafile directory - /mnt/racdba/datafile for file originally          created  as +DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/DATAFILE/undotbs1.280.1088344145 with afn -16
+Using file-/mnt/racdba/datafile/data_D-RACDB_I-1085957449_TS-UNDOTBS1_FNO-16_030dtler for original file-+DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/DATAFILE/undotbs1.280.1088344145 with afn-16
+Creating new file-/mnt/racdba/datafile/temp.282.1088344151 for original file-+DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/TEMPFILE/temp.282.1088344151
+Scanning plugin datafile directory - /mnt/racdba/datafile for file originally          created  as +DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/DATAFILE/undo_2.283.1088344175 with afn -17
+Using file-/mnt/racdba/datafile/data_D-RACDB_I-1085957449_TS-UNDO_2_FNO-17_040dtm80 for original file-+DATA/RACDBA/D0849B1A0CE20B41E0530101A8C085D0/DATAFILE/undo_2.283.1088344175 with afn-17
+2021-11-11T16:37:32.703370+00:00
+PDB_TEST(4):Endian type of dictionary set to little
+****************************************************************
+Pluggable Database PDB_TEST with pdb id - 4 is created as UNUSABLE.
+If any errors are encountered before the pdb is marked as NEW,
+then the pdb must be dropped
+local undo-1, localundoscn-0x0000000000000114
+****************************************************************
+PDB_TEST(4):Pluggable database PDB_TEST pseudo opening
+PDB_TEST(4):SUPLOG: Initialize PDB SUPLOG SGA, old value 0x0, new value 0x18
+PDB_TEST(4):Autotune of undo retention is turned on.
+PDB_TEST(4):This instance was first to open pluggable database PDB_TEST (container=4)
+PDB_TEST(4):queued attach DA request 0x8fff7aa0 for pdb 4, ospid 334557
+2021-11-11T16:37:33.671956+00:00
+Increasing priority of 2 RS
+Domain Action Reconfiguration started (domid 4, new da inc 11, cluster inc 8)
+Instance 1 is attaching to domain 4
+ Global Resource Directory partially frozen for domain action
+Domain Action Reconfiguration complete (total time 0.0 secs)
+Decreasing priority of 2 RS
+2021-11-11T16:37:33.793006+00:00
+PDB_TEST(4):Undo initialization recovery: Parallel FPTR complete: start:18298543 end:18298544 diff:1 ms (0.0 seconds)
+PDB_TEST(4):Undo initialization recovery: err:0 start: 18298542 end: 18298545 diff: 3 ms (0.0 seconds)
+PDB_TEST(4):[334557] Successfully onlined Undo Tablespace 2.
+PDB_TEST(4):Undo initialization online undo segments: err:0 start: 18298545 end: 18298678 diff: 133 ms (0.1 seconds)
+PDB_TEST(4):Undo initialization finished serial:0 start:18298542 end:18298680 diff:138 ms (0.1 seconds)
+PDB_TEST(4):Database Characterset for PDB_TEST is AL32UTF8
+PDB_TEST(4):Pluggable database PDB_TEST pseudo closing
+PDB_TEST(4):JIT: pid 334557 requesting stop
+PDB_TEST(4):Closing sequence subsystem (18298726913).
+PDB_TEST(4):Buffer Cache flush started: 4
+PDB_TEST(4):Buffer Cache flush finished: 4
+PDB_TEST(4):queued detach DA request 0x8fff7a38 for pdb 4, ospid 334557
+2021-11-11T16:37:34.520104+00:00
+Increasing priority of 2 RS
+Domain Action Reconfiguration started (domid 4, new da inc 12, cluster inc 8)
+Instance 1 is detaching from domain 4 (lazy abort? 0, recovery member? 0)
+ Global Resource Directory partially frozen for domain action
+* domain detach - domain 4 valid ? 1
+ Non-local Process blocks cleaned out
+ Set master node info
+ Dwn-cvts replayed, VALBLKs dubious
+ All grantable enqueues granted
+freeing rdom 4
+freeing the fusion rht of pdb 4
+freeing the pdb enqueue rht
+Domain Action Reconfiguration complete (total time 0.0 secs)
+Decreasing priority of 2 RS
+Completed: create pluggable database pdb_test as clone using '/mnt/racdba/pdb_test.xml' copy source_file_directory='/mnt/racdba/datafile'
+</pre>

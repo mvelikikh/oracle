@@ -1,0 +1,68 @@
+<p>Oracle versions 9i and 10.1 have a bug in a LOB to CHAR conversion. When the value is larger than 4000 bytes, it is silently truncated without dropping an error (see: <a href="https://support.oracle.com/rs?type=doc&id=388512.1">Ora-22835 - CLOB Larger Than 4000 Inserted Into Varchar2(4000) Column Is Silently Truncated (Doc ID 388512.1)</a>). This can become an issue following a database upgrade since newer versions start dropping an ORA-22835 error. This happened in this topic on <a href="https://www.sql.ru/forum/1339779/kak-by-maloy-krovu-razreshit-to-char-pri-clob-4000-podobno-kak-eto-bylo-v-oracle-9">SQL.RU</a>. This blog post provides an undocumented workaround for this issue.</p>
+<pre class='brush:sql'>
+SQL> !oerr ora 22836
+22836, 00000, "Event to turn on lob to char/raw silent truncation"
+// *Document: NO
+// *Cause:    N/A
+// *Action:   Do not throw error 22835 for truncation during LOB to CHAR/RAW
+//            conversion. Truncate the data instead.
+
+SQL>
+SQL> create table t(vc varchar2(4000));
+
+Table created.
+
+SQL>
+SQL> var c clob
+SQL>
+SQL> begin
+  2    select xmltype.createxml(cursor(select * from all_objects)).getClobVal()
+  3      into :c
+  4      from dual;
+  5  end;
+  6  /
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> exec dbms_output.put_line(dbms_lob.getlength(:c))
+12273513
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> insert into t values (to_char(:c));
+insert into t values (to_char(:c))
+                      *
+ERROR at line 1:
+ORA-22835: Buffer too small for CLOB to CHAR or BLOB to RAW conversion (actual:
+12273513, maximum: 4000)
+
+
+SQL>
+SQL> alter session set events '22836 level 1';
+
+Session altered.
+
+SQL>
+SQL> insert into t values (to_char(:c));
+
+1 row created.
+
+SQL>
+SQL> select length(vc) from t;
+
+LENGTH(VC)
+----------
+      4000
+
+SQL>
+SQL> select banner_full from v$version;
+
+BANNER_FULL
+--------------------------------------------------------------------------------
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.9.0.0.0
+</pre>
+<h1>Conclusion</h1>
+<p>Event 22836 can be used to suppress the ORA-22835 error and enable the old behavior - LOB values larger than 4000 bytes will be silently truncated without throwing an error. This is not something that can be considered as a long term solution, however, it can become handy in some cases when changing the code is not practical or not feasible.</p>
