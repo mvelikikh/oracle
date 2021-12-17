@@ -1,0 +1,72 @@
+<p>Since 21c it is now possible to use credential objects in database links. Here is a short demonstration of this functionality:</p>
+<pre class='brush:sql'>
+SQL> exec dbms_credential.create_credential('TC_CRED', 'TC', 'tc')
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> create database link link1 connect with tc_cred using 'localhost/pdb';
+
+Database link created.
+
+SQL> create database link link2 connect with tc_cred using 'localhost/pdb';
+
+Database link created.
+
+SQL>
+SQL> select * from dual@link1;
+
+D
+-
+X
+
+SQL> select * from dual@link2;
+
+D
+-
+X
+</pre>
+<p>SQL Language Reference has not been updated with the new syntax yet. If we alter the user's password, the existing DB links will not work anymore (I do not consider gradual password rollover here):</p>
+<pre class='brush:sql'>
+SQL> alter user tc identified by tc2;
+
+User altered.
+
+SQL>
+SQL> alter session close database link link1;
+
+Session altered.
+
+SQL> alter session close database link link2;
+
+Session altered.
+
+SQL>
+SQL> select * from dual@link1;
+select * from dual@link1
+                   *
+ERROR at line 1:
+ORA-01017: invalid username/password; logon denied
+ORA-02063: preceding line from LINK1
+</pre>
+<p>It is enough to alter the credentials objects to make the DB links work again:</p>
+<pre class='brush:sql'>
+SQL> exec dbms_credential.update_credential('TC_CRED', 'PASSWORD', 'tc2')
+
+PL/SQL procedure successfully completed.
+
+SQL>
+SQL> select * from dual@link1;
+
+D
+-
+X
+
+SQL> select * from dual@link2;
+
+D
+-
+X
+</pre>
+<h3>Conclusion</h3>
+<p>This functionality really comes into its own when you re-use one username and password pair in multiple database links. If we want to change the username or password, there is no need to change each link anymore. We can alter one credentials object instead. The functionality has been backported to 19c as well: <a href="https://support.oracle.com/rs?type=doc&id=29541929.8">Bug 29541929 - support credential objects in database links (Doc ID 29541929.8)</a>.</p>
