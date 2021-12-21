@@ -1,0 +1,160 @@
+<p>A question asking the same appeared on oracle-l today <a href="https://www.freelists.org/post/oracle-l/sql-trace-filtering">here</a>. It is widely known how to trace a specific SQL statement at the system level, e.g.: </p>
+<pre class='brush:sql'>
+alter system set events 'sql_trace[sql:&lt;some_sql_id&gt;]';
+</pre>
+<p>What if we want to trace the same SQL statement when it is executed by some specific user? A common approach in this case is to create a LOGON trigger and use <strong>ALTER SESSION SET EVENTS</strong> in it. It turns out that it is possible by using event filters and the <strong>username()</strong> function too. For example, to trace the SQL_ID <strong>bqka14bvd2zmb</strong> run by the user <strong>TC1</strong> we can use:</p>
+<pre class='brush:sql'>
+alter system set events 'sql_trace[sql:bqka14bvd2zmb] {streq:username(),"TC1"}';
+</pre>
+<p>Here is a full example which is also available as a Gist <a href="https://gist.github.com/mvelikikh/27a488e9104e63a55261c480b70a86f6">here</a>:</p>
+<pre class='brush:sql'>
+[oracle@db-21 ~]$ sqlplus /nolog @q
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Tue Dec 21 15:54:22 2021
+Version 21.4.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+SQL> conn / as sysdba
+Connected.
+SQL> alter session set container=pdb;
+
+Session altered.
+
+SQL>
+SQL> drop user tc1 cascade;
+
+User dropped.
+
+SQL> drop user tc2 cascade;
+
+User dropped.
+
+SQL>
+SQL> grant create session, select_catalog_role to tc1 identified by tc1;
+
+Grant succeeded.
+
+SQL> grant create session, select_catalog_role to tc2 identified by tc2;
+
+Grant succeeded.
+
+SQL>
+SQL> col sql_id old_v sql_id
+SQL> select dbms_sql_translator.sql_id(q'#select 'trace_me' from dual#') sql_id from dual;
+
+SQL_ID
+--------------------------------------------------------------------------------
+bqka14bvd2zmb
+
+SQL>
+SQL> alter system set events 'sql_trace[sql:&amp;sql_id.] {streq:username(),"TC1"}';
+old   1: alter system set events 'sql_trace[sql:&amp;sql_id.] {streq:username(),"TC1"}'
+new   1: alter system set events 'sql_trace[sql:bqka14bvd2zmb] {streq:username(),"TC1"}'
+
+System altered.
+
+SQL>
+SQL> conn tc1/tc1@db-21/pdb
+Connected.
+SQL>
+SQL> select 'trace_me' from dual;
+
+'TRACE_M
+--------
+trace_me
+
+SQL> col trace_file old_v trace_file
+SQL> select value trace_file from v$diag_info where name='Default Trace File';
+
+TRACE_FILE
+--------------------------------------------------------------------------------
+/u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_5455.trc
+
+SQL>
+SQL> !cat &amp;trace_file.
+Trace file /u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_5455.trc
+Oracle Database 21c Enterprise Edition Release 21.0.0.0.0 - Production
+Version 21.4.0.0.0
+Build label:    RDBMS_21.3.0.0.0_LINUX.X64_210727
+ORACLE_HOME:    /u01/app/oracle/product/21.0.0/dbhome_1
+System name:    Linux
+Node name:      db-21.localdomain
+Release:        5.4.17-2136.300.7.el8uek.x86_64
+Version:        #2 SMP Fri Oct 8 16:23:01 PDT 2021
+Machine:        x86_64
+VM name:        KVM CPUID feature flags: 0x01000089
+Instance name: orcl
+Redo thread mounted by this instance: 1
+Oracle process number: 48
+Unix process pid: 5455, NID: 4026531836, image: oracle@db-21.localdomain
+
+
+*** 2021-12-21T15:54:23.397300+00:00 (PDB(3))
+*** SESSION ID:(82.1864) 2021-12-21T15:54:23.397327+00:00
+*** CLIENT ID:() 2021-12-21T15:54:23.397344+00:00
+*** SERVICE NAME:(pdb) 2021-12-21T15:54:23.397360+00:00
+*** MODULE NAME:(SQL*Plus) 2021-12-21T15:54:23.397377+00:00
+*** ACTION NAME:() 2021-12-21T15:54:23.397394+00:00
+*** CLIENT DRIVER:(SQL*PLUS) 2021-12-21T15:54:23.397409+00:00
+*** CONTAINER ID:(3) 2021-12-21T15:54:23.397426+00:00
+*** CLIENT IP:(10.0.2.15) 2021-12-21T15:54:23.397449+00:00
+*** CLIENT IP:(10.0.2.15) 2021-12-21T15:54:23.397449+00:00
+
+=====================
+PARSING IN CURSOR #140557434715864 len=332 dep=1 uid=0 oct=3 lid=0 tim=1528633612 hv=2698389488 ad='85cb8630' sqlid='acmvv4fhdc9zh'
+select obj#,type#,ctime,mtime,stime, status, dataobj#, flags, oid$, spare1, spare2, spare3, signature, spare7, spare8, spare9, nvl(dflcollid, 16382), creappid, creverid, modappid, modverid, crepatchid, modpatchid from obj$ where owner#=:1 and name=:2 and namespace=:3 and remoteowner is null and linkname is null and subname is null
+END OF STMT
+EXEC #140557434715864:c=0,e=25,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=813480514,tim=1528633611
+FETCH #140557434715864:c=19,e=19,p=0,cr=3,cu=0,mis=0,r=0,dep=1,og=4,plh=813480514,tim=1528634393
+CLOSE #140557434715864:c=0,e=0,dep=1,type=3,tim=1528634426
+=====================
+PARSING IN CURSOR #140557434718920 len=27 dep=0 uid=120 oct=3 lid=120 tim=1528635472 hv=4140924523 ad='7aa8feb0' sqlid='bqka14bvd2zmb'
+select 'trace_me' from dual
+END OF STMT
+EXEC #140557434718920:c=30,e=30,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=1388734953,tim=1528635471
+FETCH #140557434718920:c=5,e=6,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=1388734953,tim=1528635612
+STAT #140557434718920 id=1 cnt=1 pid=0 pos=1 obj=0 op='FAST DUAL  (cr=0 pr=0 pw=0 str=1 time=1 us cost=2 size=0 card=1)'
+FETCH #140557434718920:c=0,e=0,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=0,plh=1388734953,tim=1528636086
+CLOSE #140557434718920:c=0,e=7,dep=0,type=0,tim=1528637068
+
+SQL>
+SQL> conn tc2/tc2@db-21/pdb
+Connected.
+SQL>
+SQL> select 'trace_me' from dual;
+
+'TRACE_M
+--------
+trace_me
+
+SQL> col trace_file old_v trace_file
+SQL> select value trace_file from v$diag_info where name='Default Trace File';
+
+TRACE_FILE
+--------------------------------------------------------------------------------
+/u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_5458.trc
+
+SQL>
+SQL> !cat &amp;trace_file.
+cat: /u01/app/oracle/diag/rdbms/orcl/orcl/trace/orcl_ora_5458.trc: No such file or directory
+</pre>
+<p>Here I make use of the streq filter and the username function:</p>
+<pre class='brush:sql'>
+SQL> oradebug doc event filter streq
+
+streq: filter to only fire an event when string s1 = s2 (up to &lt;len> characters)
+
+Usage
+-------
+{streq:  s1              &lt;string>[256],
+         s2              &lt;string>[256],
+         len             &lt;ub4> }
+
+SQL> oradebug doc event action username
+username
+        - Return user log-in name
+Usage
+-------
+username( Action returns: &lt;string>[30])
+</pre>
