@@ -6,7 +6,7 @@ Command line utility to display X$ table meta-information from the Oracle binary
 Installation
 ============
 
-Download the directory xinfo and install using pip::
+Download the directory `xinfo <https://downgit.github.io/#/home?url=https:%2F%2Fgithub.com%2Fmvelikikh%2Foracle%2Ftree%2Fmaster%2Ftools%2Fxinfo>`_ and install using pip::
 
     $ python3 -m pip install xinfo
 
