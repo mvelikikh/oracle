@@ -1,0 +1,19 @@
+version: 1
+formatters:
+  simple:
+    format: '%(asctime)s [%(levelname)s %(name)s.%(funcName)s][%(threadName)s] %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+    stream: ext://sys.stdout
+loggers:
+  simpleExample:
+    level: DEBUG
+    handlers: [console]
+    propagate: no
+root:
+  level: INFO
+  #level: DEBUG
+  handlers: [console]
