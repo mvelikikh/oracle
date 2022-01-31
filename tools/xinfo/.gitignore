@@ -7,4 +7,4 @@ dist/
 *.egg-info/
 
 # Vim swap files
-.*.swp
+[._]*.swp
