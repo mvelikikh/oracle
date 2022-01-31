@@ -127,42 +127,39 @@ def cmdline_main():
     '''
     It is run when invoking the module via the commandline.
     '''
-    _setup_logging()
-
-    parser = argparse.ArgumentParser(
-        prog='xinfo',
-        description='Command line utility to display X$ table meta-information'
-    )
-    parser.add_argument('--version', action='version', version=__version__)
-
-
-    subparsers = parser.add_subparsers(metavar='[command]',
-                                       description='Available commands')
-
-    actions = _load_actions()
-    spd = {}
-    for cmd, (action, args_cb, help_) in actions:
-        spd[cmd] = sp = subparsers.add_parser(cmd, help=help_,
-                                              parents=_get_common_parsers(),
-                                              description=help_)
-        sp.set_defaults(command=cmd)
-        if args_cb is not None:
-            args_cb(sp)
-
-    if len(sys.argv) == 1:
-        parser.print_help(sys.stderr)
-        sys.exit(1)
-
-    args = parser.parse_args()
-
-    _handle_common_args(args)
-    LOGGER.debug(args)
-    action = dict(actions)[args.command][0]
-    action(args)
-
-if __name__ == '__main__':
     try:
-        cmdline_main()
+        _setup_logging()
+
+        parser = argparse.ArgumentParser(
+            prog='xinfo',
+            description='Command line utility to display X$ table meta-information'
+        )
+        parser.add_argument('--version', action='version', version=__version__)
+
+
+        subparsers = parser.add_subparsers(metavar='[command]',
+                                           description='Available commands')
+
+        actions = _load_actions()
+        spd = {}
+        for cmd, (action, args_cb, help_) in actions:
+            spd[cmd] = sp = subparsers.add_parser(cmd, help=help_,
+                                                  parents=_get_common_parsers(),
+                                                  description=help_)
+            sp.set_defaults(command=cmd)
+            if args_cb is not None:
+                args_cb(sp)
+
+        if len(sys.argv) == 1:
+            parser.print_help(sys.stderr)
+            sys.exit(1)
+
+        args = parser.parse_args()
+
+        _handle_common_args(args)
+        LOGGER.debug(args)
+        action = dict(actions)[args.command][0]
+        action(args)
     except BrokenPipeError:
         # Python flushes standard streams on exit; redirect remaining output
         # to devnull to avoid another BrokenPipeError at shutdown
@@ -172,3 +169,6 @@ if __name__ == '__main__':
     except Exception as err:
         print(traceback.format_exc())
         sys.exit(1)
+
+if __name__ == '__main__':
+    cmdline_main()
