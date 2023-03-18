@@ -1,0 +1,111 @@
+<p>Given the following amount of memory and %target parameters, what PGA_AGGREGATE_TARGET (PAT) can be set for this system?</p>
+<pre class='brush:sql'>SQL> sho parameter ga%target
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+pga_aggregate_target                 big integer 200M
+sga_target                           big integer 16640M
+SQL> !grep Mem /proc/meminfo
+MemTotal:       32053636 kB
+MemFree:         2063524 kB
+MemAvailable:    5843840 kB
+</pre>
+<p>Oracle allows to set the value to more than MemAvailable:</p>
+<pre class='brush:sql'>SQL> alter system set pga_aggregate_target=5843841K;
+
+System altered.
+</pre>
+<p>At the same time, an attempt to set the PAT value to 6GB fails with ORA-855:</p>
+<pre class='brush:sql'>
+SQL> alter system set pga_aggregate_target=6G;
+alter system set pga_aggregate_target=6G
+*
+ERROR at line 1:
+ORA-02097: parameter cannot be modified because specified value is invalid
+ORA-00855: PGA_AGGREGATE_TARGET cannot be set because of insufficient physical
+memory.
+</pre>
+<p>with the following message written to the DB alert log:</p>
+<pre class='brush:sql'>pga_aggregate_target cannot be set to 6442450944 due to SGA memory requirement and the physical memory size.</pre>
+<p>The description of the error is self-explanatory:</p>
+<pre>
+SQL> !oerr ora 855
+00855, 00000, "PGA_AGGREGATE_TARGET cannot be set because of insufficient physical memory."
+// *Cause:  PGA_AGGREGATE_TARGET value was too high for the current system global area (SGA) size and amount of physical memory available.
+// *Action: Reduce the SGA size or increase the physical memory size.
+</pre>
+<p>Which, however, doesn't explain what the maximum PAT value allowed for this system.</p>
+<p>During my experiments, I found out that Oracle calls the <b>ksmc_physmem_pga_target</b> function internally that returns the maximum PAT value. The function takes the total host memory as input, which in my case would be <b>32053636KB</b> (or <b>0x7a4661000</b> in hex). We can use gdb to show the value:</p>
+<pre class='brush:sql'>
+(gdb) printf "0x%lx\n", (long) ksmc_physmem_pga_target(0x7a4661000)
+0x1686120cc
+</pre>
+<p>Which is 6,046,163,148 bytes. oradebug outputs just 4 last bytes and it is not reliable here (the same value is shown in the trace file):</p>
+<pre class='brush:sql'>
+SQL> oradebug call ksmc_physmem_pga_target 0x7a4661000
+Function returned 686120CC
+</pre>
+<p>The trace file:</p>
+<pre class='brush:sql'>
+Oradebug command 'call ksmc_physmem_pga_target 0x7a4661000' console output:
+Function returned 686120CC
+</pre>
+<p>Oracle developers must have used the x format in oradebug:</p>
+<pre class='brush:sql'>(gdb) printf "0x%x\n", (long) ksmc_physmem_pga_target(0x7a4661000)
+0x686120cc</pre>
+<p>The PAT value can be validated in SQL*Plus:</p>
+<pre class='brush:sql'>
+SQL> alter system set pga_aggregate_target=6046163148;
+
+System altered.
+</pre>
+<p>While setting the value to more than that is not allowed:</p>
+<pre class='brush:sql'>
+SQL> alter system set pga_aggregate_target=6046163149;
+alter system set pga_aggregate_target=6046163149
+*
+ERROR at line 1:
+ORA-02097: parameter cannot be modified because specified value is invalid
+ORA-00855: PGA_AGGREGATE_TARGET cannot be set because of insufficient physical
+memory.
+</pre>
+<p>The internal algorithm used by Oracle may change, but at the time of my experiments in 19.18 the maximum PGA value seems to be calculated as follows:</p>
+<pre>max PAT = (TotalMemory * _pga_limit_physmem_perc / 100 - SGA_TARGET) * 100 / _pga_limit_target_perc</pre>
+<p>Description:</p>
+<ul>
+  <li><b>max PAT</b>: PGA_AGGREGATE_TARGET max value</li>
+  <li><b>TotalMemory</b>: total host memory (MemTotal in /proc/meminfo)</li>
+  <li><p><b>_pga_limit_physmem_perc</b>: the parameter limiting total PGA and SGA (90% by default, in other words Oracle reserves 10% for OS and everything else):</p>
+    <pre class='brush:sql'>
+SQL> select indx, ksppdesc from x$ksppi where ksppinm='_pga_limit_physmem_perc';
+
+      INDX KSPPDESC
+---------- --------------------------------------------------------------------------------
+       246 default percent of physical memory for pga_aggregate_limit and SGA
+       
+SQL> select ksppstvl from x$ksppsv where indx=246;
+
+KSPPSTVL
+--------------------------------------------------------------------------------
+90
+
+    </pre>
+  </li>
+  <li><p><b>_pga_limit_target_perc</b>: the default percent of PAT for pga_aggregate_limit (200% by default):</p>
+    <pre class='brush:sql'>
+SQL> select indx, ksppdesc from x$ksppi where ksppinm='_pga_limit_target_perc';
+
+      INDX KSPPDESC
+---------- --------------------------------------------------------------------------------
+       234 default percent of pga_aggregate_target for pga_aggregate_limit
+
+SQL> select ksppstvl from x$ksppsv where indx=234;
+
+KSPPSTVL
+--------------------------------------------------------------------------------
+200
+    </pre>
+  </li>
+</ul>
+<p>Substituting the value from the sample system to the formula, we get the expected value we experimentally found previously:</p>
+<pre>max PAT = (32053636 * 1024 * 90 / 100 - 16640 * 1024 * 1024) * 100 / 200 = 6046163148.8</pre>
