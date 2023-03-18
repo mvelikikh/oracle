@@ -118,4 +118,19 @@ Errors in file /u01/app/oracle/diag/rdbms/racdb/racdb1/trace/racdb1_ora_275709.t
 ORA-00700: soft internal error, arguments: [pga physmem limit], [6046163149], [6046163148], [], [], [], [], [], [], [], [], []
 Incident details in: /u01/app/oracle/diag/rdbms/racdb/racdb1/incident/incdir_14402/racdb1_ora_275709_i14402.trc
 </pre>
-<p>Where the second argument of the ORA-00700 error (6046163149) is the actual PAT value, the third argument (6046163148) is the max PAT value calculated by the formula above.</p>
+<p>Where the second argument of the ORA-00700 error (6046163149) is the actual PAT value, the third argument (6046163148) is the max PAT value calculated by the formula above. In such a scenario, it is not possible to set the PAT value to itself:</p>
+<pre class='brush:sql'>
+SQL> sho parameter pga
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+pga_aggregate_limit                  big integer 12092326298
+pga_aggregate_target                 big integer 6046163149
+SQL> alter system set pga_aggregate_target=6046163149;
+alter system set pga_aggregate_target=6046163149
+*
+ERROR at line 1:
+ORA-02097: parameter cannot be modified because specified value is invalid
+ORA-00855: PGA_AGGREGATE_TARGET cannot be set because of insufficient physical
+memory.
+</pre>
