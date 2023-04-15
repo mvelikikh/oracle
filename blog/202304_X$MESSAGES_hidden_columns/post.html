@@ -1,0 +1,130 @@
+<p>Sometimes X$ tables might have seemingly unused gaps in a row. Here is an example with X$MESSAGES:</p>
+<pre class='brush:sql'>
+SQL> select kqftarsz
+  2    from x$kqfta
+  3   where kqftanam = 'X$MESSAGES'
+  4  /
+
+  KQFTARSZ
+----------
+        32
+
+SQL> select c.kqfconam column_name,
+  2         c.kqfcodty datatype,
+  3         c.kqfcosiz size_byte,
+  4         c.kqfcooff offset
+  5    from x$kqfta t,
+  6         x$kqfco c
+  7   where t.kqftanam = 'X$MESSAGES'
+  8     and c.kqfcotab = t.indx
+  9   order by c.indx
+ 10  /
+
+COLUMN_NAME   DATATYPE  SIZE_BYTE     OFFSET
+----------- ---------- ---------- ----------
+ADDR                23          8          0
+INDX                 2          4          0
+INST_ID              2          4          0
+CON_ID               2          2          0
+DESCRIPTION          1         64          8
+DEST                 1         64         16
+
+6 rows selected.
+
+SQL> desc x$messages
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ADDR                                               RAW(8)
+ INDX                                               NUMBER
+ INST_ID                                            NUMBER
+ CON_ID                                             NUMBER
+ DESCRIPTION                                        VARCHAR2(64)
+ DEST                                               VARCHAR2(64)
+</pre>
+<p>Having looked carefully at the output above, several discrepancies can be noticed:</p>
+<ul>
+  <li>How come the row size is 32 bytes whereas there are only two non-generated columns of 8 bytes each (<b>DESCRIPTION</b> and <b>DEST</b>, which are pointers)?</li>
+  <li>If the row size is 32 bytes, and <b>DESCRIPTION</b> and <b>DEST</b> starts at offsets 8 and 16 correspondingly, what data is in bytes 0-7 and 24-31?</li>
+</ul>
+<p>Based on the fact that <b>X$MESSAGES</b> takes its data from <b>ksbsdt</b> (see <a href="/2023/04/x-tables-starting-address.html">X$ tables: starting address</a>), the structure itself can be inspected in case it can help connect the dots.</p>
+<pre class='brush:sql'>
+[oracle@rac1 bin]$ readelf -s oracle | grep -w ksbsdt
+203009: 00000000152e5760 16992 OBJECT  GLOBAL DEFAULT   17 ksbsdt
+218757: 00000000152e5760 16992 OBJECT  GLOBAL DEFAULT   17 ksbsdt
+[oracle@rac1 bin]$ objdump -s --start-address=0x00000000152e5760 --stop-address=$((0x00000000152e5760+16992)) oracle
+
+oracle:     file format elf64-x86-64
+
+Contents of section .rodata:
+ 152e5760 203eee00 00000000 48f12e15 00000000   >......H.......
+ 152e5770 f818be13 00000000 11000000 00000000  ................
+ 152e5780 d04aee00 00000000 60f12e15 00000000  .J......`.......
+ 152e5790 f818be13 00000000 01000000 00000000  ................
+ 152e57a0 f0b11307 00000000 78f12e15 00000000  ........x.......
+ 152e57b0 f818be13 00000000 00000000 00000000  ................
+ 152e57c0 80043401 00000000 90f12e15 00000000  ..4.............
+ 152e57d0 f818be13 00000000 05000000 00000000  ................
+ 152e57e0 f0162707 00000000 acf12e15 00000000  ..'.............
+ 152e57f0 c0b28f15 00000000 00000000 00000000  ................
+...
+</pre>
+<p>It can be seen that there is a symbol at byte 0 and some number at byte 24; byte 8 and byte 16 has expected pointers:</p>
+<pre class='brush:sql'>
+[oracle@rac1 bin]$ readelf -s oracle | grep 00ee3e20
+ 30104: 0000000000ee3e20  1344 FUNC    GLOBAL DEFAULT   13 ksl_pdb_event_stats_exten
+322705: 0000000000ee3e20  1344 FUNC    GLOBAL DEFAULT   13 ksl_pdb_event_stats_exten
+[oracle@rac1 bin]$ objdump -s --start-address=0x152ef148 --stop-address=$((0x152ef148+32)) oracle
+
+oracle:     file format elf64-x86-64
+
+Contents of section .rodata:
+ 152ef148 70646220 6576656e 74207374 61747320  pdb event stats
+ 152ef158 61637469 6f6e0000 57616974 204f7574  action..Wait Out
+[oracle@rac1 bin]$ objdump -s --start-address=0x13be18f8 --stop-address=$((0x13be18f8+32)) oracle
+
+oracle:     file format elf64-x86-64
+
+Contents of section .rodata:
+ 13be18f8 47454e30 00000000 4c4d4643 00000000  GEN0....LMFC....
+ 13be1908 44425730 00000000 4c434b31 00000000  DBW0....LCK1....
+...
+</pre>
+<p>Thus, the missing columns can be obtained using another tool that I wrote for such cases - <b>bide</b> (binary data extractor):</p>
+<pre class='brush:sql'>
+[oracle@rac1 src]$ bide dump-table ksbsdt --format func:symbol description:string dest:string L
++----------------------------------------+-----------------------------------------------------------------+------------------------------------+-----------+
+| func                                   | description                                                     | dest                               | _unnamed3 |
++----------------------------------------+-----------------------------------------------------------------+------------------------------------+-----------+
+| ksl_pdb_event_stats_extend             | pdb event stats action                                          | GEN0                               |        17 |
+| kslwo_compute_sys_thresholds_bg_action | Wait Outlier thresholds                                         | GEN0                               |         1 |
+| kslwo_process_sys_wait_bg_action       | Process wait outlier                                            | GEN0                               |         0 |
+| ksuguid_mac_update_act                 | KSU GUID MAC Address update                                     | GEN0                               |         5 |
+| ksu_inc_sos_param                      | session param update action                                     | GEN1                               |         0 |
+| ksu_inc_sos                            | session update action                                           | GEN2                               |         1 |
+| kstmUpdateTranslationCbk               | Update KGSTM Translation                                        | MMON                               |         1 |
+| ksustaen_init_act                      | event nfy timeout action                                        | GEN0                               |         8 |
+| ksbmsg                                 | KSB action for X-instance calls                                 | *                                  |         2 |
+| ksbckbast                              | KSB action for bast checking                                    | *                                  |         1 |
+| ksbsht                                 | generic shutdown background                                     | *                                  |         0 |
+...
+</pre>
+<p>Comparing it with the data seen in the database, it can be concluded that not only do we have a description of each "message" and a process presumably handling it, but also we have an underlying function:</p>
+<pre class='brush:sql'>
+SQL> select * from x$messages;
+
+ADDR                   INDX    INST_ID     CON_ID DESCRIPTION                                                      DEST
+---------------- ---------- ---------- ---------- ---------------------------------------------------------------- -----
+00000000152E5760          0          1          0 pdb event stats action                                           GEN0
+00000000152E5780          1          1          0 Wait Outlier thresholds                                          GEN0
+00000000152E57A0          2          1          0 Process wait outlier                                             GEN0
+00000000152E57C0          3          1          0 KSU GUID MAC Address update                                      GEN0
+00000000152E57E0          4          1          0 session param update action                                      GEN1
+00000000152E5800          5          1          0 session update action                                            GEN2
+00000000152E5820          6          1          0 Update KGSTM Translation                                         MMON
+00000000152E5840          7          1          0 event nfy timeout action                                         GEN0
+00000000152E5860          8          1          0 KSB action for X-instance calls                                  *
+00000000152E5880          9          1          0 KSB action for bast checking                                     *
+00000000152E58A0         10          1          0 generic shutdown background                                      *
+...
+</pre>
+<p>This allows one to execute those actions by calling the respective function. It also explains what is stored in bytes 0-7 and 24-31 of X$MESSAGES rows.</p>

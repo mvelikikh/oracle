@@ -1,0 +1,83 @@
+<p>I wrote a short Python <a href="https://github.com/mvelikikh/oracle/blob/master/tools/ora_hash.py">function</a> to compute a hash value for a given expression. The return value of the function matches the return value of <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/sqlrf/ORA_HASH.html#GUID-0349AFF5-0268-43CE-8118-4F96D752FDE6">ORA_HASH</a> on inputs I tested it with in Oracle 23c on Linux x86-64.</p>
+<p>In its simplest form, the invocation can be as follows:</p>
+<pre class='brush:sql'>
+>>> ora_hash(b'test')
+2662839991
+
+SQL> select ora_hash('test');
+
+ORA_HASH('TEST')
+----------------
+      2662839991
+</pre>
+<h3>Handling non-string datatypes</h3>
+<p>In case of a non-string datatype, some conversion should be performed. ORA_HASH accepts a variety of datatypes. I use NUMBER and DATE in the examples below. The procedure is essentially the same with both datatypes: need to take the internal representation of a value in Oracle and pass it to Python. It should be possible to handle any other supported datatypes following the same procedure.</p>
+<h4>NUMBER</h4>
+<pre class='brush:sql'>
+SQL> select ora_hash(2023);
+
+ORA_HASH(2023)
+--------------
+    2671887358
+
+SQL> select dump(2023, 16);
+
+DUMP(2023,16)
+---------------------
+Typ=2 Len=3: c2,15,18
+
+>>> ora_hash(b'\xc2\x15\x18')
+2671887358
+</pre>
+<h4>DATE</h4>
+<pre class='brush:sql'>
+SQL> select ora_hash(to_date('2023-03-01 12:34:56', 'yyyy-mm-dd hh24:mi:ss'));
+
+ORA_HASH(TO_DATE('2023-03-0112:34:56','YYYY-MM-DDHH24:MI:SS'))
+--------------------------------------------------------------
+                                                     112410422
+                                                     
+SQL> select dump(to_date('2023-03-01 12:34:56', 'yyyy-mm-dd hh24:mi:ss'), 16);
+
+DUMP(TO_DATE('2023-03-0112:34:56
+--------------------------------
+Typ=13 Len=8: e7,7,3,1,c,22,38,0
+
+>>> ora_hash(b'\xe7\x07\x03\x01\x0c\x22\x38\x00')
+112410422
+</pre>
+<h3>Specifying max_bucket and seed_value</h3>
+<p>These parameters are also supported.</p>
+<h4>MAX_BUCKET</h4>
+<pre class='brush:sql'>
+SQL> select ora_hash('abracadabra', 255);
+
+ORA_HASH('ABRACADABRA',255)
+---------------------------
+                         82
+
+>>> ora_hash(b'abracadabra', 255)
+82
+</pre>
+<h4>SEED_VALUE</h4>
+<pre class='brush:sql'>
+SQL> select ora_hash('abracadabra', power(2,32)-1, 123);
+
+ORA_HASH('ABRACADABRA',POWER(2,32)-1,123)
+-----------------------------------------
+                               4012392341
+
+>>> ora_hash(b'abracadabra', seed=123)
+4012392341
+</pre>
+<h4>MAX_BUCKET and SEED_VALUE</h4>
+<pre class='brush:sql'>
+SQL> select ora_hash('abracadabra', 255, 123);
+
+ORA_HASH('ABRACADABRA',255,123)
+-------------------------------
+                            149
+
+>>> ora_hash(b'abracadabra', 255, 123)
+149
+</pre>

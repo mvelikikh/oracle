@@ -1,0 +1,207 @@
+<p>Column definition structures are stored in <b>kqftap</b>:</p>
+<pre class='brush:sql;highlight:[17]'>
+[oracle@db-21 ~]$ xinfo list 'X$KCCCP' -o json --with-kqftap
+{
+  "457": {
+    "obj": 4294951392,
+    "ver": 5,
+    "nam_ptr": 383999376,
+    "nam": "X$KCCCP",
+    "xstruct_nam_ptr": 383999384,
+    "xstruct": "kctcpx",
+    "typ": 5,
+    "flg": 0,
+    "rsz": 552,
+    "coc": 25,
+    "kqftap": {
+      "xstruct_ptr": 382889376,
+      "cb2_ptr": 75535856,
+      "xstruct": "kctcpx_c",
+      "cb2": "kctxcp"
+    }
+  }
+}
+</pre>
+<p>For example, the structure <b>kctcpx_c</b> defines <b>X$KCCCP</b>'s columns:</p>
+<pre class='brush:sql'>
+[oracle@db-21 bin]$ readelf -s oracle | grep -E -A1 -w 'Symbol|kctcpx_c' --no-group-separator
+Symbol table '.dynsym' contains 225083 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+Symbol table '.symtab' contains 402534 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+ 80301: 0000000016d77100  1664 OBJECT  LOCAL  DEFAULT   17 kctcpx_c
+ 80302: 0000000016d77780  2304 OBJECT  LOCAL  DEFAULT   17 kctmtx_c
+</pre>
+<p>Here is what it looks like:</p>
+<pre class='brush:sql;highlight:[6,10,14,18,22]'>
+[oracle@db-21 bin]$ objdump -s --start-address=0x0000000016d77100 --stop-address=$((0x0000000016d77100+1664)) oracle
+
+oracle:     file format elf64-x86-64
+
+Contents of section .rodata:
+ 16d77100 04000000 00000000 9c95e616 00000000  ................
+ 16d77110 17090000 00000000 00000000 00000000  ................
+ 16d77120 00000000 00000000 08000000 00000000  ................
+ 16d77130 00000000 00000000 00000000 00000000  ................
+ 16d77140 04000000 00000000 60d6d715 00000000  ........`.......
+ 16d77150 020b0000 00000000 00000000 00000000  ................
+ 16d77160 00000000 00000000 04000000 00000000  ................
+ 16d77170 00000000 00000000 00000000 00000000  ................
+ 16d77180 07000000 00000000 b0960f16 00000000  ................
+ 16d77190 020b0000 00000000 00000000 00000000  ................
+ 16d771a0 00000000 00000000 04000000 00000000  ................
+ 16d771b0 00000000 00000000 00000000 00000000  ................
+ 16d771c0 06000000 00000000 5c8de716 00000000  ........\.......
+ 16d771d0 020b0000 00000000 00000000 00000000  ................
+ 16d771e0 00000000 00000000 02000000 00000000  ................
+ 16d771f0 00000000 00000000 00000000 00000000  ................
+ 16d77200 05000000 00000000 6c82e916 00000000  ........l.......
+ 16d77210 02000100 00000000 00000000 00000000  ................
+ 16d77220 00000000 00000000 04000000 00000000  ................
+ 16d77230 0c020000 00000000 00000000 00000000  ................
+</pre>
+<p>Each column is defined within 64 bytes:</p>
+<pre class='brush:sql'>
+[oracle@db-21 bin]$ for a in 16e6959c 15d7d660 160f96b0 16e78d5c 16e9826c
+> do
+>   objdump -s --start-address=0x$a --stop-address=$((0x$a+16)) oracle
+> done
+
+oracle:     file format elf64-x86-64
+
+Contents of section .rodata:
+ 16e6959c 41444452 00000000 6b71665f 66696c6c  ADDR....kqf_fill
+
+oracle:     file format elf64-x86-64
+
+Contents of section .rodata:
+ 15d7d660 494e4458 00000000 49535355 45440000  INDX....ISSUED..
+
+oracle:     file format elf64-x86-64
+
+Contents of section .rodata:
+ 160f96b0 494e5354 5f494400 71656573 46696e64  INST_ID.qeesFind
+
+oracle:     file format elf64-x86-64
+
+Contents of section .rodata:
+ 16e78d5c 434f4e5f 49440000 5352435f 434f4e5f  CON_ID..SRC_CON_
+
+oracle:     file format elf64-x86-64
+
+Contents of section .rodata:
+ 16e9826c 4350544e 4f000000 43505354 41000000  CPTNO...CPSTA...
+</pre>
+<p>Here is the structure of <b>X$KCCCP</b>:</p>
+<pre class='brush:sql'>
+SQL> desc x$kcccp
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ADDR                                               RAW(8)
+ INDX                                               NUMBER
+ INST_ID                                            NUMBER
+ CON_ID                                             NUMBER
+ CPTNO                                              NUMBER
+ CPSTA                                              NUMBER
+ CPFLG                                              NUMBER
+ CPDRT                                              NUMBER
+ CPRDB                                              NUMBER
+ CPLRBA_SEQ                                         NUMBER
+ CPLRBA_BNO                                         NUMBER
+ CPLRBA_BOF                                         NUMBER
+ CPODR_SEQ                                          NUMBER
+ CPODR_BNO                                          NUMBER
+ CPODR_BOF                                          NUMBER
+ CPODS                                              VARCHAR2(20)
+ CPODT                                              VARCHAR2(20)
+ CPODT_I                                            NUMBER
+ CPHBT                                              NUMBER
+ CPRLS                                              VARCHAR2(20)
+ CPRLC                                              NUMBER
+ CPMID                                              NUMBER
+ CPSDR_SEQ                                          NUMBER
+ CPSDR_BNO                                          NUMBER
+ CPSDR_ADB                                          NUMBER
+</pre>
+<p>And the actual <b>X$KQFCO</b> rows:</p>
+<pre class='brush:sql'>
+SQL> select kqfcocno,
+  2         kqfconam,
+  3         kqfcosiz,
+  4         kqfcodty,
+  5         kqfcotyp,
+  6         kqfcomax,
+  7         kqfcolsz,
+  8         kqfcolof,
+  9         kqfcooff,
+ 10         kqfcoidx,
+ 11         kqfcoipo
+ 12    from x$kqfta t,
+ 13         x$kqfco c
+ 14   where t.kqftanam = 'X$KCCCP'
+ 15     and c.kqfcotab = t.indx
+ 16   order by 1;
+
+  KQFCOCNO KQFCONAM     KQFCOSIZ   KQFCODTY   KQFCOTYP   KQFCOMAX   KQFCOLSZ   KQFCOLOF   KQFCOOFF   KQFCOIDX   KQFCOIPO
+---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+         1 ADDR                8         23          9          0          0          0          0          0          0
+         2 INDX                4          2         11          0          0          0          0          0          0
+         3 INST_ID             4          2         11          0          0          0          0          0          0
+         4 CON_ID              2          2         11          0          0          0          0          0          0
+         5 CPTNO               4          2          0          0          0          0        524          1          0
+         6 CPSTA               4          2         11          0          0          0          0          0          0
+         7 CPFLG               4          2         11          0          0          0          4          0          0
+         8 CPDRT               4          2         11          0          0          0          8          0          0
+         9 CPRDB               4          2         11          0          0          0        548          0          0
+        10 CPLRBA_SEQ          4          2         11          0          0          0         12          0          0
+        11 CPLRBA_BNO          4          2         11          0          0          0         16          0          0
+        12 CPLRBA_BOF          2          2         11          0          0          0         20          0          0
+        13 CPODR_SEQ           4          2         11          0          0          0         24          0          0
+        14 CPODR_BNO           4          2         11          0          0          0         28          0          0
+        15 CPODR_BOF           2          2         11          0          0          0         32          0          0
+        16 CPODS              20          1          5          0          0          0        484          0          0
+        17 CPODT              20          1          5          0          0          0        504          0          0
+        18 CPODT_I             4          2         11          0          0          0         44          0          0
+        19 CPHBT               4          2         11          0          0          0         60          0          0
+        20 CPRLS              20          1          5          0          0          0        528          0          0
+        21 CPRLC               4          2         11          0          0          0         48          0          0
+        22 CPMID               4          2         11          0          0          0         64          0          0
+        23 CPSDR_SEQ           4          2         11          0          0          0        104          0          0
+        24 CPSDR_BNO           4          2         11          0          0          0        108          0          0
+        25 CPSDR_ADB           2          2         11          0          0          0        112          0          0
+
+25 rows selected.
+</pre>
+<p>The <b>xinfo</b> tool has a <b>describe</b> command that produces the same data:</p>
+<pre class='brush:sql'>
+[oracle@db-21 ~]$ xinfo desc 'X$KCCCP'
++-----+------------+------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-------------+
+| cno |    nam_ptr | nam        | siz | dty | typ | max | lsz | lof | off | idx | ipo | kqfcop_indx |
++-----+------------+------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-------------+
+|   1 | 0x16e6959c | ADDR       |   8 |  23 |   9 |   0 |   0 |   0 |   0 |   0 |   0 |           0 |
+|   2 | 0x15d7d660 | INDX       |   4 |   2 |  11 |   0 |   0 |   0 |   0 |   0 |   0 |           0 |
+|   3 | 0x160f96b0 | INST_ID    |   4 |   2 |  11 |   0 |   0 |   0 |   0 |   0 |   0 |           0 |
+|   4 | 0x16e78d5c | CON_ID     |   2 |   2 |  11 |   0 |   0 |   0 |   0 |   0 |   0 |           0 |
+|   5 | 0x16e9826c | CPTNO      |   4 |   2 |   0 |   0 |   0 |   0 | 524 |   1 |   0 |           0 |
+|   6 | 0x16e98274 | CPSTA      |   4 |   2 |  11 |   0 |   0 |   0 |   0 |   0 |   0 |           0 |
+|   7 | 0x16e9827c | CPFLG      |   4 |   2 |  11 |   0 |   0 |   0 |   4 |   0 |   0 |           0 |
+|   8 | 0x16e98284 | CPDRT      |   4 |   2 |  11 |   0 |   0 |   0 |   8 |   0 |   0 |           0 |
+|   9 | 0x16e9828c | CPRDB      |   4 |   2 |  11 |   0 |   0 |   0 | 548 |   0 |   0 |           0 |
+|  10 | 0x16e98294 | CPLRBA_SEQ |   4 |   2 |  11 |   0 |   0 |   0 |  12 |   0 |   0 |           0 |
+|  11 | 0x16e982a0 | CPLRBA_BNO |   4 |   2 |  11 |   0 |   0 |   0 |  16 |   0 |   0 |           0 |
+|  12 | 0x16e982ac | CPLRBA_BOF |   2 |   2 |  11 |   0 |   0 |   0 |  20 |   0 |   0 |           0 |
+|  13 | 0x16e982b8 | CPODR_SEQ  |   4 |   2 |  11 |   0 |   0 |   0 |  24 |   0 |   0 |           0 |
+|  14 | 0x16e982c4 | CPODR_BNO  |   4 |   2 |  11 |   0 |   0 |   0 |  28 |   0 |   0 |           0 |
+|  15 | 0x16e982d0 | CPODR_BOF  |   2 |   2 |  11 |   0 |   0 |   0 |  32 |   0 |   0 |           0 |
+|  16 | 0x16e982dc | CPODS      |  20 |   1 |   5 |   0 |   0 |   0 | 484 |   0 |   0 |           0 |
+|  17 | 0x16e982e4 | CPODT      |  20 |   1 |   5 |   0 |   0 |   0 | 504 |   0 |   0 |           0 |
+|  18 | 0x16e982ec | CPODT_I    |   4 |   2 |  11 |   0 |   0 |   0 |  44 |   0 |   0 |           0 |
+|  19 | 0x16e982f4 | CPHBT      |   4 |   2 |  11 |   0 |   0 |   0 |  60 |   0 |   0 |           0 |
+|  20 | 0x16e982fc | CPRLS      |  20 |   1 |   5 |   0 |   0 |   0 | 528 |   0 |   0 |           0 |
+|  21 | 0x16e98304 | CPRLC      |   4 |   2 |  11 |   0 |   0 |   0 |  48 |   0 |   0 |           0 |
+|  22 | 0x16e9830c | CPMID      |   4 |   2 |  11 |   0 |   0 |   0 |  64 |   0 |   0 |           0 |
+|  23 | 0x16e98314 | CPSDR_SEQ  |   4 |   2 |  11 |   0 |   0 |   0 | 104 |   0 |   0 |           0 |
+|  24 | 0x16e98320 | CPSDR_BNO  |   4 |   2 |  11 |   0 |   0 |   0 | 108 |   0 |   0 |           0 |
+|  25 | 0x16e9832c | CPSDR_ADB  |   2 |   2 |  11 |   0 |   0 |   0 | 112 |   0 |   0 |           0 |
++-----+------------+------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-------------+
+</pre>
